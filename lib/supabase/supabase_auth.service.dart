@@ -1,20 +1,18 @@
-import 'package:app_core/config.dart';
-import 'package:app_core/notifications/notifications.manager.dart';
 import 'package:app_core/controllers/pro.controller.dart';
-import 'package:app_core/supabase/supabase_functions.service.dart';
 import 'package:app_core/firebase/analytics.service.dart';
 import 'package:app_core/firebase/config/config.service.dart';
 import 'package:app_core/firebase/crashlytics.service.dart';
 import 'package:app_core/globals.dart';
+import 'package:app_core/notifications/notifications.manager.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/persistence/persistence.dart';
+import 'package:app_core/supabase/supabase_functions.service.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:either_dart/either.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:supabase/supabase.dart';
 
 class SupabaseAuthService extends GetxService with ConsoleMixin {

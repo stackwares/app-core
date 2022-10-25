@@ -5,26 +5,22 @@ class ConfigApp {
     this.enabled = true,
     this.build = const ConfigAppBuild(),
     this.beta = const ConfigAppBeta(),
-    this.giveaway = const ConfigAppGiveaway(),
   });
 
   final bool enabled;
   final ConfigAppBuild build;
   final ConfigAppBeta beta;
-  final ConfigAppGiveaway giveaway;
 
   factory ConfigApp.fromJson(Map<String, dynamic> json) => ConfigApp(
         enabled: json["enabled"],
         build: ConfigAppBuild.fromJson(json["build"]),
         beta: ConfigAppBeta.fromJson(json["beta"]),
-        giveaway: ConfigAppGiveaway.fromJson(json["giveaway"]),
       );
 
   Map<String, dynamic> toJson() => {
         "enabled": enabled,
         "build": build.toJson(),
         "beta": beta.toJson(),
-        "giveaway": giveaway.toJson(),
       };
 
   String toJsonString() => jsonEncode(toJson());
