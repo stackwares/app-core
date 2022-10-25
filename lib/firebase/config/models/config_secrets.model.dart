@@ -4,26 +4,28 @@ class ConfigSecrets {
   const ConfigSecrets({
     this.revenuecat = const ConfigSecretsRevenuecat(),
     this.sentry = const ConfigSecretsSentry(),
-    this.unsplash = const ConfigSecretsUnsplash(),
+    this.unsplash,
     this.supabase = const ConfigSecretsSupabase(),
   });
 
   final ConfigSecretsRevenuecat revenuecat;
   final ConfigSecretsSentry sentry;
-  final ConfigSecretsUnsplash unsplash;
+  final ConfigSecretsUnsplash? unsplash;
   final ConfigSecretsSupabase supabase;
 
   factory ConfigSecrets.fromJson(Map<String, dynamic> json) => ConfigSecrets(
         revenuecat: ConfigSecretsRevenuecat.fromJson(json["revenuecat"]),
         sentry: ConfigSecretsSentry.fromJson(json["sentry"]),
-        unsplash: ConfigSecretsUnsplash.fromJson(json["unsplash"]),
+        unsplash: json["unsplash"] == null
+            ? null
+            : ConfigSecretsUnsplash.fromJson(json["unsplash"]),
         supabase: ConfigSecretsSupabase.fromJson(json["supabase"]),
       );
 
   Map<String, dynamic> toJson() => {
         "revenuecat": revenuecat.toJson(),
         "sentry": sentry.toJson(),
-        "unsplash": unsplash.toJson(),
+        "unsplash": unsplash?.toJson(),
         "supabase": supabase.toJson(),
       };
 }

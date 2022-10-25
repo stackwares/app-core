@@ -8,11 +8,27 @@ import 'package:get/get.dart';
 
 import '../controllers/pro.controller.dart';
 import '../globals.dart';
+import '../persistence/persistence.dart';
 import '../supabase/supabase_database.service.dart';
 import '../supabase/supabase_functions.service.dart';
+import '../widgets/consent.widget.dart';
 
 class UIUtils {
   static final console = Console(name: 'UIUtils');
+
+  static Future<void> showConsent() async {
+    if (isApple && !Persistence.to.consented.val) {
+      const dialog = AlertDialog(
+        content: SizedBox(
+          width: 400,
+          child: ConsentWidget(),
+        ),
+      );
+
+      await Get.dialog(dialog, barrierDismissible: false);
+      Persistence.to.consented.val = true;
+    }
+  }
 
   static Future<void> showSnackBar({
     required String title,

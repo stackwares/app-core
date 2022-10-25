@@ -1,3 +1,4 @@
+import 'package:app_core/config.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -19,12 +20,7 @@ class ProText extends StatelessWidget {
         ),
         const SizedBox(width: 4),
         GradientWidget(
-          gradient: const LinearGradient(
-            colors: [
-              Color.fromARGB(255, 255, 0, 212),
-              Color.fromARGB(255, 0, 166, 255),
-            ],
-          ),
+          gradient: LinearGradient(colors: CoreConfig().gradientColors),
           child: Text(
             'Pro',
             style: TextStyle(

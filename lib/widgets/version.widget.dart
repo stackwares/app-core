@@ -6,9 +6,16 @@ class VersionText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      metadataApp.formattedVersion,
-      style: const TextStyle(color: Colors.grey, fontSize: 10),
+    return Align(
+      heightFactor: 1,
+      alignment: Alignment.bottomRight,
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 5, right: 5),
+        child: Text(
+          metadataApp.formattedVersion,
+          style: const TextStyle(color: Colors.grey, fontSize: 10),
+        ),
+      ),
     );
   }
 }

@@ -107,6 +107,7 @@ class ConfigGeneralAppLinks {
     this.mobileDemo = '',
     this.contributors = '',
     this.reddit = '',
+    this.github = '',
     this.store = const ConfigGeneralStore(),
   });
 
@@ -123,6 +124,7 @@ class ConfigGeneralAppLinks {
   final String mobileDemo;
   final String contributors;
   final String reddit;
+  final String github;
   final ConfigGeneralStore store;
 
   factory ConfigGeneralAppLinks.fromJson(Map<String, dynamic> json) =>
@@ -140,6 +142,7 @@ class ConfigGeneralAppLinks {
         mobileDemo: json["mobile_demo"] ?? '',
         contributors: json["contributors"] ?? '',
         reddit: json["reddit"] ?? '',
+        github: json["github"] ?? '',
         store: ConfigGeneralStore.fromJson(json["store"]),
       );
 
@@ -157,6 +160,7 @@ class ConfigGeneralAppLinks {
         "mobile_demo": mobileDemo,
         "contributors": contributors,
         "reddit": reddit,
+        "github": github,
         "store": store.toJson(),
       };
 }

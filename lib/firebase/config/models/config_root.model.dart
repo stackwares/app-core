@@ -4,7 +4,6 @@ import 'dart:convert';
 
 import 'config_app.model.dart';
 import 'config_general.model.dart';
-import 'config_limits.model.dart';
 import 'config_secrets.model.dart';
 
 class ConfigRoot {
@@ -16,14 +15,14 @@ class ConfigRoot {
   });
 
   List<Condition> conditions;
-  Parameters parameters;
+  ConfigParameters parameters;
   String etag;
   Version version;
 
   factory ConfigRoot.fromJson(Map<String, dynamic> json) => ConfigRoot(
         conditions: List<Condition>.from(
             json["conditions"].map((x) => Condition.fromJson(x))),
-        parameters: Parameters.fromJson(json["parameters"]),
+        parameters: ConfigParameters.fromJson(json["parameters"]),
         etag: json["etag"],
         version: Version.fromJson(json["version"]),
       );
@@ -96,20 +95,19 @@ class DefaultValue {
       };
 }
 
-class Parameters {
-  Parameters({
+class ConfigParameters {
+  ConfigParameters({
     required this.generalConfig,
     required this.secretsConfig,
-    required this.limitsConfig,
     required this.appConfig,
   });
 
   ConfigGeneral generalConfig;
   ConfigSecrets secretsConfig;
-  ConfigLimits limitsConfig;
   ConfigApp appConfig;
 
-  factory Parameters.fromJson(Map<String, dynamic> json) => Parameters(
+  factory ConfigParameters.fromJson(Map<String, dynamic> json) =>
+      ConfigParameters(
         generalConfig: ConfigGeneral.fromJson(
           jsonDecode(
             ConfigValue.fromJson(json["general_config"]).defaultValue.value,
@@ -118,11 +116,6 @@ class Parameters {
         secretsConfig: ConfigSecrets.fromJson(
           jsonDecode(
             ConfigValue.fromJson(json["secrets_config"]).defaultValue.value,
-          ),
-        ),
-        limitsConfig: ConfigLimits.fromJson(
-          jsonDecode(
-            ConfigValue.fromJson(json["limits_config"]).defaultValue.value,
           ),
         ),
         appConfig: ConfigApp.fromJson(
@@ -135,7 +128,6 @@ class Parameters {
   Map<String, dynamic> toJson() => {
         "general_config": generalConfig.toJson(),
         "secrets_config": secretsConfig.toJson(),
-        "limits_config": limitsConfig.toJson(),
         "app_config": appConfig.toJson(),
       };
 }

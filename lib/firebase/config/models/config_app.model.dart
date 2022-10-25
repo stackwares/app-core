@@ -3,24 +3,18 @@ import 'dart:convert';
 class ConfigApp {
   const ConfigApp({
     this.enabled = true,
-    this.free = false,
-    this.watermark = '',
     this.build = const ConfigAppBuild(),
     this.beta = const ConfigAppBeta(),
     this.giveaway = const ConfigAppGiveaway(),
   });
 
   final bool enabled;
-  final bool free;
-  final String watermark;
   final ConfigAppBuild build;
   final ConfigAppBeta beta;
   final ConfigAppGiveaway giveaway;
 
   factory ConfigApp.fromJson(Map<String, dynamic> json) => ConfigApp(
         enabled: json["enabled"],
-        free: json["free"],
-        watermark: json["watermark"],
         build: ConfigAppBuild.fromJson(json["build"]),
         beta: ConfigAppBeta.fromJson(json["beta"]),
         giveaway: ConfigAppGiveaway.fromJson(json["giveaway"]),
@@ -28,8 +22,6 @@ class ConfigApp {
 
   Map<String, dynamic> toJson() => {
         "enabled": enabled,
-        "free": free,
-        "watermark": watermark,
         "build": build.toJson(),
         "beta": beta.toJson(),
         "giveaway": giveaway.toJson(),

@@ -24,6 +24,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(UpgradeScreenController());
+    final upgradeConfig = CoreConfig().upgradeConfig;
 
     String deviceAccess = 'Other devices';
 
@@ -53,121 +54,49 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
             style: const TextStyle(color: Colors.grey),
           ),
         ),
-        if (isIAPSupported) ...[
-          Obx(
-            () => FeatureTile(
-              iconData: Icons.check,
-              title: controller.promoText,
-            ),
-          )
-        ] else ...[
-          FeatureTile(
-            iconData: Icons.check,
-            title: '1 ${'week'.tr} ${'free_trial'.tr}',
-          ),
-        ],
-        FeatureTile(
-          iconData: Icons.check,
-          title: 'cancel_anytime'.tr,
-        ),
-        FeatureTile(
-          iconData: Icons.check,
-          title: 'change_remove_watermark'.tr,
-        ),
-        FeatureTile(
-          iconData: Icons.check,
-          title: 'hd_quality_exports'.tr,
-        ),
-        FeatureTile(
-          iconData: Icons.check,
-          title: 'custom_canvas_size'.tr,
-        ),
-        FeatureTile(
-          iconData: Icons.check,
-          title: 'annotation_tools'.tr,
-        ),
-        FeatureTile(
-          iconData: Icons.check,
-          title: 'device_frame_mockups'.tr,
-        ),
-        FeatureTile(
-          iconData: Icons.check,
-          title: deviceAccess,
-        ),
-        FeatureTile(
-          iconData: Icons.check,
-          title: 'custom_image_backgrounds'.tr,
-        ),
-        FeatureTile(
-          iconData: Icons.check,
-          title: 'colored_shadows'.tr,
-        ),
-        FeatureTile(
-          iconData: Icons.check,
-          title: '3d_tilt_effects'.tr,
-        ),
-        FeatureTile(
-          iconData: Icons.check,
-          title: 'photo_filter_effects'.tr,
-        ),
-        const FeatureTile(
-          iconData: Icons.check,
-          // TODO: localize
-          title: 'Support a young indie developer raising 2 babies',
-        ),
-        if (!isApple) ...[
-          Obx(
-            () => Visibility(
-              visible: controller.showMoreFeatures.value,
-              replacement: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Iconsax.eye, color: Get.theme.primaryColor),
-                    const SizedBox(width: 10),
-                    TextButton(
-                      onPressed: controller.showMoreFeatures.toggle,
-                      child: Text(
-                        'more_upcoming_features'.tr,
-                        style: const TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
-                        ),
+        ...upgradeConfig.features.map((e) => FeatureTile(title: e)).toList(),
+        Obx(
+          () => Visibility(
+            visible: controller.showMoreFeatures.value &&
+                upgradeConfig.upcomingFeatures.isNotEmpty,
+            replacement: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Iconsax.eye, color: Get.theme.primaryColor),
+                  const SizedBox(width: 10),
+                  TextButton(
+                    onPressed: controller.showMoreFeatures.toggle,
+                    child: Text(
+                      'more_upcoming_features'.tr,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
-                  ],
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Divider(),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15),
-                    child: Text(
-                      'upcoming_features'.tr,
-                      style: const TextStyle(color: Colors.grey),
-                    ),
-                  ),
-                  FeatureTile(
-                    iconData: Icons.check,
-                    title: 'pro_templates'.tr,
-                  ),
-                  FeatureTile(
-                    iconData: Icons.check,
-                    title: 'upload_cloud_service'.tr,
-                  ),
-                  FeatureTile(
-                    iconData: Icons.check,
-                    title: 'screenshot_from_url'.tr,
                   ),
                 ],
               ),
             ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Divider(),
+                Padding(
+                  padding: const EdgeInsets.only(left: 15),
+                  child: Text(
+                    'upcoming_features'.tr,
+                    style: const TextStyle(color: Colors.grey),
+                  ),
+                ),
+                ...upgradeConfig.upcomingFeatures
+                    .map((e) => FeatureTile(title: e))
+                    .toList(),
+              ],
+            ),
           ),
-        ],
+        ),
       ],
     );
 
@@ -462,19 +391,9 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
       ],
     );
 
-    const darkDecoration = BoxDecoration(
-      gradient: LinearGradient(
-        begin: Alignment.bottomLeft,
-        end: Alignment.topRight,
-        colors: [
-          Colors.black,
-          Color(0xff3b0054),
-        ],
-      ),
-    );
-
     return Container(
-      decoration: Get.isDarkMode ? darkDecoration : null,
+      decoration:
+          Get.isDarkMode ? CoreConfig().upgradeConfig.darkDecoration : null,
       child: Scaffold(
         backgroundColor: Get.isDarkMode ? Colors.transparent : null,
         appBar: appBar,

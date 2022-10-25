@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:app_core/config.dart';
 import 'package:app_core/controllers/pro.controller.dart';
 import 'package:app_core/firebase/config/config.service.dart';
 import 'package:app_core/globals.dart';
@@ -26,9 +27,14 @@ class SupabaseFunctionsService extends GetxService with ConsoleMixin {
 
   // FUNCTIONS
 
-  Future<void> sync() async {
+  Future<void> sync({Map<String, dynamic> data = const {}}) async {
     if (!auth.authenticated) return console.warning('not authenticated');
     console.info('sync...');
+
+    // enforce auth to be logged in
+    if (await Purchases.isAnonymous && !CoreConfig().allowAnonymousRcUserSync) {
+      return console.info('ignored anonymous user sync');
+    }
 
     final response = await auth.client!.functions.invoke(
       'sync-user',
@@ -39,8 +45,8 @@ class SupabaseFunctionsService extends GetxService with ConsoleMixin {
         "email": auth.user?.email,
         "phone": auth.user?.phone,
         "userMetadata": auth.user?.userMetadata,
-        "device": metadataDevice.toJson()
-      },
+        "device": metadataDevice.toJson(),
+      }..addAll(data),
     );
 
     if (response.status != 200) {

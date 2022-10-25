@@ -11,6 +11,7 @@ import '../../supabase/supabase_auth.service.dart';
 import '../functions.service.dart';
 import 'models/config_app.model.dart';
 import 'models/config_general.model.dart';
+import 'models/config_root.model.dart';
 import 'models/config_secrets.model.dart';
 
 class ConfigService extends GetxService with ConsoleMixin {
@@ -20,7 +21,10 @@ class ConfigService extends GetxService with ConsoleMixin {
   var app = const ConfigApp();
   var general = const ConfigGeneral();
   var secrets = const ConfigSecrets();
-  Function() postInit = () => throw 'unimplemented';
+
+  // TODO: use typedef
+  Function(Map<String, dynamic> parameters) postInit =
+      (_) => throw 'unimplemented';
 
   bool fetched = false;
 
@@ -31,7 +35,9 @@ class ConfigService extends GetxService with ConsoleMixin {
   // INIT
 
   // FUNCTIONS
-  Future<void> init({required Function() postInit}) async {
+  Future<void> init({
+    required Function(Map<String, dynamic> parameters) postInit,
+  }) async {
     this.postInit = postInit;
     _prePopulate();
     fetchFromFunctions();
@@ -43,30 +49,32 @@ class ConfigService extends GetxService with ConsoleMixin {
 
     result.fold(
       (error) => console.info('failed to fetch from functions: $error'),
-      (root) {
-        fetched = true;
-        console.wtf('remote config from functions synced');
+      (data) {
+        final parametersMap = jsonDecode(data)['parameters'];
+        final parameters = ConfigParameters.fromJson(parametersMap);
 
-        app = root.parameters.appConfig;
+        app = parameters.appConfig;
         Persistence.to.configApp.val = jsonEncode(app.toJson());
 
-        secrets = root.parameters.secretsConfig;
+        secrets = parameters.secretsConfig;
         Persistence.to.configSecrets.val = jsonEncode(secrets.toJson());
 
-        general = root.parameters.generalConfig;
+        general = parameters.generalConfig;
         Persistence.to.configGeneral.val = jsonEncode(general.toJson());
 
         SupabaseAuthService.to.init();
         ProController.to.init();
+        // return raw parameters
+        postInit(parametersMap);
 
         // check if update is required
-        if (ConfigService.to.app.build.min >
-            int.parse(metadataApp.buildNumber)) {
+        if (app.build.min > int.parse(metadataApp.buildNumber)) {
           console.error('### must update');
           Get.toNamed(Routes.update);
         }
 
-        postInit();
+        fetched = true;
+        console.wtf('remote config from functions synced');
       },
     );
   }

@@ -1,3 +1,4 @@
+import 'package:app_core/pages/upgrade/upgrade_config.dart';
 import 'package:app_core/persistence/persistence.dart';
 import 'package:app_core/services/local_auth.service.dart';
 import 'package:app_core/services/main.service.dart';
@@ -30,6 +31,9 @@ class CoreConfig with ConsoleMixin {
   late BuildMode buildMode;
   late BoxConstraints mainConstraints;
   late List<GetPage<dynamic>> pages;
+  late List<Color> gradientColors;
+  late UpgradeConfig upgradeConfig;
+  late bool allowAnonymousRcUserSync;
   late Function()? onCloseUpgradeScreen;
 
   // SINGLETON
@@ -46,11 +50,13 @@ class CoreConfig with ConsoleMixin {
     required List<GetPage<dynamic>> pages,
     required String logoDarkPath,
     required String logoLightPath,
+    required List<Color> gradientColors,
     String persistenceBoxName = 'persistence',
     Size minWindowSize = const Size(400, 700),
     double desktopChangePoint = 800,
     BuildMode buildMode = BuildMode.production,
     BoxConstraints mainConstraints = const BoxConstraints(maxWidth: 500),
+    bool allowAnonymousRcUserSync = true,
     Function()? onCloseUpgradeScreen,
   }) {
     this.persistenceCipherKey = persistenceCipherKey;
@@ -63,6 +69,8 @@ class CoreConfig with ConsoleMixin {
     this.desktopChangePoint = desktopChangePoint;
     this.mainConstraints = mainConstraints;
     this.onCloseUpgradeScreen = onCloseUpgradeScreen;
+    this.gradientColors = gradientColors;
+    this.allowAnonymousRcUserSync = allowAnonymousRcUserSync;
     _initDependencies();
     return this;
   }
@@ -92,24 +100,25 @@ class CoreConfig with ConsoleMixin {
     NotificationsManager.init();
     Utils.setDisplayMode(); // refresh rate
     await Persistence.open();
+    await _initWindow();
+  }
 
-    if (GetPlatform.isDesktop && !GetPlatform.isWeb) {
-      console.wtf('### window: ${Persistence.to.windowWidth.val}');
-      await windowManager.ensureInitialized();
+  Future<void> _initWindow() async {
+    if (!isDesktop) return;
+    await windowManager.ensureInitialized();
 
-      final windowOptions = WindowOptions(
-        skipTaskbar: false,
-        minimumSize: minWindowSize,
-        size: Size(
-          Persistence.to.windowWidth.val,
-          Persistence.to.windowHeight.val,
-        ),
-      );
+    final windowOptions = WindowOptions(
+      skipTaskbar: false,
+      minimumSize: minWindowSize,
+      size: Size(
+        Persistence.to.windowWidth.val,
+        Persistence.to.windowHeight.val,
+      ),
+    );
 
-      windowManager.waitUntilReadyToShow(windowOptions, () async {
-        await windowManager.show();
-        await windowManager.focus();
-      });
-    }
+    windowManager.waitUntilReadyToShow(windowOptions, () async {
+      await windowManager.show();
+      await windowManager.focus();
+    });
   }
 }

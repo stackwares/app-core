@@ -1,11 +1,7 @@
-import 'dart:convert';
-
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:either_dart/either.dart';
 import 'package:get/get.dart';
-
-import 'config/models/config_root.model.dart';
 
 class FirebaseFunctionsService extends GetxService with ConsoleMixin {
   static FirebaseFunctionsService get to => Get.find();
@@ -21,7 +17,7 @@ class FirebaseFunctionsService extends GetxService with ConsoleMixin {
 
   // FUNCTIONS
 
-  Future<Either<String, ConfigRoot>> getRemoteConfig() async {
+  Future<Either<String, String>> getRemoteConfig() async {
     console.debug('fetching...');
     HttpsCallableResult? result;
 
@@ -37,6 +33,6 @@ class FirebaseFunctionsService extends GetxService with ConsoleMixin {
       return const Left('failed to fetch remote config');
     }
 
-    return Right(ConfigRoot.fromJson(jsonDecode(result.data)));
+    return Right(result.data);
   }
 }

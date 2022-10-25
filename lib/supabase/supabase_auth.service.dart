@@ -1,3 +1,4 @@
+import 'package:app_core/config.dart';
 import 'package:app_core/notifications/notifications.manager.dart';
 import 'package:app_core/controllers/pro.controller.dart';
 import 'package:app_core/supabase/supabase_functions.service.dart';
@@ -13,6 +14,7 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:either_dart/either.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:supabase/supabase.dart';
 
 class SupabaseAuthService extends GetxService with ConsoleMixin {
@@ -21,18 +23,13 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
   // VARIABLES
   final persistence = Get.find<Persistence>();
   final config = Get.find<ConfigService>();
+  VoidCallback? signedIn;
 
   SupabaseClient? client;
 
   // GETTERS
   bool get authenticated => user != null;
   User? get user => client?.auth.currentUser;
-
-  @override
-  void onReady() {
-    init();
-    super.onReady();
-  }
 
   // FUNCTIONS
   Future<void> init() async {
@@ -72,6 +69,8 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
             Future.delayed(refreshAfter.seconds)
                 .then((value) => recoverSession());
           }
+
+          signedIn?.call();
         });
       } else if (data.event == AuthChangeEvent.signedOut) {
         EasyDebounce.debounce('auth-sign-out', 5.seconds, () {
@@ -126,6 +125,45 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
       CrashlyticsService.to.record(e, s);
       return Left('signIn exception: $e');
     }
+  }
+
+  Future<void> signIn(String email, String password) async {
+    try {
+      await client!.auth.signInWithPassword(email: email, password: password);
+    } on AuthException catch (e) {
+      // invalid credentials
+      if (e.statusCode == '400') {
+        return console.error('signIn error: $e');
+      } else {
+        return console.error('signIn error: $e');
+      }
+    } catch (e, s) {
+      CrashlyticsService.to.record(e, s);
+      return console.error('signIn exception: $e');
+    }
+  }
+
+  Future<void> authenticate({
+    required String email,
+    required String password,
+  }) async {
+    if (authenticated) return console.info('already authenticated');
+
+    try {
+      await client!.auth.signUp(email: email, password: password);
+    } on AuthException catch (e) {
+      // already registered
+      if (e.statusCode == '400') {
+        await signIn(email, password);
+      } else {
+        return console.error('signUp error: $e');
+      }
+    } catch (e, s) {
+      CrashlyticsService.to.record(e, s);
+      return console.error('signIn exception: $e');
+    }
+
+    console.wtf('authentication successful');
   }
 
   Future<void> signInUri(Uri uri, Map<String, dynamic>? attributes) async {

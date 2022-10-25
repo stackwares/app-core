@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class FeatureTile extends StatelessWidget {
-  final IconData iconData;
   final String title;
 
   const FeatureTile({
     Key? key,
-    required this.iconData,
     required this.title,
   }) : super(key: key);
 
@@ -18,7 +16,7 @@ class FeatureTile extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(iconData, color: Get.theme.primaryColor),
+          Icon(Icons.check, color: Get.theme.primaryColor),
           const SizedBox(width: 20),
           Expanded(
             child: Text(

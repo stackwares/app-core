@@ -86,7 +86,7 @@ class UpgradeScreenController extends GetxController
         ),
         title: title,
         body: body,
-        closeText: 'try_nexsnap_pro'.trParams({'w1': ConfigService.to.appName}),
+        closeText: 'try_app_pro'.trParams({'w1': ConfigService.to.appName}),
       );
     }
 

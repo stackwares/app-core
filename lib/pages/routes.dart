@@ -1,6 +1,6 @@
 class Routes {
   // SCREENS
-  static const main = '/main';
+  static const main = '/';
   static const welcome = '/welcome';
   static const unlock = '/unlock';
   static const settings = '/settings';
