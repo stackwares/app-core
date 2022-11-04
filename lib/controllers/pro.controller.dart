@@ -13,7 +13,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
-import 'package:supabase/supabase.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../pages/routes.dart';
 
@@ -54,20 +54,13 @@ class ProController extends GetxController with ConsoleMixin {
   @override
   void onClose() {
     if (!isIAPSupported) return;
-
-    Purchases.removeCustomerInfoUpdateListener((info_) {
-      info.value = info_;
-    });
-
+    Purchases.removeCustomerInfoUpdateListener((info_) => info.value = info_);
     super.onClose();
   }
 
   @override
   void onInit() {
-    verifiedPro.listen((value) {
-      Persistence.to.verifiedProCache.val = value;
-    });
-
+    verifiedPro.listen((value) => Persistence.to.verifiedProCache.val = value);
     super.onInit();
   }
 
@@ -80,7 +73,7 @@ class ProController extends GetxController with ConsoleMixin {
   // FUNCTIONS
   Future<void> init() async {
     if (!isIAPSupported) return;
-    await Purchases.setDebugLogsEnabled(true);
+    await Purchases.setDebugLogsEnabled(false);
 
     await Purchases.configure(
       PurchasesConfiguration(ConfigService.to.secrets.revenuecat.apiKey),
@@ -95,7 +88,6 @@ class ProController extends GetxController with ConsoleMixin {
 
   Future<void> invalidate() async {
     if (!isIAPSupported) return;
-
     await Purchases.invalidateCustomerInfoCache();
   }
 
@@ -172,7 +164,6 @@ class ProController extends GetxController with ConsoleMixin {
 
   Future<void> purchase(Package package) async {
     if (!isIAPSupported) return;
-
     timeLockEnabled = false; // temporarily disable
     CustomerInfo? info_;
 
@@ -192,7 +183,6 @@ class ProController extends GetxController with ConsoleMixin {
 
   Future<void> restore() async {
     if (!isIAPSupported) return;
-
     CustomerInfo? info_;
 
     try {

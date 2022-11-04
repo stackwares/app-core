@@ -16,17 +16,21 @@ final currencyFormatter = NumberFormat.currency(symbol: '', decimalDigits: 2);
 final kFormatter = NumberFormat.compact();
 
 // GETTERS
-bool get isBeta => CoreConfig().buildMode == BuildMode.production;
+bool get isBeta => CoreConfig().buildMode == BuildMode.beta;
 bool get isSmallScreen =>
     Get.mediaQuery.size.width < CoreConfig().desktopChangePoint;
 
 bool get isLinux => GetPlatform.isLinux && !GetPlatform.isWeb;
 bool get isWindows => GetPlatform.isWindows && !GetPlatform.isWeb;
 bool get isMac => GetPlatform.isMacOS && !GetPlatform.isWeb;
+
 bool get isApple =>
     !GetPlatform.isWeb && GetPlatform.isMacOS || GetPlatform.isIOS;
+
 bool get isWindowsLinux =>
     !GetPlatform.isWeb && (GetPlatform.isWindows || GetPlatform.isLinux);
+
+bool get isCrashlyticsSupported => isApple || isMobile;
 
 bool get isDesktop =>
     !GetPlatform.isWeb &&
@@ -54,7 +58,7 @@ double? get popupIconSize => isSmallScreen ? null : 20;
 late HiveMetadataDevice metadataDevice;
 late HiveMetadataApp metadataApp;
 
-void initGlobals() async {
+Future<void> initGlobals() async {
   metadataApp = await HiveMetadataApp.get();
   metadataDevice = await HiveMetadataDevice.get();
 }

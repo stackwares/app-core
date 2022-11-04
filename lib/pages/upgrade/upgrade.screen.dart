@@ -6,7 +6,6 @@ import 'package:app_core/widgets/busy_indicator.widget.dart';
 import 'package:app_core/widgets/pro.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:extended_image/extended_image.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
@@ -26,22 +25,22 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
     final controller = Get.put(UpgradeScreenController());
     final upgradeConfig = CoreConfig().upgradeConfig;
 
-    String deviceAccess = 'Other devices';
+    // String deviceAccess = 'Other devices';
 
-    if (isMac) {
-      deviceAccess = 'iOS & ${'other_platform_access'.tr}';
-    } else if (GetPlatform.isIOS) {
-      deviceAccess = 'macOS & ${'other_platform_access'.tr}';
-    } else if (GetPlatform.isAndroid) {
-      deviceAccess = 'iOS, macOS, Windows, \nand Web ${'app_access'.tr}';
-    } else if (isWindows) {
-      deviceAccess = 'iOS, macOS, Android, \nand Web ${'app_access'.tr}';
-    } else if (isLinux) {
-      deviceAccess =
-          'iOS, macOS, Windows, Android, \nand Web ${'app_access'.tr}';
-    } else if (kIsWeb) {
-      deviceAccess = 'iOS, macOS, Windows, \nand Android ${'app_access'.tr}';
-    }
+    // if (isMac) {
+    //   deviceAccess = 'iOS & ${'other_platform_access'.tr}';
+    // } else if (GetPlatform.isIOS) {
+    //   deviceAccess = 'macOS & ${'other_platform_access'.tr}';
+    // } else if (GetPlatform.isAndroid) {
+    //   deviceAccess = 'iOS, macOS, Windows, \nand Web ${'app_access'.tr}';
+    // } else if (isWindows) {
+    //   deviceAccess = 'iOS, macOS, Android, \nand Web ${'app_access'.tr}';
+    // } else if (isLinux) {
+    //   deviceAccess =
+    //       'iOS, macOS, Windows, Android, \nand Web ${'app_access'.tr}';
+    // } else if (kIsWeb) {
+    //   deviceAccess = 'iOS, macOS, Windows, \nand Android ${'app_access'.tr}';
+    // }
 
     final benefits = ListView(
       shrinkWrap: true,

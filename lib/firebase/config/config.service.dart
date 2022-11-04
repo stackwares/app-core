@@ -1,13 +1,14 @@
 import 'dart:convert';
 
+import 'package:app_core/config.dart';
 import 'package:app_core/persistence/persistence.dart';
+import 'package:app_core/supabase/supabase_auth.service.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
 
 import '../../controllers/pro.controller.dart';
 import '../../globals.dart';
 import '../../pages/routes.dart';
-import '../../supabase/supabase_auth.service.dart';
 import '../functions.service.dart';
 import 'models/config_app.model.dart';
 import 'models/config_general.model.dart';
@@ -39,6 +40,7 @@ class ConfigService extends GetxService with ConsoleMixin {
     required Function(Map<String, dynamic> parameters) postInit,
   }) async {
     this.postInit = postInit;
+
     _prePopulate();
     fetchFromFunctions();
   }
@@ -61,8 +63,6 @@ class ConfigService extends GetxService with ConsoleMixin {
 
         general = parameters.generalConfig;
         Persistence.to.configGeneral.val = jsonEncode(general.toJson());
-
-        SupabaseAuthService.to.init();
         ProController.to.init();
         // return raw parameters
         postInit(parametersMap);
@@ -80,20 +80,24 @@ class ConfigService extends GetxService with ConsoleMixin {
   }
 
   Future<void> _prePopulate() async {
-    if (Persistence.to.configApp.val.isEmpty) {
-      return console.error('no cached remote config');
+    app = ConfigApp.fromJson(CoreConfig().appConfig);
+    secrets = ConfigSecrets.fromJson(CoreConfig().secretsConfig);
+    general = ConfigGeneral.fromJson(CoreConfig().generalConfig);
+
+    if (Persistence.to.configApp.val.isNotEmpty) {
+      app = ConfigApp.fromJson(
+        jsonDecode(Persistence.to.configApp.val),
+      );
+
+      secrets = ConfigSecrets.fromJson(
+        jsonDecode(Persistence.to.configSecrets.val),
+      );
+
+      general = ConfigGeneral.fromJson(
+        jsonDecode(Persistence.to.configGeneral.val),
+      );
     }
 
-    app = ConfigApp.fromJson(
-      jsonDecode(Persistence.to.configApp.val),
-    );
-
-    secrets = ConfigSecrets.fromJson(
-      jsonDecode(Persistence.to.configSecrets.val),
-    );
-
-    general = ConfigGeneral.fromJson(
-      jsonDecode(Persistence.to.configGeneral.val),
-    );
+    SupabaseAuthService.to.init();
   }
 }

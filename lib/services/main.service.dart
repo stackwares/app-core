@@ -37,14 +37,10 @@ class MainService extends GetxService with ConsoleMixin, WindowListener {
 
   @override
   void onInit() {
-    if (isDesktop) {
-      window.addListener(this);
-      window.setPreventClose(true);
-    }
-
+    _initWindow();
     _initAppLifeCycleEvents();
     _updateBuildNumber();
-    initLaunchAtStartup();
+    _initLaunchAtStartup();
     super.onInit();
   }
 
@@ -64,10 +60,7 @@ class MainService extends GetxService with ConsoleMixin, WindowListener {
 
   @override
   void onClose() {
-    if (isDesktop) {
-      window.removeListener(this);
-    }
-
+    if (isDesktop) window.removeListener(this);
     super.onClose();
   }
 
@@ -82,7 +75,13 @@ class MainService extends GetxService with ConsoleMixin, WindowListener {
     console.info('reset!');
   }
 
-  void initLaunchAtStartup() {
+  void _initWindow() {
+    if (!isDesktop) return;
+    window.addListener(this);
+    window.setPreventClose(true);
+  }
+
+  void _initLaunchAtStartup() {
     if (!isDesktop) return;
 
     launchAtStartup.setup(

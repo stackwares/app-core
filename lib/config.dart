@@ -34,6 +34,11 @@ class CoreConfig with ConsoleMixin {
   late List<Color> gradientColors;
   late UpgradeConfig upgradeConfig;
   late bool allowAnonymousRcUserSync;
+  late String supabaseAuthHost;
+  late Map<String, dynamic> secretsConfig;
+  late Map<String, dynamic> appConfig;
+  late Map<String, dynamic> generalConfig;
+
   late Function()? onCloseUpgradeScreen;
 
   // SINGLETON
@@ -44,7 +49,7 @@ class CoreConfig with ConsoleMixin {
   CoreConfig._internal();
 
   // INIT
-  CoreConfig init({
+  Future<CoreConfig> init({
     required String persistenceCipherKey,
     required Map<String, dynamic> translationKeys,
     required List<GetPage<dynamic>> pages,
@@ -57,8 +62,12 @@ class CoreConfig with ConsoleMixin {
     BuildMode buildMode = BuildMode.production,
     BoxConstraints mainConstraints = const BoxConstraints(maxWidth: 500),
     bool allowAnonymousRcUserSync = true,
+    Map<String, dynamic> secretsConfig = const {},
+    Map<String, dynamic> appConfig = const {},
+    Map<String, dynamic> generalConfig = const {},
+    required String supabaseAuthHost,
     Function()? onCloseUpgradeScreen,
-  }) {
+  }) async {
     this.persistenceCipherKey = persistenceCipherKey;
     this.translationKeys = translationKeys;
     this.pages = pages;
@@ -67,15 +76,21 @@ class CoreConfig with ConsoleMixin {
     this.persistenceBoxName = persistenceBoxName;
     this.minWindowSize = minWindowSize;
     this.desktopChangePoint = desktopChangePoint;
+    this.buildMode = buildMode;
     this.mainConstraints = mainConstraints;
     this.onCloseUpgradeScreen = onCloseUpgradeScreen;
     this.gradientColors = gradientColors;
     this.allowAnonymousRcUserSync = allowAnonymousRcUserSync;
-    _initDependencies();
+    this.supabaseAuthHost = supabaseAuthHost;
+    this.secretsConfig = secretsConfig;
+    this.appConfig = appConfig;
+    this.generalConfig = generalConfig;
+    await _initDependencies();
     return this;
   }
 
-  void _initDependencies() async {
+  Future<void> _initDependencies() async {
+    await initGlobals();
     // services
     Get.lazyPut(() => CrashlyticsService());
     Get.lazyPut(() => Persistence());
@@ -94,8 +109,6 @@ class CoreConfig with ConsoleMixin {
   }
 
   Future<void> postInit() async {
-    // initializations
-    initGlobals();
     CrashlyticsService.to.init();
     NotificationsManager.init();
     Utils.setDisplayMode(); // refresh rate

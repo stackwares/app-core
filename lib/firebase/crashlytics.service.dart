@@ -30,8 +30,7 @@ class CrashlyticsService extends GetxService with ConsoleMixin {
   }
 
   void configure() {
-    if (isWindowsLinux) return console.warning('Not Supported');
-
+    if (!isCrashlyticsSupported) return console.warning('Not Supported');
     instance.setCrashlyticsCollectionEnabled(
       Persistence.to.crashReporting.val,
     );
@@ -67,7 +66,7 @@ class CrashlyticsService extends GetxService with ConsoleMixin {
     }
 
     // send to sentry
-    if (isWindowsLinux) {
+    if (!isCrashlyticsSupported) {
       await Sentry.captureException(
         details.exception,
         stackTrace: details.stack,
@@ -76,6 +75,7 @@ class CrashlyticsService extends GetxService with ConsoleMixin {
       return;
     }
 
+    if (!isCrashlyticsSupported) return console.warning('Not Supported');
     FirebaseCrashlytics.instance.recordFlutterError(details);
   }
 }

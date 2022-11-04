@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:app_core/config.dart';
 import 'package:app_core/controllers/pro.controller.dart';
 import 'package:app_core/firebase/config/config.service.dart';
@@ -7,28 +8,29 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:either_dart/either.dart';
 import 'package:get/get.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'model/entitlement_response.model.dart';
 import 'model/gumroad_product.model.dart';
 import 'model/server_response.model.dart';
 import 'model/sync_user_response.model.dart';
-import 'supabase_auth.service.dart';
 
 class SupabaseFunctionsService extends GetxService with ConsoleMixin {
   static SupabaseFunctionsService get to => Get.find();
 
   // VARIABLES
-  final auth = Get.find<SupabaseAuthService>();
   final config = Get.find<ConfigService>();
 
   // GETTERS
+  User? get user => Supabase.instance.client.auth.currentUser;
+  FunctionsClient get functions => Supabase.instance.client.functions;
 
   // INIT
 
   // FUNCTIONS
 
   Future<void> sync({Map<String, dynamic> data = const {}}) async {
-    if (!auth.authenticated) return console.warning('not authenticated');
+    if (user == null) return console.warning('not authenticated');
     console.info('sync...');
 
     // enforce auth to be logged in
@@ -36,15 +38,15 @@ class SupabaseFunctionsService extends GetxService with ConsoleMixin {
       return console.info('ignored anonymous user sync');
     }
 
-    final response = await auth.client!.functions.invoke(
+    final response = await functions.invoke(
       'sync-user',
       body: {
         if (isIAPSupported) ...{
           "rcUserId": await Purchases.appUserID,
         },
-        "email": auth.user?.email,
-        "phone": auth.user?.phone,
-        "userMetadata": auth.user?.userMetadata,
+        "email": user?.email,
+        "phone": user?.phone,
+        "userMetadata": user?.userMetadata,
         "device": metadataDevice.toJson(),
       }..addAll(data),
     );
@@ -61,7 +63,7 @@ class SupabaseFunctionsService extends GetxService with ConsoleMixin {
       return console.error('server error: ${serverResponse.errors}');
     }
 
-    console.wtf('synced: ${jsonEncode(serverResponse.toJson())}');
+    // console.wtf('synced: ${jsonEncode(serverResponse.toJson())}');
     final syncUserResponse = SyncUserResponse.fromJson(serverResponse.data);
     ProController.to.licenseKey.value = syncUserResponse.licenseKey;
 
@@ -80,7 +82,7 @@ class SupabaseFunctionsService extends GetxService with ConsoleMixin {
   Future<Either<String, GumroadProduct>> gumroadProductDetail() async {
     console.info('gumroadProductDetail...');
 
-    final response = await auth.client!.functions.invoke(
+    final response = await functions.invoke(
       'gumroad-product-detail',
       body: {"localeCode": Get.locale?.languageCode},
     );
@@ -109,14 +111,14 @@ class SupabaseFunctionsService extends GetxService with ConsoleMixin {
 
   Future<Either<String, EntitlementResponse>> verifyGumroad(String licenseKey,
       {bool updateEntitlement = true}) async {
-    if (!auth.authenticated) {
+    if (user == null) {
       console.warning('not authenticated');
       return const Left('Please sign in to continue');
     }
 
     console.info('verifyGumroad...');
 
-    final response = await auth.client!.functions.invoke(
+    final response = await functions.invoke(
       'verify-gumroad',
       body: {"licenseKey": licenseKey},
     );
@@ -152,14 +154,14 @@ class SupabaseFunctionsService extends GetxService with ConsoleMixin {
 
   Future<Either<String, EntitlementResponse>> verifyRevenueCat(String rcUserId,
       {bool updateEntitlement = true}) async {
-    if (!auth.authenticated) {
+    if (user == null) {
       console.warning('not authenticated');
       return const Left('Please sign in to continue');
     }
 
     console.info('verifyRevenueCat...');
 
-    final response = await auth.client!.functions.invoke(
+    final response = await functions.invoke(
       'verify-revenuecat',
       body: {"userId": rcUserId},
     );

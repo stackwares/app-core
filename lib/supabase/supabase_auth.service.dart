@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:app_core/config.dart';
 import 'package:app_core/controllers/pro.controller.dart';
 import 'package:app_core/firebase/analytics.service.dart';
 import 'package:app_core/firebase/config/config.service.dart';
@@ -13,7 +16,7 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:either_dart/either.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:supabase/supabase.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseAuthService extends GetxService with ConsoleMixin {
   static SupabaseAuthService get to => Get.find();
@@ -22,18 +25,24 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
   final persistence = Get.find<Persistence>();
   final config = Get.find<ConfigService>();
   VoidCallback? signedIn;
-
-  SupabaseClient? client;
+  bool ready = false;
 
   // GETTERS
   bool get authenticated => user != null;
-  User? get user => client?.auth.currentUser;
+  User? get user => auth.currentUser;
+  GoTrueClient get auth => Supabase.instance.client.auth;
+
+  // INIT
 
   // FUNCTIONS
-  Future<void> init() async {
-    client = SupabaseClient(
-      config.secrets.supabase.url,
-      config.secrets.supabase.key,
+  void init() async {
+    final supabaseConfig = config.secrets.supabase;
+
+    await Supabase.initialize(
+      url: supabaseConfig.url,
+      anonKey: supabaseConfig.key,
+      authCallbackUrlHostname: supabaseConfig.redirect.host,
+      debug: false,
     );
 
     initAuthState();
@@ -41,7 +50,7 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
   }
 
   void initAuthState() {
-    client!.auth.onAuthStateChange.listen((data) {
+    auth.onAuthStateChange.listen((data) {
       console.info(
         'onAuthStateChange! ${data.event}: user id: ${data.session?.user.id}}',
       );
@@ -51,7 +60,7 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
 
       if (data.event == AuthChangeEvent.signedIn) {
         EasyDebounce.debounce('auth-sign-in', 5.seconds, () async {
-          if (!authenticated) return;
+          if (user == null) return;
 
           if (!isWindowsLinux) {
             await CrashlyticsService.to.instance.setUserIdentifier(user!.id);
@@ -71,7 +80,7 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
           signedIn?.call();
         });
       } else if (data.event == AuthChangeEvent.signedOut) {
-        EasyDebounce.debounce('auth-sign-out', 5.seconds, () {
+        EasyDebounce.debounce('auth-sign-out', 1.seconds, () async {
           AnalyticsService.to.logSignOut();
           ProController.to.logout();
           Get.offNamedUntil(Routes.main, (route) => false);
@@ -89,7 +98,7 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
     if (sessionString.isEmpty) return console.warning('no supabase session');
 
     try {
-      final session = await client!.auth.recoverSession(sessionString);
+      final session = await auth.recoverSession(sessionString);
       console.info('recovered session! user id: ${session.user?.id}');
     } on AuthException catch (e) {
       persistence.supabaseSession.val = '';
@@ -104,14 +113,14 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
     final redirect = config.secrets.supabase.redirect;
     final redirectTo = GetPlatform.isWeb
         ? kReleaseMode
-            ? 'https://app.nexsnap.app/%23/${redirect.host}'
+            ? '${CoreConfig().supabaseAuthHost}/%23/${redirect.host}'
             : 'http://localhost:9000/%23/${redirect.host}'
         : '${redirect.scheme}://${redirect.host}';
 
     console.info('redirectTo: $redirectTo');
 
     try {
-      await client!.auth.signInWithOtp(
+      await auth.signInWithOtp(
         email: email,
         emailRedirectTo: redirectTo,
       );
@@ -127,7 +136,7 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
 
   Future<void> signIn(String email, String password) async {
     try {
-      await client!.auth.signInWithPassword(email: email, password: password);
+      await auth.signInWithPassword(email: email, password: password);
     } on AuthException catch (e) {
       // invalid credentials
       if (e.statusCode == '400') {
@@ -145,10 +154,10 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
     required String email,
     required String password,
   }) async {
-    if (authenticated) return console.info('already authenticated');
+    if (user != null) return console.info('already authenticated');
 
     try {
-      await client!.auth.signUp(email: email, password: password);
+      await auth.signUp(email: email, password: password);
     } on AuthException catch (e) {
       // already registered
       if (e.statusCode == '400') {
@@ -165,12 +174,10 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
   }
 
   Future<void> signInUri(Uri uri, Map<String, dynamic>? attributes) async {
-    if (client == null) await init();
-    console.wtf('signInUri authenticated: $authenticated');
-
     try {
-      final response = await client!.auth.getSessionFromUrl(uri);
-      updateUserAttribute(attributes);
+      console.info('signInUri: ${uri.toString()}');
+      final response = await auth.getSessionFromUrl(uri);
+      // updateUserAttribute(attributes);
       console.info('signInUri session user id: ${response.session.user.id}');
 
       NotificationsManager.notify(
@@ -193,7 +200,7 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
     if (data == null) return;
 
     try {
-      final response = await client!.auth.updateUser(
+      final response = await auth.updateUser(
         UserAttributes(data: data),
       );
 
@@ -208,6 +215,6 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
 
   Future<void> deleteAccount() async {
     // client.auth.user().
-    client!.auth.signOut();
+    auth.signOut();
   }
 }
