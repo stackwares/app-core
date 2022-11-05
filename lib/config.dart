@@ -27,6 +27,7 @@ class CoreConfig with ConsoleMixin {
   late String logoLightPath;
   late String persistenceBoxName;
   late Size minWindowSize;
+  late Size initialWindowSize;
   late double desktopChangePoint;
   late BuildMode buildMode;
   late BoxConstraints mainConstraints;
@@ -40,6 +41,7 @@ class CoreConfig with ConsoleMixin {
   late Map<String, dynamic> generalConfig;
 
   late Function()? onCloseUpgradeScreen;
+  late Function()? onSignedOut;
 
   // SINGLETON
   static final CoreConfig _singleton = CoreConfig._internal();
@@ -57,7 +59,8 @@ class CoreConfig with ConsoleMixin {
     required String logoLightPath,
     required List<Color> gradientColors,
     String persistenceBoxName = 'persistence',
-    Size minWindowSize = const Size(400, 700),
+    Size minWindowSize = const Size(350, 700),
+    Size initialWindowSize = const Size(1500, 1000),
     double desktopChangePoint = 800,
     BuildMode buildMode = BuildMode.production,
     BoxConstraints mainConstraints = const BoxConstraints(maxWidth: 500),
@@ -67,6 +70,7 @@ class CoreConfig with ConsoleMixin {
     Map<String, dynamic> generalConfig = const {},
     required String supabaseAuthHost,
     Function()? onCloseUpgradeScreen,
+    Function()? onSignedOut,
   }) async {
     this.persistenceCipherKey = persistenceCipherKey;
     this.translationKeys = translationKeys;
@@ -75,16 +79,18 @@ class CoreConfig with ConsoleMixin {
     this.logoLightPath = logoLightPath;
     this.persistenceBoxName = persistenceBoxName;
     this.minWindowSize = minWindowSize;
+    this.initialWindowSize = initialWindowSize;
     this.desktopChangePoint = desktopChangePoint;
     this.buildMode = buildMode;
     this.mainConstraints = mainConstraints;
-    this.onCloseUpgradeScreen = onCloseUpgradeScreen;
     this.gradientColors = gradientColors;
     this.allowAnonymousRcUserSync = allowAnonymousRcUserSync;
     this.supabaseAuthHost = supabaseAuthHost;
     this.secretsConfig = secretsConfig;
     this.appConfig = appConfig;
     this.generalConfig = generalConfig;
+    this.onCloseUpgradeScreen = onCloseUpgradeScreen;
+    this.onSignedOut = onSignedOut;
     await _initDependencies();
     return this;
   }

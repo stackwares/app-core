@@ -71,6 +71,8 @@ class ConfigService extends GetxService with ConsoleMixin {
         if (app.build.min > int.parse(metadataApp.buildNumber)) {
           console.error('### must update');
           Get.toNamed(Routes.update);
+        } else if (isBeta && !ConfigService.to.app.beta.enabled) {
+          Get.toNamed(Routes.disabledBeta);
         }
 
         fetched = true;

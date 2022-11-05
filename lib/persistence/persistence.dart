@@ -23,8 +23,11 @@ class Persistence extends GetxController {
   final crashReporting = (isApple ? false : true).val('crash-reporting');
   final analytics = (isApple ? false : true).val('analytics');
   // WINDOW SIZE
-  final windowWidth = 1000.0.val('window-width');
-  final windowHeight = 850.0.val('window-height');
+  final windowWidth = CoreConfig().initialWindowSize.width.val('window-width');
+
+  final windowHeight =
+      CoreConfig().initialWindowSize.height.val('window-height');
+
   final minimizeToTray = false.val('minimize-to-tray');
   final launchAtStartup = true.val('launch-at-startup');
   // THEME

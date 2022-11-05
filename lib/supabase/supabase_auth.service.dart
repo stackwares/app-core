@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:app_core/config.dart';
 import 'package:app_core/controllers/pro.controller.dart';
 import 'package:app_core/firebase/analytics.service.dart';
@@ -81,6 +79,7 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
         });
       } else if (data.event == AuthChangeEvent.signedOut) {
         EasyDebounce.debounce('auth-sign-out', 1.seconds, () async {
+          CoreConfig().onSignedOut?.call();
           AnalyticsService.to.logSignOut();
           ProController.to.logout();
           Get.offNamedUntil(Routes.main, (route) => false);
