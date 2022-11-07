@@ -25,7 +25,7 @@ bool get isWindows => GetPlatform.isWindows && !GetPlatform.isWeb;
 bool get isMac => GetPlatform.isMacOS && !GetPlatform.isWeb;
 
 bool get isApple =>
-    !GetPlatform.isWeb && GetPlatform.isMacOS || GetPlatform.isIOS;
+    !GetPlatform.isWeb && (GetPlatform.isMacOS || GetPlatform.isIOS);
 
 bool get isWindowsLinux =>
     !GetPlatform.isWeb && (GetPlatform.isWindows || GetPlatform.isLinux);
@@ -48,9 +48,8 @@ bool get isLocalAuthSupported =>
     !GetPlatform.isWeb && GetPlatform.isMobile && Persistence.to.biometrics.val;
 
 bool get isRateReviewSupported =>
-    !GetPlatform.isWeb && GetPlatform.isAndroid ||
-    GetPlatform.isIOS ||
-    GetPlatform.isMacOS;
+    !GetPlatform.isWeb &&
+    (GetPlatform.isAndroid || GetPlatform.isIOS || GetPlatform.isMacOS);
 
 double get popupItemHeight => isSmallScreen ? kMinInteractiveDimension : 30;
 double? get popupIconSize => isSmallScreen ? null : 20;

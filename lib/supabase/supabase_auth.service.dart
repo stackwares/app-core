@@ -58,7 +58,7 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
 
       if (data.event == AuthChangeEvent.signedIn) {
         EasyDebounce.debounce('auth-sign-in', 5.seconds, () async {
-          if (user == null) return;
+          if (!authenticated) return;
 
           if (!isWindowsLinux) {
             await CrashlyticsService.to.instance.setUserIdentifier(user!.id);
@@ -176,7 +176,7 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
     try {
       console.info('signInUri: ${uri.toString()}');
       final response = await auth.getSessionFromUrl(uri);
-      // updateUserAttribute(attributes);
+      updateUserAttribute(attributes);
       console.info('signInUri session user id: ${response.session.user.id}');
 
       NotificationsManager.notify(
