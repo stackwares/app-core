@@ -21,8 +21,6 @@ class Utils {
   static final console = Console(name: 'Utils');
 
   // GETTERS
-  static bool get isSmallScreen =>
-      Get.mediaQuery.size.width < CoreConfig().desktopChangePoint;
 
   // FUNCTIONS
 
