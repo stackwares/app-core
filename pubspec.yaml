@@ -34,7 +34,7 @@ dependencies:
   # UI
   extended_image: ^6.3.1
   flex_color_scheme: 6.0.1 # themes
-  flutter_displaymode: ^0.4.0 # allow higher refresh rates
+  flutter_displaymode: ^0.4.1 # allow higher refresh rates
   flutter_rating_bar: ^4.0.1
   google_fonts: ^3.0.1
 
@@ -50,7 +50,7 @@ dependencies:
   url_launcher: ^6.1.6
   supercharged: ^2.1.1 # useful utils
   flutter_local_notifications: ^12.0.3
-  either_dart: ^0.2.0 # functional programming + error handling
+  either_dart: ^0.3.0 # functional programming + error handling
   share_plus: ^6.2.0 # exporting files and sharing texts
   app_review: ^2.1.2+1
   app_settings: ^4.1.8
@@ -60,16 +60,16 @@ dependencies:
   app_links: ^3.3.0
   permission_handler: ^10.2.0
   easy_debounce: ^2.0.2+1
-  sentry_flutter: ^6.13.1 # error reporting for windows and linux
+  sentry_flutter: ^6.14.0 # error reporting for windows and linux
 
   # SECURITY
   local_auth: ^2.1.2
 
   # FIREBASE
   firebase_core: 2.1.1
-  firebase_analytics: 10.0.3
-  firebase_crashlytics: 3.0.3
-  firebase_performance: 0.9.0+3
+  firebase_analytics: 10.0.4
+  firebase_crashlytics: 3.0.4
+  firebase_performance: 0.9.0+4
   cloud_functions: ^4.0.3
   # -- FIREBASE DESKTOP --
   firebase_dart: ^1.0.11

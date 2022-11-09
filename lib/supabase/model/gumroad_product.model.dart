@@ -71,7 +71,7 @@ class Product {
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
         name: json["name"],
-        previewUrl: json["preview_url"],
+        previewUrl: json["preview_url"] ?? '',
         description: json["description"],
         customizablePrice: json["customizable_price"],
         requireShipping: json["require_shipping"],
@@ -79,11 +79,11 @@ class Product {
         customPermalink: json["custom_permalink"],
         subscriptionDuration: json["subscription_duration"],
         id: json["id"],
-        url: json["url"],
+        url: json["url"] ?? '',
         price: json["price"],
         currency: json["currency"],
         shortUrl: json["short_url"],
-        thumbnailUrl: json["thumbnail_url"],
+        thumbnailUrl: json["thumbnail_url"] ?? '',
         formattedPrice: json["formatted_price"],
         published: json["published"],
         shownOnProfile: json["shown_on_profile"],

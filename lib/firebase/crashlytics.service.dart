@@ -75,7 +75,6 @@ class CrashlyticsService extends GetxService with ConsoleMixin {
       return;
     }
 
-    if (!isCrashlyticsSupported) return console.warning('Not Supported');
     FirebaseCrashlytics.instance.recordFlutterError(details);
   }
 }

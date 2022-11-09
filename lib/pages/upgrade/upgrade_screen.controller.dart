@@ -138,7 +138,7 @@ class UpgradeScreenController extends GetxController
 
       return Utils.adaptiveRouteOpen(
         name: Routes.settings,
-        parameters: {'expand': 'account'},
+        parameters: {'expand': 'account', 'action': 'license_key'},
       );
     }
 
