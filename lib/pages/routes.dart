@@ -7,6 +7,7 @@ class Routes {
   static const debug = '/debug';
   static const about = '/about';
   static const feedback = '/feedback';
+  static const artGenerator = '/art_generator';
   static const upgrade = '/upgrade';
   static const update = '/update';
   static const disabledBeta = '/disabled_beta';

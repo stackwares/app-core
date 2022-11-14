@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../firebase/config/config.service.dart';
-import '../../globals.dart';
 import '../../widgets/appbar_leading.widget.dart';
 import 'feedback_screen.controller.dart';
 
@@ -97,7 +96,7 @@ class FeedbackScreen extends StatelessWidget with ConsoleMixin {
                         onPressed: controller.review,
                         icon: const Icon(Icons.star_border),
                         label: Text(
-                          '${'rate_review'.tr} ${ConfigService.to.appName} on ${isApple ? 'the App Store' : 'Google Play'}',
+                          '${'rate_review'.tr} ${ConfigService.to.appName}',
                         ),
                       ),
                       const SizedBox(height: 10),

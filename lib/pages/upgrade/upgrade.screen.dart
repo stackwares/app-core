@@ -25,23 +25,6 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
     final controller = Get.put(UpgradeScreenController());
     final upgradeConfig = CoreConfig().upgradeConfig;
 
-    // String deviceAccess = 'Other devices';
-
-    // if (isMac) {
-    //   deviceAccess = 'iOS & ${'other_platform_access'.tr}';
-    // } else if (GetPlatform.isIOS) {
-    //   deviceAccess = 'macOS & ${'other_platform_access'.tr}';
-    // } else if (GetPlatform.isAndroid) {
-    //   deviceAccess = 'iOS, macOS, Windows, \nand Web ${'app_access'.tr}';
-    // } else if (isWindows) {
-    //   deviceAccess = 'iOS, macOS, Android, \nand Web ${'app_access'.tr}';
-    // } else if (isLinux) {
-    //   deviceAccess =
-    //       'iOS, macOS, Windows, Android, \nand Web ${'app_access'.tr}';
-    // } else if (kIsWeb) {
-    //   deviceAccess = 'iOS, macOS, Windows, \nand Android ${'app_access'.tr}';
-    // }
-
     final benefits = ListView(
       shrinkWrap: true,
       controller: ScrollController(),
@@ -53,7 +36,11 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
             style: const TextStyle(color: Colors.grey),
           ),
         ),
-        ...upgradeConfig.features.map((e) => FeatureTile(title: e)).toList(),
+        ...upgradeConfig.features.map((e) {
+          return FeatureTile(
+            title: e == 'promo_text' ? controller.promoText : e,
+          );
+        }).toList(),
         Obx(
           () => Visibility(
             visible: controller.showMoreFeatures.value &&

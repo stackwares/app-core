@@ -40,7 +40,7 @@ class SupabaseDBService extends GetxService with ConsoleMixin {
       final profile = SupabaseProfile.fromJson(response.first);
       return Right(profile);
     } catch (e) {
-      return Left('Upsert Profile Error: $e');
+      return Left('Upsert Exception: $e');
     }
   }
 }

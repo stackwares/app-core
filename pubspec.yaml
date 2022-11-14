@@ -32,7 +32,7 @@ dependencies:
   protocol_registry: ^0.0.5 # windows, and linux App Links URI
 
   # UI
-  extended_image: ^6.3.1
+  extended_image: ^6.3.2
   flex_color_scheme: 6.0.1 # themes
   flutter_displaymode: ^0.4.1 # allow higher refresh rates
   flutter_rating_bar: ^4.0.1
@@ -51,7 +51,6 @@ dependencies:
   supercharged: ^2.1.1 # useful utils
   flutter_local_notifications: ^12.0.3
   either_dart: ^0.3.0 # functional programming + error handling
-  share_plus: ^6.2.0 # exporting files and sharing texts
   app_review: ^2.1.2+1
   app_settings: ^4.1.8
   intl: ^0.17.0 # date formatting
@@ -60,16 +59,16 @@ dependencies:
   app_links: ^3.3.0
   permission_handler: ^10.2.0
   easy_debounce: ^2.0.2+1
-  sentry_flutter: ^6.14.0 # error reporting for windows and linux
+  sentry_flutter: ^6.15.1 # error reporting for windows and linux
 
   # SECURITY
   local_auth: ^2.1.2
 
   # FIREBASE
   firebase_core: 2.1.1
-  firebase_analytics: 10.0.4
-  firebase_crashlytics: 3.0.4
-  firebase_performance: 0.9.0+4
+  firebase_analytics: 10.0.5
+  firebase_crashlytics: 3.0.5
+  firebase_performance: 0.9.0+5
   cloud_functions: ^4.0.3
   # -- FIREBASE DESKTOP --
   firebase_dart: ^1.0.11
@@ -79,7 +78,7 @@ dependencies:
   # -- FIREBASE DESKTOP --
 
   # API / NETWORKS
-  purchases_flutter: ^4.3.2
+  purchases_flutter: ^4.4.1
   connectivity_plus: ^3.0.2
   # supabase: 1.1.1
   supabase_flutter: ^1.1.0
@@ -91,8 +90,8 @@ dependencies:
 
 dependency_overrides:
   package_info_plus: ^3.0.1
-  firebase_core: ^2.1.1
-  cloud_functions: ^4.0.3
+  firebase_core: ^2.2.0
+  cloud_functions: ^4.0.4
 
 dev_dependencies:
   flutter_test:
