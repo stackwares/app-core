@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:app_core/config.dart';
 import 'package:app_core/firebase/config/config.service.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/persistence/persistence.dart';
@@ -25,6 +26,7 @@ class ProController extends GetxController with ConsoleMixin {
   // PROPERTIES
   final info = Rx<CustomerInfo>(CustomerInfo.fromJson(kPurchaserInfoInitial));
   final offerings = Rx<Offerings>(Offerings.fromJson(kOfferingsInitial));
+  final packages = <Package>[].obs;
   final verifiedPro = Persistence.to.verifiedProCache.val.obs;
   final licenseKey = ''.obs;
 
@@ -33,9 +35,6 @@ class ProController extends GetxController with ConsoleMixin {
   bool get isPro => proEntitlement?.isActive == true || verifiedPro.value;
 
   EntitlementInfo? get proEntitlement => info.value.entitlements.all['pro'];
-
-  List<Package> get packages =>
-      offerings.value.current?.availablePackages ?? [];
 
   String get proPrefixString =>
       proEntitlement?.willRenew == true ? 'renews'.tr : 'expires'.tr;
@@ -121,10 +120,16 @@ class ProController extends GetxController with ConsoleMixin {
 
     try {
       offerings.value = await Purchases.getOfferings();
+      packages.value = offerings.value
+              .getOffering(CoreConfig().offeringId)
+              ?.availablePackages ??
+          [];
     } on PlatformException catch (e) {
       console.error('load error: $e');
-      _showError(e);
+      return _showError(e);
     }
+
+    console.info('packages: ${packages.length}');
   }
 
   Future<void> sync() async {
@@ -138,7 +143,7 @@ class ProController extends GetxController with ConsoleMixin {
     }
 
     // show upgrade screen every after 5th times opened
-    if (!ProController.to.isPro && (Persistence.to.sessionCount.val % 5) == 0) {
+    if (!isPro && (Persistence.to.sessionCount.val % 5) == 0) {
       await Future.delayed(1.seconds);
 
       if (isIAPSupported) {

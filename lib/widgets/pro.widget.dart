@@ -1,9 +1,7 @@
 import 'package:app_core/config.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import '../firebase/config/config.service.dart';
-import 'gradient.widget.dart';
 
 class ProText extends StatelessWidget {
   final double? size;
@@ -16,17 +14,26 @@ class ProText extends StatelessWidget {
       children: [
         Text(
           ConfigService.to.appName,
-          style: TextStyle(fontSize: size, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: size!, fontWeight: FontWeight.bold),
         ),
         const SizedBox(width: 4),
-        GradientWidget(
-          gradient: LinearGradient(colors: CoreConfig().gradientColors),
-          child: Text(
-            'Pro',
-            style: TextStyle(
-              fontSize: size,
-              fontWeight: FontWeight.bold,
-              color: Get.theme.primaryColor,
+        Card(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: CoreConfig().gradientColors,
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
+              ),
+            ),
+            child: Text(
+              'PRO',
+              style: TextStyle(
+                fontSize: size! * 0.8,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
           ),
         ),

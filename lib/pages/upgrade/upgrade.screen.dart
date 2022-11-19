@@ -1,18 +1,17 @@
 import 'package:app_core/config.dart';
 import 'package:app_core/firebase/config/config.service.dart';
 import 'package:app_core/globals.dart';
+import 'package:app_core/pages/upgrade/extensions.dart';
+import 'package:app_core/pages/upgrade/item.tile.dart';
 import 'package:app_core/utils/utils.dart';
-import 'package:app_core/widgets/busy_indicator.widget.dart';
 import 'package:app_core/widgets/pro.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
-import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../controllers/pro.controller.dart';
-import '../../widgets/logo.widget.dart';
 import '../routes.dart';
 import 'feature.tile.dart';
 import 'upgrade_screen.controller.dart';
@@ -33,14 +32,44 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
           padding: const EdgeInsets.only(left: 15),
           child: Text(
             'unlock_all_access'.tr,
-            style: const TextStyle(color: Colors.grey),
+            style: const TextStyle(fontSize: 12),
           ),
         ),
-        ...upgradeConfig.features.map((e) {
-          return FeatureTile(
-            title: e == 'promo_text' ? controller.promoText : e,
-          );
-        }).toList(),
+        const Divider(),
+        Obx(
+          () => Visibility(
+            visible: isIAPSupported,
+            replacement: Column(
+              children: [
+                FeatureTile(
+                  title: 'money_back_guarantee'.tr,
+                  highlighted: true,
+                ),
+                FeatureTile(
+                  title: '7-Day ${'free_trial'.tr}',
+                  highlighted: true,
+                ),
+                FeatureTile(
+                  title: 'cancel_anytime'.tr,
+                  highlighted: true,
+                ),
+              ],
+            ),
+            child: Column(
+              children: controller.product.features
+                  .map(
+                    (e) => FeatureTile(
+                      title: e == 'first' ? 'The First' : e,
+                      highlighted: true,
+                    ),
+                  )
+                  .toList(),
+            ),
+          ),
+        ),
+        ...upgradeConfig.features
+            .map((e) => FeatureTile(title: e == 'first' ? 'The First' : e))
+            .toList(),
         Obx(
           () => Visibility(
             visible: controller.showMoreFeatures.value &&
@@ -86,220 +115,99 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
       ],
     );
 
+    Widget itemBuilder(_, index) {
+      final package = ProController.to.packages[index];
+      return IAPProductTile(package: package);
+    }
+
     final productsListView = Obx(
       () => ListView.builder(
         shrinkWrap: true,
         padding: EdgeInsets.zero,
         controller: ScrollController(),
         itemCount: ProController.to.packages.length,
-        itemBuilder: (_, index) {
-          final package = ProController.to.packages[index];
-          final product = package.storeProduct;
-          final packageType = package.packageType.name.toLowerCase();
-
-          Widget title = Text('Just ${product.priceString} ${packageType.tr}');
-          Widget? subTitle =
-              product.description.isEmpty ? null : Text(product.description);
-          Widget? secondary;
-
-          if (product.introductoryPrice != null) {
-            final intro = product.introductoryPrice!;
-            final periodCycle = intro.cycles > 1
-                ? '${intro.cycles} ${intro.periodUnit.name.tr}s'
-                : intro.periodUnit.name.tr;
-
-            title = Obx(
-              () => RichText(
-                text: TextSpan(
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
-                    color: Get.theme.textTheme.titleLarge?.color,
-                  ),
-                  children: [
-                    TextSpan(text: product.priceString),
-                    TextSpan(text: ' / ${controller.periodUnitName.tr}'),
-                  ],
-                ),
-              ),
-            );
-
-            secondary = Card(
-              elevation: 1.0,
-              margin: EdgeInsets.zero,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(10, 2, 10, 5),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  // crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    ExtendedImage.network(
-                      'https://i.imgur.com/zUCN6gk.png',
-                      height: 20,
-                    ),
-                    const SizedBox(width: 5),
-                    Text(
-                      'Gumroad',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Get.theme.primaryColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-
-            subTitle = RichText(
-              text: TextSpan(
-                style: const TextStyle(
-                  fontSize: 12,
-                  fontStyle: FontStyle.italic,
-                  color: Colors.grey,
-                ),
-                children: [
-                  const TextSpan(text: 'Start with '),
-                  TextSpan(
-                    text: intro.priceString,
-                    style: TextStyle(
-                      color: Get.theme.primaryColor,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  TextSpan(text: ' on the first $periodCycle'),
-                ],
-              ),
-            );
-
-            if (controller.isFreeTrial) {
-              final monthlyPrice = product.price / 12;
-              final currencySymbol = product.priceString.substring(0, 1);
-
-              subTitle = RichText(
-                text: TextSpan(
-                  style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.grey,
-                  ),
-                  children: [
-                    TextSpan(
-                      text:
-                          '$currencySymbol${currencyFormatter.format(monthlyPrice)}',
-                      style: TextStyle(color: Get.theme.primaryColor),
-                    ),
-                    TextSpan(text: ' / ${'month_billed_annually'.tr}'),
-                  ],
-                ),
-              );
-            }
-          }
-
-          return Obx(
-            () => RadioListTile<String>(
-              title: title,
-              subtitle: subTitle,
-              value: package.identifier,
-              secondary: !isIAPSupported ? secondary : null,
-              groupValue: controller.identifier,
-              activeColor: Get.theme.primaryColor,
-              contentPadding: EdgeInsets.zero,
-              onChanged: (value) => controller.package.value =
-                  ProController.to.packages.firstWhere(
-                (e) => e.identifier == value,
-              ),
-            ),
-          );
-        },
+        itemBuilder: itemBuilder,
       ),
     );
 
-    final actionCardContent = Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            isIAPSupported
-                ? productsListView
-                : RadioListTile<int>(
-                    title: Obx(
-                      () => Text(
-                        controller.gumroadProduct.value.formattedPrice,
-                        style: TextStyle(
-                          fontSize: 17,
+    final actionCardContent = Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              isIAPSupported
+                  ? productsListView
+                  : Obx(
+                      () => IAPProductTileWeb(
+                        product: controller.gumroadProduct.value,
+                      ),
+                    ),
+              const SizedBox(height: 5),
+              Obx(
+                () => ElevatedButton(
+                  onPressed: controller.busy.value ? null : controller.purchase,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Get.theme.primaryColor,
+                    visualDensity: VisualDensity.standard,
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 10,
+                      horizontal: 15,
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      Text(
+                        controller.buttonText,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Get.theme.textTheme.titleLarge?.color,
+                          fontSize: 16,
                         ),
                       ),
-                    ),
-                    contentPadding: EdgeInsets.zero,
-                    groupValue: null,
-                    onChanged: (_) {},
-                    value: 0,
-                  ),
-            const SizedBox(height: 5),
-            ElevatedButton(
-              onPressed: controller.purchase,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Get.theme.primaryColor,
-                visualDensity: VisualDensity.standard,
-                padding: const EdgeInsets.symmetric(
-                  vertical: 10,
-                  horizontal: 15,
-                ),
-              ),
-              child: Obx(
-                () => Column(
-                  children: [
-                    Text(
-                      '${controller.isFreeTrial ? 'try_free'.tr : 'subscribe'.tr} & ${'cancel_anytime'.tr}',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                    if (controller.isFreeTrial) ...[
+                      const SizedBox(height: 3),
                       Text(
-                        "trial_remind".tr,
+                        isIAPSupported
+                            ? controller.product.buttonSubTitle
+                            : 'trial_remind'.tr,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontWeight: FontWeight.normal,
-                          fontSize: 13,
+                          fontSize: 12,
                         ),
                       ),
                     ],
-                  ],
+                  ),
                 ),
-              ),
-            )
-                .animate(onPlay: (c) => c.repeat())
-                .shimmer(duration: 2000.ms)
-                .then(delay: 2000.ms),
-            const SizedBox(height: 5),
-            Text(
-              "easy_cancel".tr,
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-        const SizedBox(height: 10),
-      ],
-    );
-
-    final actionCard = Card(
-      elevation: 4.0,
-      color: Get.isDarkMode ? const Color(0xFF0B1717) : null,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: controller.obx(
-          (state) => actionCardContent,
-          onLoading: BusyIndicator(color: Get.theme.primaryColor),
-        ),
+              )
+                  .animate(onPlay: (c) => c.repeat())
+                  .shimmer(duration: 2000.ms)
+                  .then(delay: 2000.ms),
+              // const SizedBox(height: 5),
+              // Align(
+              //   alignment: Alignment.center,
+              //   child: Row(
+              //     mainAxisSize: MainAxisSize.min,
+              //     children: [
+              //       const Text(
+              //         '30-Day Money Back Guarantee', // TODO: localize
+              //         textAlign: TextAlign.center,
+              //       ),
+              //       const SizedBox(width: 5),
+              //       Icon(
+              //         Icons.check_rounded,
+              //         color: Get.theme.primaryColor,
+              //       ),
+              //     ],
+              //   ),
+              // ),
+            ],
+          ),
+          const SizedBox(height: 10),
+        ],
       ),
     );
 
@@ -309,7 +217,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(child: benefits),
-          actionCard,
+          actionCardContent,
           Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -354,13 +262,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
       elevation: 0.0,
       automaticallyImplyLeading: false,
       centerTitle: false,
-      title: Row(
-        children: const [
-          LogoWidget(size: 30),
-          SizedBox(width: 15),
-          ProText(size: 23),
-        ],
-      ),
+      title: const ProText(size: 20),
       actions: [
         IconButton(
           icon: const Icon(Icons.close),
@@ -377,14 +279,11 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
       ],
     );
 
-    return Container(
-      decoration:
-          Get.isDarkMode ? CoreConfig().upgradeConfig.darkDecoration : null,
-      child: Scaffold(
-        backgroundColor: Get.isDarkMode ? Colors.transparent : null,
-        appBar: appBar,
-        body: content,
-      ),
+    return Scaffold(
+      backgroundColor:
+          Get.isDarkMode ? const Color.fromARGB(255, 29, 29, 29) : null,
+      appBar: appBar,
+      body: content,
     );
   }
 }

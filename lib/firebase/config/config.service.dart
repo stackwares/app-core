@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:app_core/config.dart';
 import 'package:app_core/persistence/persistence.dart';
-import 'package:app_core/supabase/supabase_auth.service.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
 
@@ -40,7 +39,6 @@ class ConfigService extends GetxService with ConsoleMixin {
     required Function(Map<String, dynamic> parameters) postInit,
   }) async {
     this.postInit = postInit;
-
     _prePopulate();
     fetchFromFunctions();
   }
@@ -99,7 +97,5 @@ class ConfigService extends GetxService with ConsoleMixin {
         jsonDecode(Persistence.to.configGeneral.val),
       );
     }
-
-    SupabaseAuthService.to.init();
   }
 }

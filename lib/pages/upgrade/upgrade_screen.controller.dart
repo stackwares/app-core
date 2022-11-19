@@ -1,6 +1,7 @@
 import 'package:app_core/firebase/config/config.service.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/notifications/notifications.manager.dart';
+import 'package:app_core/pages/upgrade/extensions.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:app_core/widgets/gradient.widget.dart';
@@ -28,36 +29,15 @@ class UpgradeScreenController extends GetxController
   final gumroadProduct = const Product().obs;
 
   // GETTERS
-  String get identifier => package.value.identifier;
-
+  String get packageId => package.value.identifier;
   StoreProduct get product => package.value.storeProduct;
 
-  bool get isSubscription => product.identifier.contains('.sub.');
-
-  String get priceString =>
-      product.introductoryPrice?.priceString ?? product.priceString;
-
-  String get periodUnitName {
-    if (product.identifier.contains('annual')) {
-      return 'year';
-    } else if (product.identifier.contains('month')) {
-      return 'month';
-    }
-
-    return 'error';
-  }
-
-  bool get isFreeTrial => product.introductoryPrice?.price == 0;
-
-  String get promoText {
-    final intro = product.introductoryPrice!;
-
-    final percentageDifference_ =
-        ((product.price - intro.price) / product.price) * 100;
-
-    return isFreeTrial
-        ? '${intro.periodNumberOfUnits} ${GetUtils.capitalizeFirst(intro.periodUnit.name.tr)} ${'free_trial'.tr}'
-        : '${percentageDifference_.round()}%\nOFF';
+  String get buttonText {
+    return busy.value
+        ? '${'please_wait'.tr}...'
+        : isIAPSupported
+            ? product.buttonTitle
+            : 'Redeem Your Free Trial';
   }
 
   // INIT
@@ -149,7 +129,7 @@ class UpgradeScreenController extends GetxController
     change(null, status: RxStatus.loading());
 
     final package = ProController.to.packages.firstWhere(
-      (e) => e.identifier == identifier,
+      (e) => e.identifier == packageId,
     );
 
     await ProController.to.purchase(package);

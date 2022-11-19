@@ -35,13 +35,14 @@ class CoreConfig with ConsoleMixin {
   late List<Color> gradientColors;
   late UpgradeConfig upgradeConfig;
   late bool allowAnonymousRcUserSync;
-  late String supabaseAuthHost;
   late Map<String, dynamic> secretsConfig;
   late Map<String, dynamic> appConfig;
   late Map<String, dynamic> generalConfig;
+  late String offeringId;
 
   late Function()? onCloseUpgradeScreen;
   late Function()? onSignedOut;
+  late Function()? onSignedIn;
 
   // SINGLETON
   static final CoreConfig _singleton = CoreConfig._internal();
@@ -68,9 +69,10 @@ class CoreConfig with ConsoleMixin {
     Map<String, dynamic> secretsConfig = const {},
     Map<String, dynamic> appConfig = const {},
     Map<String, dynamic> generalConfig = const {},
-    required String supabaseAuthHost,
+    String offeringId = 'default',
     Function()? onCloseUpgradeScreen,
     Function()? onSignedOut,
+    Function()? onSignedIn,
   }) async {
     this.persistenceCipherKey = persistenceCipherKey;
     this.translationKeys = translationKeys;
@@ -85,12 +87,13 @@ class CoreConfig with ConsoleMixin {
     this.mainConstraints = mainConstraints;
     this.gradientColors = gradientColors;
     this.allowAnonymousRcUserSync = allowAnonymousRcUserSync;
-    this.supabaseAuthHost = supabaseAuthHost;
     this.secretsConfig = secretsConfig;
     this.appConfig = appConfig;
     this.generalConfig = generalConfig;
+    this.offeringId = offeringId;
     this.onCloseUpgradeScreen = onCloseUpgradeScreen;
     this.onSignedOut = onSignedOut;
+    this.onSignedIn = onSignedIn;
     await _initDependencies();
     return this;
   }

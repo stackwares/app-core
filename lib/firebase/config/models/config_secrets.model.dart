@@ -101,23 +101,31 @@ class ConfigSecretsSupabase {
   const ConfigSecretsSupabase({
     this.url = '',
     this.key = '',
+    this.redirectUrl = '',
+    this.redirectUrlWeb = '',
     this.redirect = const ConfigSecretsSupabaseRedirect(),
   });
 
   final String url;
   final String key;
+  final String redirectUrl;
+  final String redirectUrlWeb;
   final ConfigSecretsSupabaseRedirect redirect;
 
   factory ConfigSecretsSupabase.fromJson(Map<String, dynamic> json) =>
       ConfigSecretsSupabase(
         url: json["url"],
         key: json["key"],
+        redirectUrl: json["redirect_url"],
+        redirectUrlWeb: json["redirect_url_web"],
         redirect: ConfigSecretsSupabaseRedirect.fromJson(json["redirect"]),
       );
 
   Map<String, dynamic> toJson() => {
         "url": url,
         "key": key,
+        "redirect_url": redirectUrl,
+        "redirect_url_web": redirectUrlWeb,
         "redirect": redirect.toJson(),
       };
 }

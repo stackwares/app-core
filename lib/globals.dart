@@ -20,7 +20,7 @@ bool get isBeta => CoreConfig().buildMode == BuildMode.beta;
 bool get isSmallScreen =>
     Get.mediaQuery.size.width < CoreConfig().desktopChangePoint;
 
-bool get isThreeColumns => Get.mediaQuery.size.width > 1400;
+bool get isThreeColumns => Get.mediaQuery.size.width > 1350;
 
 bool get isLinux => GetPlatform.isLinux && !GetPlatform.isWeb;
 bool get isWindows => GetPlatform.isWindows && !GetPlatform.isWeb;

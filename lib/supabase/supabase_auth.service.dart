@@ -2,6 +2,7 @@ import 'package:app_core/config.dart';
 import 'package:app_core/controllers/pro.controller.dart';
 import 'package:app_core/firebase/analytics.service.dart';
 import 'package:app_core/firebase/config/config.service.dart';
+import 'package:app_core/firebase/config/models/config_secrets.model.dart';
 import 'package:app_core/firebase/crashlytics.service.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/notifications/notifications.manager.dart';
@@ -22,8 +23,8 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
   // VARIABLES
   final persistence = Get.find<Persistence>();
   final config = Get.find<ConfigService>();
-  VoidCallback? signedIn;
-  bool ready = false;
+
+  // PROPERTIES
 
   // GETTERS
   bool get authenticated => user != null;
@@ -32,14 +33,20 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
 
   // INIT
 
+  @override
+  void onInit() {
+    init();
+    super.onInit();
+  }
+
   // FUNCTIONS
   void init() async {
-    final supabaseConfig = config.secrets.supabase;
+    final s = ConfigSecrets.fromJson(CoreConfig().secretsConfig).supabase;
 
     await Supabase.initialize(
-      url: supabaseConfig.url,
-      anonKey: supabaseConfig.key,
-      authCallbackUrlHostname: supabaseConfig.redirect.host,
+      url: s.url,
+      anonKey: s.key,
+      authCallbackUrlHostname: s.redirect.host,
       debug: false,
     );
 
@@ -57,32 +64,31 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
           data.session?.persistSessionString ?? '';
 
       if (data.event == AuthChangeEvent.signedIn) {
-        EasyDebounce.debounce('auth-sign-in', 5.seconds, () async {
-          if (!authenticated) return;
+        CoreConfig().onSignedIn?.call();
+        final user_ = data.session!.user;
 
+        EasyDebounce.debounce('auth-sign-in', 2.seconds, () async {
           if (!isWindowsLinux) {
-            await CrashlyticsService.to.instance.setUserIdentifier(user!.id);
-            await AnalyticsService.to.instance.setUserId(id: user!.id);
+            await CrashlyticsService.to.instance.setUserIdentifier(user_.id);
+            await AnalyticsService.to.instance.setUserId(id: user_.id);
           }
 
-          ProController.to.login(user!);
+          ProController.to.login(user_);
           SupabaseFunctionsService.to.sync();
 
           // refresh token 2 minutes before expiration time
-          if (data.session?.expiresIn != null) {
+          if (data.session!.expiresIn != null) {
             final refreshAfter = (data.session!.expiresIn! - 120);
-            Future.delayed(refreshAfter.seconds)
-                .then((value) => recoverSession());
+            Future.delayed(refreshAfter.seconds).then(
+              (value) => recoverSession(),
+            );
           }
-
-          signedIn?.call();
         });
       } else if (data.event == AuthChangeEvent.signedOut) {
         EasyDebounce.debounce('auth-sign-out', 1.seconds, () async {
-          CoreConfig().onSignedOut?.call();
           AnalyticsService.to.logSignOut();
           ProController.to.logout();
-          Get.offNamedUntil(Routes.main, (route) => false);
+          CoreConfig().onSignedOut?.call();
         });
       } else if (data.event == AuthChangeEvent.tokenRefreshed) {
         //
@@ -108,13 +114,36 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
     }
   }
 
-  Future<Either<String, bool>> magicLink(String email) async {
-    final redirect = config.secrets.supabase.redirect;
+  Future<Either<String, bool>> socialAuth(Provider provider) async {
+    final redirect = config.secrets.supabase.redirectUrl;
+    final redirectWeb = config.secrets.supabase.redirectUrlWeb;
+
     final redirectTo = GetPlatform.isWeb
         ? kReleaseMode
-            ? '${CoreConfig().supabaseAuthHost}/%23/${redirect.host}'
-            : 'http://localhost:9000/%23/${redirect.host}'
-        : '${redirect.scheme}://${redirect.host}';
+            ? redirectWeb
+            : 'http://localhost:9000/%23/auth-callback'
+        : redirect;
+
+    try {
+      await auth.signInWithOAuth(provider, redirectTo: redirectTo);
+      return const Right(true);
+    } on AuthException catch (e) {
+      return Left('signIn error: $e');
+    } catch (e, s) {
+      CrashlyticsService.to.record(e, s);
+      return Left('signIn exception: $e');
+    }
+  }
+
+  Future<Either<String, bool>> magicLink(String email) async {
+    final redirect = config.secrets.supabase.redirectUrl;
+    final redirectWeb = config.secrets.supabase.redirectUrlWeb;
+
+    final redirectTo = GetPlatform.isWeb
+        ? kReleaseMode
+            ? redirectWeb
+            : 'http://localhost:9000/%23/auth-callback'
+        : redirect;
 
     console.info('redirectTo: $redirectTo');
 
@@ -133,48 +162,47 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
     }
   }
 
-  Future<void> signIn(String email, String password) async {
-    try {
-      await auth.signInWithPassword(email: email, password: password);
-    } on AuthException catch (e) {
-      // invalid credentials
-      if (e.statusCode == '400') {
-        return console.error('signIn error: $e');
-      } else {
-        return console.error('signIn error: $e');
-      }
-    } catch (e, s) {
-      CrashlyticsService.to.record(e, s);
-      return console.error('signIn exception: $e');
-    }
-  }
+  // Future<void> signIn(String email, String password) async {
+  //   try {
+  //     await auth.signInWithPassword(email: email, password: password);
+  //   } on AuthException catch (e) {
+  //     // invalid credentials
+  //     if (e.statusCode == '400') {
+  //       return console.error('signIn error: $e');
+  //     } else {
+  //       return console.error('signIn error: $e');
+  //     }
+  //   } catch (e, s) {
+  //     CrashlyticsService.to.record(e, s);
+  //     return console.error('signIn exception: $e');
+  //   }
+  // }
 
-  Future<void> authenticate({
-    required String email,
-    required String password,
-  }) async {
-    if (user != null) return console.info('already authenticated');
+  // Future<void> authenticate({
+  //   required String email,
+  //   required String password,
+  // }) async {
+  //   if (user != null) return console.info('already authenticated');
 
-    try {
-      await auth.signUp(email: email, password: password);
-    } on AuthException catch (e) {
-      // already registered
-      if (e.statusCode == '400') {
-        await signIn(email, password);
-      } else {
-        return console.error('signUp error: $e');
-      }
-    } catch (e, s) {
-      CrashlyticsService.to.record(e, s);
-      return console.error('signIn exception: $e');
-    }
+  //   try {
+  //     await auth.signUp(email: email, password: password);
+  //   } on AuthException catch (e) {
+  //     // already registered
+  //     if (e.statusCode == '400') {
+  //       await signIn(email, password);
+  //     } else {
+  //       return console.error('signUp error: $e');
+  //     }
+  //   } catch (e, s) {
+  //     CrashlyticsService.to.record(e, s);
+  //     return console.error('signIn exception: $e');
+  //   }
 
-    console.wtf('authentication successful');
-  }
+  //   console.wtf('authentication successful');
+  // }
 
   Future<void> signInUri(Uri uri, Map<String, dynamic>? attributes) async {
     try {
-      console.info('signInUri: ${uri.toString()}');
       final response = await auth.getSessionFromUrl(uri);
       updateUserAttribute(attributes);
       console.info('signInUri session user id: ${response.session.user.id}');
@@ -213,7 +241,6 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
   }
 
   Future<void> deleteAccount() async {
-    // client.auth.user().
     auth.signOut();
   }
 }

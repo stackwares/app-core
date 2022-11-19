@@ -1,35 +1,45 @@
+import 'package:app_core/animations/animations.dart';
+import 'package:app_core/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class FeatureTile extends StatelessWidget {
   final String title;
+  final bool highlighted;
 
   const FeatureTile({
     Key? key,
     required this.title,
+    this.highlighted = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(Icons.check, color: Get.theme.primaryColor),
-          const SizedBox(width: 20),
-          Expanded(
-            child: Text(
-              title,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.w500,
+    return ListItemAnimation(
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: 15,
+          vertical: isSmallScreen ? 5 : 10,
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.check, color: Get.theme.primaryColor),
+            const SizedBox(width: 15),
+            Expanded(
+              child: Text(
+                title,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w500,
+                  color: highlighted ? Get.theme.primaryColor : null,
+                ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
