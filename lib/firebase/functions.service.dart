@@ -27,8 +27,6 @@ class FirebaseFunctionsService extends GetxService with ConsoleMixin {
       return Left('error fetching remote config: $e');
     }
 
-    // console.wtf('response: ${result.data}');
-
     if (result.data == false) {
       return const Left('failed to fetch remote config');
     }

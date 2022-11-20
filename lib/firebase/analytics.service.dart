@@ -8,9 +8,6 @@ class AnalyticsService extends GetxService with ConsoleMixin {
   static AnalyticsService get to => Get.find();
 
   // VARIABLES
-  final observer = FirebaseAnalyticsObserver(
-    analytics: FirebaseAnalytics.instance,
-  );
 
   // PROPERTIES
 
