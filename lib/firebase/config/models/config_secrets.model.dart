@@ -4,29 +4,28 @@ class ConfigSecrets {
   const ConfigSecrets({
     this.revenuecat = const ConfigSecretsRevenuecat(),
     this.sentry = const ConfigSecretsSentry(),
-    this.unsplash,
     this.supabase = const ConfigSecretsSupabase(),
+    this.upgradeFallback = const ConfigSecretUpgradeFallback(),
   });
 
   final ConfigSecretsRevenuecat revenuecat;
   final ConfigSecretsSentry sentry;
-  final ConfigSecretsUnsplash? unsplash;
   final ConfigSecretsSupabase supabase;
+  final ConfigSecretUpgradeFallback upgradeFallback;
 
   factory ConfigSecrets.fromJson(Map<String, dynamic> json) => ConfigSecrets(
         revenuecat: ConfigSecretsRevenuecat.fromJson(json["revenuecat"]),
         sentry: ConfigSecretsSentry.fromJson(json["sentry"]),
-        unsplash: json["unsplash"] == null
-            ? null
-            : ConfigSecretsUnsplash.fromJson(json["unsplash"]),
         supabase: ConfigSecretsSupabase.fromJson(json["supabase"]),
+        upgradeFallback:
+            ConfigSecretUpgradeFallback.fromJson(json["upgrade_fallback"]),
       );
 
   Map<String, dynamic> toJson() => {
         "revenuecat": revenuecat.toJson(),
         "sentry": sentry.toJson(),
-        "unsplash": unsplash?.toJson(),
         "supabase": supabase.toJson(),
+        "upgrade_fallback": upgradeFallback.toJson(),
       };
 }
 
@@ -148,5 +147,46 @@ class ConfigSecretsSupabaseRedirect {
   Map<String, dynamic> toJson() => {
         "scheme": scheme,
         "host": host,
+      };
+}
+
+class ConfigSecretUpgradeFallback {
+  const ConfigSecretUpgradeFallback({
+    this.apple = const Promo(),
+    this.google = const Promo(),
+    this.gumroad = const Promo(),
+  });
+
+  final Promo apple;
+  final Promo google;
+  final Promo gumroad;
+
+  factory ConfigSecretUpgradeFallback.fromJson(Map<String, dynamic> json) =>
+      ConfigSecretUpgradeFallback(
+        apple: Promo.fromJson(json["apple"]),
+        google: Promo.fromJson(json["google"]),
+        gumroad: Promo.fromJson(json["gumroad"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "apple": apple.toJson(),
+        "google": google.toJson(),
+        "gumroad": gumroad.toJson(),
+      };
+}
+
+class Promo {
+  const Promo({
+    this.code = '',
+  });
+
+  final String code;
+
+  factory Promo.fromJson(Map<String, dynamic> json) => Promo(
+        code: json["code"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "code": code,
       };
 }

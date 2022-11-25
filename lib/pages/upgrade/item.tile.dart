@@ -60,7 +60,6 @@ class IAPProductTile extends StatelessWidget {
           product.itemTitleNext,
           style: titleStyle.copyWith(
             color: Get.theme.colorScheme.tertiary,
-            fontSize: 13,
           ),
         ),
       ],

@@ -94,6 +94,12 @@ class ProController extends GetxController with ConsoleMixin {
     if (!isIAPSupported) return;
     await Purchases.logIn(user.id);
     await Purchases.setEmail(user.email!);
+
+    await Purchases.setAttributes({
+      'version': metadataApp.formattedVersion,
+      'platform': Utils.platformName(),
+      'device-id': metadataDevice.id,
+    });
   }
 
   Future<void> logout() async {

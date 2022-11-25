@@ -5,6 +5,7 @@ import 'package:app_core/pages/upgrade/extensions.dart';
 import 'package:app_core/pages/upgrade/item.tile.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:app_core/widgets/pro.widget.dart';
+import 'package:app_core/widgets/remote_image.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -46,6 +47,10 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                   highlighted: true,
                 ),
                 FeatureTile(
+                  title: 'money_back_guarantee'.tr,
+                  highlighted: true,
+                ),
+                FeatureTile(
                   title: '7-Day ${'free_trial'.tr}',
                   highlighted: true,
                 ),
@@ -58,10 +63,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
             child: Column(
               children: controller.product.features
                   .map(
-                    (e) => FeatureTile(
-                      title: e == 'first' ? 'The First' : e,
-                      highlighted: true,
-                    ),
+                    (e) => FeatureTile(title: e, highlighted: true),
                   )
                   .toList(),
             ),
@@ -130,6 +132,59 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
       ),
     );
 
+    final upgradeButton = Stack(
+      alignment: Alignment.topRight,
+      children: [
+        Obx(
+          () => ElevatedButton(
+            onPressed: controller.busy.value ? null : controller.purchase,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Get.theme.primaryColor,
+              visualDensity: VisualDensity.standard,
+              padding: const EdgeInsets.symmetric(
+                vertical: 10,
+                horizontal: 15,
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  controller.buttonText,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(height: 3),
+                Text(
+                  controller.product.buttonSubTitle,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.normal,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        )
+            .animate(onPlay: (c) => c.repeat())
+            .shimmer(duration: 2000.ms)
+            .then(delay: 2000.ms),
+        const Positioned(
+          top: 7,
+          right: 6,
+          child: RemoteImage(
+            url: 'https://cdn-icons-png.flaticon.com/512/4840/4840351.png',
+            width: 32,
+            height: 32,
+          ),
+        )
+      ],
+    );
+
     final actionCardContent = Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
@@ -147,63 +202,31 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                       ),
                     ),
               const SizedBox(height: 5),
-              Obx(
-                () => ElevatedButton(
-                  onPressed: controller.busy.value ? null : controller.purchase,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Get.theme.primaryColor,
-                    visualDensity: VisualDensity.standard,
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 15,
-                    ),
-                  ),
-                  child: Column(
-                    children: [
-                      Text(
-                        controller.buttonText,
+              upgradeButton,
+              const SizedBox(height: 5),
+              Align(
+                alignment: Alignment.center,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Obx(
+                      () => Text(
+                        controller.product.discount,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                      const SizedBox(height: 3),
-                      Text(
-                        isIAPSupported
-                            ? controller.product.buttonSubTitle
-                            : 'trial_remind'.tr,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.normal,
+                          fontWeight: FontWeight.w600,
                           fontSize: 12,
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(width: 5),
+                    Icon(
+                      Icons.check_rounded,
+                      color: Get.theme.primaryColor,
+                    ),
+                  ],
                 ),
-              )
-                  .animate(onPlay: (c) => c.repeat())
-                  .shimmer(duration: 2000.ms)
-                  .then(delay: 2000.ms),
-              // const SizedBox(height: 5),
-              // Align(
-              //   alignment: Alignment.center,
-              //   child: Row(
-              //     mainAxisSize: MainAxisSize.min,
-              //     children: [
-              //       const Text(
-              //         '30-Day Money Back Guarantee', // TODO: localize
-              //         textAlign: TextAlign.center,
-              //       ),
-              //       const SizedBox(width: 5),
-              //       Icon(
-              //         Icons.check_rounded,
-              //         color: Get.theme.primaryColor,
-              //       ),
-              //     ],
-              //   ),
-              // ),
+              ),
             ],
           ),
           const SizedBox(height: 10),
@@ -268,7 +291,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
           icon: const Icon(Icons.close),
           onPressed: () {
             Get.back();
-            CoreConfig().onCloseUpgradeScreen?.call();
+            CoreConfig().onCancelledUpgradeScreen?.call();
           },
         ),
         TextButton(

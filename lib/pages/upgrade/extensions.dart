@@ -1,3 +1,4 @@
+import 'package:app_core/pages/upgrade/currency_data.dart';
 import 'package:get/get.dart';
 import 'package:purchases_flutter/object_wrappers.dart';
 
@@ -32,7 +33,7 @@ extension StoreProductExtension on StoreProduct {
 
   String get itemTitleNext {
     if (isAnnually) {
-      return ' - ${'best_value'.tr}';
+      return ' - ${'best_deal'.tr}';
     } else if (isMonthly) {
       return '';
     } else if (isWeekly) {
@@ -42,18 +43,23 @@ extension StoreProductExtension on StoreProduct {
     return '';
   }
 
+  String get itemOrigPrice {
+    return '$currencyCode ${price * 2}';
+  }
+
+  String get currencySymbol {
+    return kCurrencyData[currencyCode]?['symbol'] ?? '';
+  }
+
   String get itemSubTitle {
     if (periodUnitName == 'year') {
       final monthlyPrice = price / 12;
-      final currencySymbol = priceString.substring(0, 1);
       return '$currencySymbol${currencyFormatter.format(monthlyPrice)} / ${'month'.tr}';
     } else if (periodUnitName == 'month') {
       final monthlyPrice = price / 4;
-      final currencySymbol = priceString.substring(0, 1);
       return '$currencySymbol${currencyFormatter.format(monthlyPrice)} / ${'week'.tr}';
     } else if (periodUnitName == 'week') {
       final monthlyPrice = price / 7;
-      final currencySymbol = priceString.substring(0, 1);
       return '$currencySymbol${currencyFormatter.format(monthlyPrice)} / ${'day'.tr}';
     }
 
@@ -73,19 +79,29 @@ extension StoreProductExtension on StoreProduct {
   }
 
   String get buttonTitle {
-    return isSubscription ? 'Pay only $itemTitle' : 'Buy for only $itemTitle';
+    return isFreeTrial ? 'redeem_trial'.tr : 'upgrade_to_pro'.tr;
+
+    // return isSubscription ? 'Pay only $itemTitle' : 'Buy for only $itemTitle';
   }
 
   String get buttonSubTitle {
-    return isFreeTrial
-        ? 'Redeem Your Free Trial - Cancel Anytime'
-        : isSubscription
-            ? 'cancel_anytime'.tr
-            : description;
+    // return isFreeTrial
+    //     ? 'Redeem Your Free Trial - Cancel Anytime'
+    //     : isSubscription
+    //         ? 'cancel_anytime'.tr
+    //         : description;
+
+    return '${isSubscription ? '${'now_only'.tr} $itemTitle' : '${'now_only'.tr} $itemTitle'} - ${'cancel_anytime'.tr}';
   }
 
   String get trialDurationText {
     return '${introductoryPrice!.periodNumberOfUnits} ${GetUtils.capitalizeFirst(introductoryPrice!.periodUnit.name.tr)}';
+  }
+
+  String get discount {
+    final origPrice = '$currencySymbol${currencyFormatter.format(price * 2)}';
+    final discountedPrice = '$currencySymbol${currencyFormatter.format(price)}';
+    return '${'from'.tr} $origPrice ${'to_only'.tr} $discountedPrice';
   }
 
   List<String> get features {

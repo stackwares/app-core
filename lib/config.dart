@@ -40,7 +40,7 @@ class CoreConfig with ConsoleMixin {
   late Map<String, dynamic> generalConfig;
   late String offeringId;
 
-  late Function()? onCloseUpgradeScreen;
+  late Function()? onCancelledUpgradeScreen;
   late Function()? onSignedOut;
   late Function()? onSignedIn;
 
@@ -70,7 +70,7 @@ class CoreConfig with ConsoleMixin {
     Map<String, dynamic> appConfig = const {},
     Map<String, dynamic> generalConfig = const {},
     String offeringId = 'default',
-    Function()? onCloseUpgradeScreen,
+    Function()? onCancelledUpgradeScreen,
     Function()? onSignedOut,
     Function()? onSignedIn,
   }) async {
@@ -91,7 +91,7 @@ class CoreConfig with ConsoleMixin {
     this.appConfig = appConfig;
     this.generalConfig = generalConfig;
     this.offeringId = offeringId;
-    this.onCloseUpgradeScreen = onCloseUpgradeScreen;
+    this.onCancelledUpgradeScreen = onCancelledUpgradeScreen;
     this.onSignedOut = onSignedOut;
     this.onSignedIn = onSignedIn;
     await _initDependencies();
