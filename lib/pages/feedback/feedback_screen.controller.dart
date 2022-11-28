@@ -2,6 +2,7 @@ import 'package:app_core/globals.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 import '../../firebase/config/config.service.dart';
 import '../../utils/ui_utils.dart';
@@ -55,5 +56,7 @@ class FeedbackScreenController extends GetxController
       previousRoute: Get.previousRoute,
       feedbackType: feedbackType,
     );
+
+    Purchases.setAttributes({'star-rating': rating.value.toString()});
   }
 }
