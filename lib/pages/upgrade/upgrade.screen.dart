@@ -40,12 +40,9 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
         Obx(
           () => Visibility(
             visible: isIAPSupported,
+            // gumroad
             replacement: Column(
               children: [
-                FeatureTile(
-                  title: 'money_back_guarantee'.tr,
-                  highlighted: true,
-                ),
                 FeatureTile(
                   title: 'money_back_guarantee'.tr,
                   highlighted: true,
@@ -62,16 +59,12 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
             ),
             child: Column(
               children: controller.product.features
-                  .map(
-                    (e) => FeatureTile(title: e, highlighted: true),
-                  )
+                  .map((e) => FeatureTile(title: e.tr, highlighted: true))
                   .toList(),
             ),
           ),
         ),
-        ...upgradeConfig.features
-            .map((e) => FeatureTile(title: e == 'first' ? 'The First' : e))
-            .toList(),
+        ...upgradeConfig.features.map((e) => FeatureTile(title: e.tr)).toList(),
         Obx(
           () => Visibility(
             visible: controller.showMoreFeatures.value &&
@@ -108,7 +101,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                   ),
                 ),
                 ...upgradeConfig.upcomingFeatures
-                    .map((e) => FeatureTile(title: e))
+                    .map((e) => FeatureTile(title: e.tr))
                     .toList(),
               ],
             ),
