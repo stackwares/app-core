@@ -40,6 +40,16 @@ class UpgradeScreenController extends GetxController
             : 'Redeem Your Free Trial';
   }
 
+  String get buttonSubText {
+    return isIAPSupported
+        ? product.buttonSubTitle
+        : gumroadProduct.value.buttonSubTitle;
+  }
+
+  String get footerText {
+    return isIAPSupported ? product.discount : gumroadProduct.value.discount;
+  }
+
   // INIT
   @override
   void onInit() async {

@@ -80,18 +80,10 @@ extension StoreProductExtension on StoreProduct {
 
   String get buttonTitle {
     return isFreeTrial ? 'redeem_trial'.tr : 'upgrade_to_pro'.tr;
-
-    // return isSubscription ? 'Pay only $itemTitle' : 'Buy for only $itemTitle';
   }
 
   String get buttonSubTitle {
-    // return isFreeTrial
-    //     ? 'Redeem Your Free Trial - Cancel Anytime'
-    //     : isSubscription
-    //         ? 'cancel_anytime'.tr
-    //         : description;
-
-    return '${isSubscription ? '${'now_only'.tr} $itemTitle' : '${'now_only'.tr} $itemTitle'} - ${'cancel_anytime'.tr}';
+    return '${!isSubscription ? '${'now_only'.tr} $itemTitle' : '${'now_only'.tr} $itemTitle'} - ${'cancel_anytime'.tr}';
   }
 
   String get trialDurationText {

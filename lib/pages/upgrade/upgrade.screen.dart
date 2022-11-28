@@ -152,7 +152,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                 ),
                 const SizedBox(height: 3),
                 Text(
-                  controller.product.buttonSubTitle,
+                  controller.buttonSubText,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontWeight: FontWeight.normal,
@@ -204,7 +204,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                   children: [
                     Obx(
                       () => Text(
-                        controller.product.discount,
+                        controller.footerText,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontWeight: FontWeight.w600,
