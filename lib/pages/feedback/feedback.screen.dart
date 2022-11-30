@@ -68,6 +68,7 @@ class FeedbackScreen extends StatelessWidget with ConsoleMixin {
                 itemBuilder: (context, _) => Icon(
                   Icons.star,
                   color: Get.theme.primaryColor,
+                  size: 20,
                 ),
               ),
               Obx(
