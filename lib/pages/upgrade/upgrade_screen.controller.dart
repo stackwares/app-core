@@ -1,3 +1,4 @@
+import 'package:app_core/config.dart';
 import 'package:app_core/firebase/config/config.service.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/notifications/notifications.manager.dart';
@@ -152,6 +153,7 @@ class UpgradeScreenController extends GetxController
       );
 
       Get.back();
+      CoreConfig().onSuccessfulUpgrade?.call();
     }
   }
 
@@ -175,6 +177,8 @@ class UpgradeScreenController extends GetxController
       );
 
       Get.back();
+
+      CoreConfig().onSuccessfulUpgrade?.call();
     } else {
       UIUtils.showSimpleDialog(
         'no_purchases'.tr,

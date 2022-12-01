@@ -15,6 +15,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 import '../controllers/pro.controller.dart';
 import '../globals.dart';
 import '../pages/feedback/feedback_screen.controller.dart';
+import '../pages/routes.dart';
 
 class Utils {
   // VARIABLES
@@ -110,6 +111,7 @@ class Utils {
     return Get.dialog(
       dialog,
       routeSettings: RouteSettings(name: name, arguments: arguments),
+      barrierDismissible: name != Routes.upgrade,
     );
   }
 
