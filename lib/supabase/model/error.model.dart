@@ -5,7 +5,7 @@ class SupabaseFunctionError {
   });
 
   final int code;
-  final String message;
+  final String? message;
 
   factory SupabaseFunctionError.fromJson(Map<String, dynamic> json) =>
       SupabaseFunctionError(
