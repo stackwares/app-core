@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 class CustomPopupButton extends StatelessWidget {
   final Widget child;
-
   final bool enabled;
   final String tooltip;
   final List<CustomPopupData> items;
@@ -29,21 +28,7 @@ class CustomPopupButton extends StatelessWidget {
               (e) => PopupMenuItem(
                 value: e,
                 height: popupItemHeight,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(e.iconData, size: popupIconSize),
-                          const SizedBox(width: 10),
-                          Text(e.text),
-                        ],
-                      ),
-                    ),
-                    if (e.trailing != null) ...[e.trailing!]
-                  ],
-                ),
+                child: CustomPopupButtonChild(data: e),
               ),
             )
             .toList();
@@ -54,15 +39,43 @@ class CustomPopupButton extends StatelessWidget {
 
 class CustomPopupData {
   final String text;
-  final IconData iconData;
+  final IconData? iconData;
   final Widget? trailing;
+  final Widget? child;
   final Function() onTap;
 
   const CustomPopupData({
     Key? key,
     required this.text,
-    required this.iconData,
+    this.iconData,
     this.trailing,
+    this.child,
     required this.onTap,
   });
+}
+
+class CustomPopupButtonChild extends StatelessWidget {
+  final CustomPopupData data;
+  const CustomPopupButtonChild({super.key, required this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (data.iconData != null) ...[
+                Icon(data.iconData, size: popupIconSize),
+              ],
+              const SizedBox(width: 10),
+              Text(data.text),
+            ],
+          ),
+        ),
+        if (data.trailing != null) ...[data.trailing!]
+      ],
+    );
+  }
 }
