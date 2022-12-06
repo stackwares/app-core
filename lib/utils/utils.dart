@@ -68,6 +68,11 @@ class Utils {
     Map<String, String> parameters = const {},
     dynamic arguments,
   }) {
+    if (ProController.to.isPro && name == Routes.upgrade) {
+      console.info('ignored upgrade screen');
+      return Future.value(false);
+    }
+
     // Regular navigation for mobile
     if (isSmallScreen) {
       switch (method) {
