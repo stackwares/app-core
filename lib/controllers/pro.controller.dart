@@ -126,10 +126,14 @@ class ProController extends GetxController with ConsoleMixin {
 
     try {
       offerings.value = await Purchases.getOfferings();
-      packages.value = offerings.value
-              .getOffering(CoreConfig().offeringId)
-              ?.availablePackages ??
-          [];
+      packages.value = offerings.value.current?.availablePackages ?? [];
+
+      if (CoreConfig().offeringId.isNotEmpty) {
+        packages.value = offerings.value
+                .getOffering(CoreConfig().offeringId)
+                ?.availablePackages ??
+            [];
+      }
     } on PlatformException catch (e) {
       console.error('load error: $e');
       return _showError(e);

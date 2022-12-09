@@ -70,7 +70,7 @@ class CoreConfig with ConsoleMixin {
     Map<String, dynamic> secretsConfig = const {},
     Map<String, dynamic> appConfig = const {},
     Map<String, dynamic> generalConfig = const {},
-    String offeringId = 'default',
+    String offeringId = '',
     Function()? onCancelledUpgradeScreen,
     Function()? onSuccessfulUpgrade,
     Function()? onSignedOut,

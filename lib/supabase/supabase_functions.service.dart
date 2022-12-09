@@ -20,6 +20,7 @@ class SupabaseFunctionsService extends GetxService with ConsoleMixin {
 
   // VARIABLES
   final config = Get.find<ConfigService>();
+  int sessionId = 0;
 
   // GETTERS
   User? get user => Supabase.instance.client.auth.currentUser;
@@ -68,6 +69,7 @@ class SupabaseFunctionsService extends GetxService with ConsoleMixin {
     console.wtf('synced: ${jsonEncode(serverResponse.toJson())}');
     final syncUserResponse = SyncUserResponse.fromJson(serverResponse.data);
     ProController.to.licenseKey.value = syncUserResponse.licenseKey;
+    sessionId = syncUserResponse.sessionId;
 
     // VERIFY PRO
     if (ProController.to.proEntitlement?.isActive != true) {

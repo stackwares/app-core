@@ -56,9 +56,8 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
 
   void initAuthState() {
     auth.onAuthStateChange.listen((data) {
-      console.info(
-        'onAuthStateChange! ${data.event}: user id: ${data.session?.user.id}}',
-      );
+      console.wtf('onAuthStateChange! ${data.event}');
+      console.info('User ID: ${data.session?.user.id}');
 
       persistence.supabaseSession.val =
           data.session?.persistSessionString ?? '';
