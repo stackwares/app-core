@@ -153,7 +153,7 @@ class ProController extends GetxController with ConsoleMixin {
     }
 
     // show upgrade screen every after 5th times opened
-    if (!isPro && (Persistence.to.sessionCount.val % 5) == 0) {
+    if (!isPro && (Persistence.to.sessionCount.val % 2) == 0) {
       await Future.delayed(1.seconds);
 
       if (isIAPSupported) {

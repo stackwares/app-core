@@ -1,3 +1,4 @@
+import 'package:app_core/config.dart';
 import 'package:app_core/firebase/config/config.service.dart';
 import 'package:app_core/notifications/notifications.manager.dart';
 import 'package:app_core/utils/utils.dart';
@@ -228,6 +229,8 @@ class UIUtils {
                 body:
                     'Thanks for subscribing to ${ConfigService.to.appName} Pro 🎉',
               );
+
+              CoreConfig().onSuccessfulUpgrade?.call();
             },
           );
         },

@@ -107,6 +107,8 @@ extension StoreProductExtension on StoreProduct {
       features_.add('cancel_anytime'.tr);
     }
 
+    features_.add('join_over_users'.tr);
+
     return features_;
   }
 }

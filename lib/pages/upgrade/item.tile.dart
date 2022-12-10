@@ -118,12 +118,12 @@ class IAPProductTile extends StatelessWidget {
       onTap: () => UpgradeScreenController.to.package.value = package,
       child: Obx(
         () => Card(
-          elevation: 10.0,
+          elevation: Get.isDarkMode ? 10 : 1,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
             side: UpgradeScreenController.to.packageId == package.identifier
                 ? BorderSide(color: Get.theme.primaryColor, width: 2)
-                : BorderSide.none,
+                : const BorderSide(color: Colors.grey, width: 0.2),
           ),
           child: content,
         ),

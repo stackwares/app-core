@@ -55,6 +55,10 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                   title: 'cancel_anytime'.tr,
                   highlighted: true,
                 ),
+                FeatureTile(
+                  title: 'join_over_users'.tr,
+                  highlighted: true,
+                ),
               ],
             ),
             child: Column(
@@ -133,6 +137,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
             onPressed: controller.busy.value ? null : controller.purchase,
             style: ElevatedButton.styleFrom(
               backgroundColor: Get.theme.primaryColor,
+              foregroundColor: Get.theme.colorScheme.onPrimary,
               visualDensity: VisualDensity.standard,
               padding: const EdgeInsets.symmetric(
                 vertical: 10,
@@ -278,7 +283,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
       elevation: 0.0,
       automaticallyImplyLeading: false,
       centerTitle: false,
-      title: const ProText(size: 20),
+      title: const ProText(size: 20, text: 'PRO'),
       actions: [
         IconButton(
           icon: const Icon(Icons.close),
