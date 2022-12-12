@@ -17,22 +17,22 @@ dependencies:
   # ICONS
   line_icons: ^2.0.1 # icons
   iconsax: ^0.0.8
-  lucide_icons: ^0.101.0
+  lucide_icons: ^0.104.0
 
   # ANIMATIONS
-  simple_animations: ^5.0.0+2
+  simple_animations: ^5.0.0+3
   sa4_migration_kit: ^1.0.0
   flutter_animate: ^2.0.1
 
   # DESKTOP
   system_tray: ^2.0.2
   launch_at_startup: ^0.2.0
-  window_manager: ^0.2.7
+  window_manager: ^0.2.8
   hotkey_manager: ^0.1.7
 
   # UI
-  extended_image: ^6.3.2
-  flex_color_scheme: 6.0.1 # themes
+  extended_image: ^6.3.4
+  flex_color_scheme: 6.1.1 # themes
   flutter_displaymode: ^0.4.1 # allow higher refresh rates
   flutter_rating_bar: ^4.0.1
   google_fonts: ^3.0.1
@@ -40,15 +40,15 @@ dependencies:
   # IO
   hive: ^2.2.3 # database
   hive_flutter: ^1.1.0
-  path: ^1.8.1
+  path: ^1.8.2
   path_provider: ^2.0.11
-  flutter_secure_storage: ^6.0.0
+  flutter_secure_storage: ^7.0.0
 
   # UTILS
   console_mixin: ^0.0.1
-  url_launcher: ^6.1.6
+  url_launcher: ^6.1.7
   supercharged: ^2.1.1 # useful utils
-  flutter_local_notifications: ^12.0.3+1
+  flutter_local_notifications: ^12.0.4
   either_dart: ^0.3.0 # functional programming + error handling
   app_review: ^2.1.2+1
   app_settings: ^4.1.8
@@ -57,17 +57,17 @@ dependencies:
   timeago: ^3.3.0
   permission_handler: ^10.2.0
   easy_debounce: ^2.0.2+1
-  sentry_flutter: ^6.15.1 # error reporting for windows and linux
+  sentry_flutter: ^6.18.0 # error reporting for windows and linux
 
   # SECURITY
   local_auth: ^2.1.2
 
   # FIREBASE
-  firebase_core: 2.3.0
-  firebase_analytics: 10.0.6
-  firebase_crashlytics: 3.0.6
-  firebase_performance: 0.9.0+6
-  cloud_functions: ^4.0.5
+  firebase_core: 2.4.0
+  firebase_analytics: 10.0.7
+  firebase_crashlytics: 3.0.7
+  firebase_performance: 0.9.0+7
+  cloud_functions: ^4.0.6
   # -- FIREBASE DESKTOP --
   firebase_dart: ^1.0.11
   firebase_core_desktop: 1.0.2
@@ -76,10 +76,10 @@ dependencies:
   # -- FIREBASE DESKTOP --
 
   # API / NETWORKS
-  purchases_flutter: ^4.4.1
+  purchases_flutter: ^4.5.0
   connectivity_plus: ^3.0.2
   # supabase: 1.1.1
-  supabase_flutter: ^1.1.0
+  supabase_flutter: ^1.2.2
 
   # INFO
   device_info_plus: 8.0.0
@@ -88,12 +88,10 @@ dependencies:
 
 dependency_overrides:
   package_info_plus: ^3.0.2
-  firebase_core: ^2.2.0
+  firebase_core: ^2.4.0
   cloud_functions: ^4.0.4
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
   flutter_lints: ^2.0.1
 
 flutter:

@@ -73,7 +73,7 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
           }
 
           ProController.to.login(user_);
-          SupabaseFunctionsService.to.sync();
+          SupabaseFunctionsService.to.sync(user_);
 
           // refresh token 2 minutes before expiration time
           if (data.session!.expiresIn != null) {

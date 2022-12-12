@@ -23,15 +23,13 @@ class SupabaseFunctionsService extends GetxService with ConsoleMixin {
   int sessionId = 0;
 
   // GETTERS
-  User? get user => Supabase.instance.client.auth.currentUser;
   FunctionsClient get functions => Supabase.instance.client.functions;
 
   // INIT
 
   // FUNCTIONS
 
-  Future<void> sync({Map<String, dynamic> data = const {}}) async {
-    if (user == null) return console.warning('not authenticated');
+  Future<void> sync(User user, {Map<String, dynamic> data = const {}}) async {
     console.info('sync...');
 
     // enforce auth to be logged in
@@ -47,9 +45,9 @@ class SupabaseFunctionsService extends GetxService with ConsoleMixin {
         if (isIAPSupported) ...{
           "rcUserId": await Purchases.appUserID,
         },
-        "email": user?.email,
-        "phone": user?.phone,
-        "userMetadata": user?.userMetadata,
+        "email": user.email,
+        "phone": user.phone,
+        "userMetadata": user.userMetadata,
         "device": metadataDevice.toJson(),
       }..addAll(data),
     );
@@ -115,6 +113,8 @@ class SupabaseFunctionsService extends GetxService with ConsoleMixin {
 
   Future<Either<String, EntitlementResponse>> verifyGumroad(String licenseKey,
       {bool updateEntitlement = true}) async {
+    final user = Supabase.instance.client.auth.currentUser;
+
     if (user == null) {
       console.warning('not authenticated');
       return const Left('Please sign in to continue');
@@ -158,6 +158,8 @@ class SupabaseFunctionsService extends GetxService with ConsoleMixin {
 
   Future<Either<String, EntitlementResponse>> verifyRevenueCat(String rcUserId,
       {bool updateEntitlement = true}) async {
+    final user = Supabase.instance.client.auth.currentUser;
+
     if (user == null) {
       console.warning('not authenticated');
       return const Left('Please sign in to continue');
