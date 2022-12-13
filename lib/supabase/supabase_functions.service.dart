@@ -39,22 +39,30 @@ class SupabaseFunctionsService extends GetxService with ConsoleMixin {
       return console.info('ignored anonymous user sync');
     }
 
-    final response = await functions.invoke(
-      'sync-user',
-      body: {
-        if (isIAPSupported) ...{
-          "rcUserId": await Purchases.appUserID,
-        },
-        "email": user.email,
-        "phone": user.phone,
-        "userMetadata": user.userMetadata,
-        "device": metadataDevice.toJson(),
-      }..addAll(data),
-    );
+    FunctionResponse? response;
+
+    try {
+      response = await functions.invoke(
+        'sync-user',
+        body: {
+          if (isIAPSupported) ...{
+            "rcUserId": await Purchases.appUserID,
+          },
+          "email": user.email,
+          "phone": user.phone,
+          "userMetadata": user.userMetadata,
+          "device": metadataDevice.toJson(),
+        }..addAll(data),
+      );
+    } catch (e) {
+      final message = 'sync() invoke error: $e';
+      console.error(message);
+      return;
+    }
 
     if (response.status != 200) {
       return console.error(
-        'supabase error: ${response.status}: ${response.data}',
+        'sync() response error: ${response.status}: ${response.data}',
       );
     }
 
@@ -84,13 +92,23 @@ class SupabaseFunctionsService extends GetxService with ConsoleMixin {
   Future<Either<String, GumroadProduct>> gumroadProductDetail() async {
     console.info('gumroadProductDetail...');
 
-    final response = await functions.invoke(
-      'gumroad-product-detail',
-      body: {"localeCode": Get.locale?.languageCode},
-    );
+    FunctionResponse? response;
+
+    try {
+      response = await functions.invoke(
+        'gumroad-product-detail',
+        body: {"localeCode": Get.locale?.languageCode},
+      );
+    } catch (e) {
+      final message = 'gumroadProductDetail() invoke error: $e';
+      console.error(message);
+      return Left(message);
+    }
 
     if (response.status != 200) {
-      return Left('supabase error: ${response.status}: ${response.data}');
+      return Left(
+        'gumroadProductDetail() response error: ${response.status}: ${response.data}',
+      );
     }
 
     final serverResponse = ServerResponse.fromJson(response.data);
@@ -121,14 +139,23 @@ class SupabaseFunctionsService extends GetxService with ConsoleMixin {
     }
 
     console.info('verifyGumroad...');
+    FunctionResponse? response;
 
-    final response = await functions.invoke(
-      'verify-gumroad',
-      body: {"licenseKey": licenseKey},
-    );
+    try {
+      response = await functions.invoke(
+        'verify-gumroad',
+        body: {"licenseKey": licenseKey},
+      );
+    } catch (e) {
+      final message = 'verifyGumroad() invoke error: $e';
+      console.error(message);
+      return Left(message);
+    }
 
     if (response.status != 200) {
-      return Left('supabase error: ${response.status}: ${response.data}');
+      return Left(
+        'verifyGumroad() response error: ${response.status}: ${response.data}',
+      );
     }
 
     final serverResponse = ServerResponse.fromJson(response.data);
@@ -166,14 +193,23 @@ class SupabaseFunctionsService extends GetxService with ConsoleMixin {
     }
 
     console.info('verifyRevenueCat...');
+    FunctionResponse? response;
 
-    final response = await functions.invoke(
-      'verify-revenuecat',
-      body: {"userId": rcUserId},
-    );
+    try {
+      response = await functions.invoke(
+        'verify-revenuecat',
+        body: {"userId": rcUserId},
+      );
+    } catch (e) {
+      final message = 'verifyRevenueCat() invoke error: $e';
+      console.error(message);
+      return Left(message);
+    }
 
     if (response.status != 200) {
-      return Left('supabase error: ${response.status}: ${response.data}');
+      return Left(
+        'verifyRevenueCat() response error: ${response.status}: ${response.data}',
+      );
     }
 
     final serverResponse = ServerResponse.fromJson(response.data);

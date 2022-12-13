@@ -42,7 +42,7 @@ dependencies:
   hive_flutter: ^1.1.0
   path: ^1.8.2
   path_provider: ^2.0.11
-  flutter_secure_storage: ^7.0.0
+  flutter_secure_storage: ^6.0.0
 
   # UTILS
   console_mixin: ^0.0.1
@@ -78,7 +78,6 @@ dependencies:
   # API / NETWORKS
   purchases_flutter: ^4.5.0
   connectivity_plus: ^3.0.2
-  # supabase: 1.1.1
   supabase_flutter: ^1.2.2
 
   # INFO

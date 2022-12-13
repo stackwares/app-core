@@ -7,21 +7,24 @@ import 'package:app_core/firebase/crashlytics.service.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/notifications/notifications.manager.dart';
 import 'package:app_core/pages/routes.dart';
-import 'package:app_core/persistence/persistence.dart';
 import 'package:app_core/supabase/supabase_functions.service.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:either_dart/either.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../persistence/persistence.dart';
+import '../rate/rate.widget.dart';
 
 class SupabaseAuthService extends GetxService with ConsoleMixin {
   static SupabaseAuthService get to => Get.find();
 
   // VARIABLES
-  final persistence = Get.find<Persistence>();
+  // final persistence = Get.find<Persistence>();
   final config = Get.find<ConfigService>();
 
   // PROPERTIES
@@ -51,7 +54,32 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
     );
 
     initAuthState();
-    recoverSession();
+
+    try {
+      final initialSession = await SupabaseAuth.instance.initialSession;
+      console.warning('initialSession user id: ${initialSession?.user.id}');
+      if (initialSession != null) authenticatedInit(initialSession.user);
+    } catch (e) {
+      // Handle initial auth state fetch error here
+      console.error('initialSession error: $e');
+    }
+  }
+
+  void authenticatedInit(User user_) async {
+    onSignedIn(user_);
+  }
+
+  void onSignedIn(User user_) async {
+    CoreConfig().onSignedIn?.call();
+
+    if (!isWindowsLinux) {
+      await CrashlyticsService.to.instance.setUserIdentifier(user_.id);
+      await AnalyticsService.to.instance.setUserId(id: user_.id);
+    }
+
+    ProController.to.login(user_);
+    SupabaseFunctionsService.to.sync(user_);
+    AnalyticsService.to.logSignIn();
   }
 
   void initAuthState() {
@@ -59,29 +87,10 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
       console.wtf('onAuthStateChange! ${data.event}');
       console.info('User ID: ${data.session?.user.id}');
 
-      persistence.supabaseSession.val =
-          data.session?.persistSessionString ?? '';
-
       if (data.event == AuthChangeEvent.signedIn) {
-        CoreConfig().onSignedIn?.call();
-        final user_ = data.session!.user;
-
         EasyDebounce.debounce('auth-sign-in', 2.seconds, () async {
-          if (!isWindowsLinux) {
-            await CrashlyticsService.to.instance.setUserIdentifier(user_.id);
-            await AnalyticsService.to.instance.setUserId(id: user_.id);
-          }
-
-          ProController.to.login(user_);
-          SupabaseFunctionsService.to.sync(user_);
-
-          // refresh token 2 minutes before expiration time
-          if (data.session!.expiresIn != null) {
-            final refreshAfter = (data.session!.expiresIn! - 120);
-            Future.delayed(refreshAfter.seconds).then(
-              (value) => recoverSession(),
-            );
-          }
+          onSignedIn(data.session!.user);
+          Get.offNamedUntil(Routes.main, (route) => false);
         });
       } else if (data.event == AuthChangeEvent.signedOut) {
         EasyDebounce.debounce('auth-sign-out', 1.seconds, () async {
@@ -97,25 +106,10 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
     });
   }
 
-  Future<void> recoverSession() async {
-    var sessionString = persistence.supabaseSession.val;
-    if (sessionString.isEmpty) return console.warning('no supabase session');
-
-    try {
-      final session = await auth.recoverSession(sessionString);
-      console.info('recovered session! user id: ${session.user?.id}');
-    } on AuthException catch (e) {
-      persistence.supabaseSession.val = '';
-      console.error('recover session error: $e');
-    } catch (e, s) {
-      CrashlyticsService.to.record(e, s);
-      console.error('recover session exception: $e');
-    }
-  }
-
-  Future<Either<String, bool>> socialAuth(Provider provider) async {
-    final redirect = config.secrets.supabase.redirectUrl;
-    final redirectWeb = config.secrets.supabase.redirectUrlWeb;
+  Future<Either<String, bool>> providerAuth(Provider provider) async {
+    final s = config.secrets.supabase;
+    final redirect = s.redirectUrl;
+    final redirectWeb = s.redirectUrlWeb;
 
     final redirectTo = GetPlatform.isWeb
         ? kReleaseMode
@@ -135,8 +129,9 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
   }
 
   Future<Either<String, bool>> magicLink(String email) async {
-    final redirect = config.secrets.supabase.redirectUrl;
-    final redirectWeb = config.secrets.supabase.redirectUrlWeb;
+    final s = config.secrets.supabase;
+    final redirect = s.redirectUrl;
+    final redirectWeb = s.redirectUrlWeb;
 
     final redirectTo = GetPlatform.isWeb
         ? kReleaseMode
@@ -144,14 +139,8 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
             : 'http://localhost:9000/%23/auth-callback'
         : redirect;
 
-    console.info('redirectTo: $redirectTo');
-
     try {
-      await auth.signInWithOtp(
-        email: email,
-        emailRedirectTo: redirectTo,
-      );
-
+      await auth.signInWithOtp(email: email, emailRedirectTo: redirectTo);
       return const Right(true);
     } on AuthException catch (e) {
       return Left('signIn error: $e');
@@ -210,10 +199,6 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
         title: '${'welcome_to'.tr} ${config.appName}',
         body: 'welcome_notif_body'.tr,
       );
-
-      AnalyticsService.to.logSignIn();
-      await Utils.adaptiveRouteOpen(name: Routes.upgrade);
-      await Get.offNamedUntil(Routes.main, (route) => false);
     } on AuthException catch (e) {
       console.error('signInUri error: $e');
     } catch (e, s) {

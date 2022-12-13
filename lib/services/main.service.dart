@@ -46,9 +46,6 @@ class MainService extends GetxService with ConsoleMixin, WindowListener {
 
   @override
   void onReady() async {
-    Persistence.to.sessionCount.val++;
-    console.wtf('session count: ${Persistence.to.sessionCount.val}');
-
     if (isDesktop) {
       window.setBrightness(
         Get.isDarkMode ? Brightness.dark : Brightness.light,
@@ -65,13 +62,13 @@ class MainService extends GetxService with ConsoleMixin, WindowListener {
   }
 
   // FUNCTIONS
-  void reset() async {
+  Future<void> reset() async {
     console.info('resetting...');
     // reset persistence
     await Persistence.reset();
     // invalidate purchases
-    ProController.to.invalidate();
-    ProController.to.logout();
+    await ProController.to.invalidate();
+    await ProController.to.logout();
     console.info('reset!');
   }
 

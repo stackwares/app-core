@@ -5,7 +5,6 @@ import 'package:app_core/persistence/persistence.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
 
-import '../../controllers/pro.controller.dart';
 import '../../globals.dart';
 import '../../pages/routes.dart';
 import '../functions.service.dart';
@@ -61,7 +60,6 @@ class ConfigService extends GetxService with ConsoleMixin {
 
         general = parameters.generalConfig;
         Persistence.to.configGeneral.val = jsonEncode(general.toJson());
-        ProController.to.init();
         // return raw parameters
         postInit(parametersMap);
 

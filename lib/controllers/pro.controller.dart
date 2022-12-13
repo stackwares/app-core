@@ -5,7 +5,6 @@ import 'package:app_core/config.dart';
 import 'package:app_core/firebase/config/config.service.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/persistence/persistence.dart';
-import 'package:app_core/rate/rate.widget.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
@@ -16,7 +15,9 @@ import 'package:intl/intl.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../firebase/config/models/config_secrets.model.dart';
 import '../pages/routes.dart';
+import '../rate/rate.widget.dart';
 
 class ProController extends GetxController with ConsoleMixin {
   static ProController get to => Get.find();
@@ -60,6 +61,7 @@ class ProController extends GetxController with ConsoleMixin {
   @override
   void onInit() {
     verifiedPro.listen((value) => Persistence.to.verifiedProCache.val = value);
+    init();
     super.onInit();
   }
 
@@ -74,8 +76,9 @@ class ProController extends GetxController with ConsoleMixin {
     if (!isIAPSupported) return;
     await Purchases.setDebugLogsEnabled(false);
 
+    final secrets = ConfigSecrets.fromJson(CoreConfig().secretsConfig);
     await Purchases.configure(
-      PurchasesConfiguration(ConfigService.to.secrets.revenuecat.apiKey),
+      PurchasesConfiguration(secrets.revenuecat.apiKey),
     );
 
     Purchases.addCustomerInfoUpdateListener((info_) {
@@ -83,6 +86,31 @@ class ProController extends GetxController with ConsoleMixin {
     });
 
     sync();
+    initScreen();
+  }
+
+  void initScreen() async {
+    Persistence.to.sessionCount.val++;
+    console.wtf('session count: ${Persistence.to.sessionCount.val}');
+
+    // show upgrade screen every after nth times opened
+    if (!isPro && (Persistence.to.sessionCount.val % 2) == 0) {
+      if (isIAPSupported) {
+        await Utils.adaptiveRouteOpen(name: Routes.upgrade);
+      }
+    } else {
+      if (!Persistence.to.rateDialogShown.val &&
+          Persistence.to.sessionCount.val > 16 &&
+          isRateReviewSupported) {
+        Persistence.to.rateDialogShown.val = true;
+
+        const dialog = AlertDialog(
+          content: SizedBox(width: 400, child: RateWidget()),
+        );
+
+        Get.dialog(dialog);
+      }
+    }
   }
 
   Future<void> invalidate() async {
@@ -90,7 +118,7 @@ class ProController extends GetxController with ConsoleMixin {
     await Purchases.invalidateCustomerInfoCache();
   }
 
-  void login(User user) {
+  void login(User user) async {
     if (!isIAPSupported) return;
     Purchases.logIn(user.id);
     Purchases.setEmail(user.email!);
@@ -150,30 +178,6 @@ class ProController extends GetxController with ConsoleMixin {
       // console.warning('sync: ${jsonEncode(info.value.toJson())}');
     } on PlatformException catch (e) {
       return console.error('sync error: $e');
-    }
-
-    // show upgrade screen every after 5th times opened
-    if (!isPro && (Persistence.to.sessionCount.val % 2) == 0) {
-      await Future.delayed(1.seconds);
-
-      if (isIAPSupported) {
-        await Utils.adaptiveRouteOpen(name: Routes.upgrade);
-      }
-    } else {
-      if (!Persistence.to.rateDialogShown.val &&
-          Persistence.to.sessionCount.val > 16 &&
-          isRateReviewSupported) {
-        Persistence.to.rateDialogShown.val = true;
-
-        const dialog = AlertDialog(
-          content: SizedBox(
-            width: 400,
-            child: RateWidget(),
-          ),
-        );
-
-        Get.dialog(dialog);
-      }
     }
   }
 

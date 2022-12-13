@@ -1,6 +1,7 @@
 import 'dart:ui' as ui;
 import 'package:app_core/config.dart';
 import 'package:app_core/firebase/config/config.service.dart';
+import 'package:app_core/supabase/supabase_auth.service.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
@@ -173,7 +174,7 @@ class Utils {
 
     // if (AuthService.to.isSignedIn) {
     body += 'Rating: $ratingEmojis$ln';
-    // body += 'User ID: ${AuthService.to.userId}$ln';
+    body += 'User ID: ${SupabaseAuthService.to.user?.id}$ln';
     body += 'RC User ID: ${ProController.to.info.value.originalAppUserId}$ln';
     // body += 'Entitlement: ${ProController.to.limits.id}$ln';
     body += 'Pro: ${ProController.to.isPro}$ln';
