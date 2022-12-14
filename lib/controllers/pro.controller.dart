@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:app_core/config.dart';
-import 'package:app_core/firebase/config/config.service.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/persistence/persistence.dart';
+import 'package:app_core/supabase/supabase_auth.service.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
@@ -90,6 +90,8 @@ class ProController extends GetxController with ConsoleMixin {
   }
 
   void initScreen() async {
+    if (!SupabaseAuthService.to.authenticated) return;
+    await Future.delayed(3.seconds);
     Persistence.to.sessionCount.val++;
     console.wtf('session count: ${Persistence.to.sessionCount.val}');
 

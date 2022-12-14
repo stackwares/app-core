@@ -8,17 +8,12 @@ import 'package:app_core/globals.dart';
 import 'package:app_core/notifications/notifications.manager.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/supabase/supabase_functions.service.dart';
-import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:either_dart/either.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
-import '../persistence/persistence.dart';
-import '../rate/rate.widget.dart';
 
 class SupabaseAuthService extends GetxService with ConsoleMixin {
   static SupabaseAuthService get to => Get.find();
@@ -28,6 +23,7 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
   final config = Get.find<ConfigService>();
 
   // PROPERTIES
+  final busy = false.obs;
 
   // GETTERS
   bool get authenticated => user != null;
@@ -37,13 +33,7 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
   // INIT
 
   @override
-  void onInit() {
-    init();
-    super.onInit();
-  }
-
-  // FUNCTIONS
-  void init() async {
+  void onInit() async {
     final s = ConfigSecrets.fromJson(CoreConfig().secretsConfig).supabase;
 
     await Supabase.initialize(
@@ -55,6 +45,11 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
 
     initAuthState();
 
+    super.onInit();
+  }
+
+  @override
+  void onReady() async {
     try {
       final initialSession = await SupabaseAuth.instance.initialSession;
       console.warning('initialSession user id: ${initialSession?.user.id}');
@@ -63,13 +58,18 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
       // Handle initial auth state fetch error here
       console.error('initialSession error: $e');
     }
+
+    super.onReady();
   }
+
+  // FUNCTIONS
 
   void authenticatedInit(User user_) async {
     onSignedIn(user_);
   }
 
   void onSignedIn(User user_) async {
+    busy.value = false;
     CoreConfig().onSignedIn?.call();
 
     if (!isWindowsLinux) {
@@ -118,14 +118,19 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
         : redirect;
 
     try {
+      busy.value = true;
       await auth.signInWithOAuth(provider, redirectTo: redirectTo);
-      return const Right(true);
     } on AuthException catch (e) {
+      busy.value = false;
       return Left('signIn error: $e');
     } catch (e, s) {
+      busy.value = false;
       CrashlyticsService.to.record(e, s);
       return Left('signIn exception: $e');
     }
+
+    busy.value = false;
+    return const Right(true);
   }
 
   Future<Either<String, bool>> magicLink(String email) async {
@@ -140,30 +145,33 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
         : redirect;
 
     try {
+      busy.value = true;
       await auth.signInWithOtp(email: email, emailRedirectTo: redirectTo);
-      return const Right(true);
     } on AuthException catch (e) {
+      busy.value = false;
       return Left('signIn error: $e');
     } catch (e, s) {
+      busy.value = false;
       CrashlyticsService.to.record(e, s);
       return Left('signIn exception: $e');
     }
+
+    busy.value = false;
+    return const Right(true);
   }
 
   Future<void> signIn(String email, String password) async {
     try {
+      busy.value = true;
       await auth.signInWithPassword(email: email, password: password);
     } on AuthException catch (e) {
-      // invalid credentials
-      if (e.statusCode == '400') {
-        return console.error('signIn error: $e');
-      } else {
-        return console.error('signIn error: $e');
-      }
+      console.error('signIn error: $e');
     } catch (e, s) {
       CrashlyticsService.to.record(e, s);
-      return console.error('signIn exception: $e');
+      console.error('signIn exception: $e');
     }
+
+    busy.value = false;
   }
 
   Future<void> authenticate({
@@ -173,38 +181,45 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
     if (user != null) return console.info('already authenticated');
 
     try {
+      busy.value = true;
       await auth.signUp(email: email, password: password);
     } on AuthException catch (e) {
       // already registered
       if (e.statusCode == '400') {
         await signIn(email, password);
       } else {
-        return console.error('signUp error: $e');
+        console.error('signUp error: $e');
       }
     } catch (e, s) {
       CrashlyticsService.to.record(e, s);
-      return console.error('signIn exception: $e');
+      console.error('signIn exception: $e');
     }
 
+    busy.value = false;
     console.wtf('authentication successful');
   }
 
   Future<void> signInUri(Uri uri, Map<String, dynamic>? attributes) async {
     try {
+      busy.value = true;
       final response = await auth.getSessionFromUrl(uri);
-      updateUserAttribute(attributes);
       console.info('signInUri session user id: ${response.session.user.id}');
-
-      NotificationsManager.notify(
-        title: '${'welcome_to'.tr} ${config.appName}',
-        body: 'welcome_notif_body'.tr,
-      );
     } on AuthException catch (e) {
-      console.error('signInUri error: $e');
+      busy.value = false;
+      return console.error('signInUri error: $e');
     } catch (e, s) {
+      busy.value = false;
       CrashlyticsService.to.record(e, s);
-      console.error('signInUri exception: $e');
+      return console.error('signInUri exception: $e');
     }
+
+    busy.value = false;
+    updateUserAttribute(attributes);
+
+    NotificationsManager.notify(
+      title: '${'welcome_to'.tr} ${config.appName}',
+      body: 'welcome_notif_body'.tr,
+    );
   }
 
   void updateUserAttribute(Map<String, dynamic>? data) async {
