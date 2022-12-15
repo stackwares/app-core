@@ -120,10 +120,10 @@ class ProController extends GetxController with ConsoleMixin {
     await Purchases.invalidateCustomerInfoCache();
   }
 
-  void login(User user) async {
+  Future<void> login(User user) async {
     if (!isIAPSupported) return;
-    Purchases.logIn(user.id);
-    Purchases.setEmail(user.email!);
+    await Purchases.logIn(user.id);
+    await Purchases.setEmail(user.email!);
 
     Purchases.setAttributes({
       'version': metadataApp.formattedVersion,

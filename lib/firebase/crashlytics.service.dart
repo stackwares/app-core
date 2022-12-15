@@ -29,6 +29,11 @@ class CrashlyticsService extends GetxService with ConsoleMixin {
     // FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   }
 
+  Future<void> setUserID(String userId) async {
+    if (!isCrashlyticsSupported) return console.warning('Not Supported');
+    await instance.setUserIdentifier(userId);
+  }
+
   void configure() {
     if (!isCrashlyticsSupported) return console.warning('Not Supported');
     instance.setCrashlyticsCollectionEnabled(

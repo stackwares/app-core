@@ -172,13 +172,20 @@ class Utils {
 
     String body = '$preBody$ln$ln';
 
-    // if (AuthService.to.isSignedIn) {
     body += 'Rating: $ratingEmojis$ln';
-    body += 'User ID: ${SupabaseAuthService.to.user?.id}$ln';
-    body += 'RC User ID: ${ProController.to.info.value.originalAppUserId}$ln';
+
+    if (SupabaseAuthService.to.authenticated) {
+      body += 'User ID: ${SupabaseAuthService.to.user!.id}$ln';
+    }
+
+    // TODO: Entitlement
     // body += 'Entitlement: ${ProController.to.limits.id}$ln';
     body += 'Pro: ${ProController.to.isPro}$ln';
-    // }
+    body += 'RC User ID: ${ProController.to.info.value.originalAppUserId}$ln';
+
+    if (Get.locale != null) {
+      body += 'Locale: ${Get.locale?.languageCode}$ln';
+    }
 
     body += 'App Version: ${metadataApp.formattedVersion}$ln';
     body += 'Platform: ${Utils.platformName()}$ln';
@@ -199,7 +206,6 @@ class Utils {
     String url, {
     LaunchMode mode = LaunchMode.externalApplication,
   }) async {
-    console.info('launching: $url');
     final canLaunch = await canLaunchUrlString(url);
     if (!canLaunch) console.error('cannot launch');
     launchUrlString(url, mode: mode);

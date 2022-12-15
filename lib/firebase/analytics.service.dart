@@ -47,4 +47,9 @@ class AnalyticsService extends GetxService with ConsoleMixin {
     if (isWindowsLinux) return;
     instance.logEvent(name: name);
   }
+
+  Future<void> setUserID(String userId) async {
+    if (isWindowsLinux) return;
+    await instance.setUserId(id: userId);
+  }
 }

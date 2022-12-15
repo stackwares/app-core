@@ -20,8 +20,8 @@ class Persistence extends GetxController {
   final rateDialogShown = false.val('rate-dialog-shown');
   final verifiedProCache = false.val('verified-pro-cache');
   final consented = false.val('consented');
-  final crashReporting = (isApple ? false : true).val('crash-reporting');
-  final analytics = (isApple ? false : true).val('analytics');
+  final crashReporting = (isApple ? true : true).val('crash-reporting');
+  final analytics = (isApple ? true : true).val('analytics');
   // WINDOW SIZE
   final windowWidth = CoreConfig().initialWindowSize.width.val('window-width');
 

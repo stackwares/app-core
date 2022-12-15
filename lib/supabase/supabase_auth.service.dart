@@ -14,6 +14,7 @@ import 'package:either_dart/either.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SupabaseAuthService extends GetxService with ConsoleMixin {
   static SupabaseAuthService get to => Get.find();
@@ -73,8 +74,8 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
     CoreConfig().onSignedIn?.call();
 
     if (!isWindowsLinux) {
-      await CrashlyticsService.to.instance.setUserIdentifier(user_.id);
-      await AnalyticsService.to.instance.setUserId(id: user_.id);
+      await CrashlyticsService.to.setUserID(user_.id);
+      await AnalyticsService.to.setUserID(user_.id);
     }
 
     ProController.to.login(user_);
@@ -114,7 +115,7 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
     final redirectTo = GetPlatform.isWeb
         ? kReleaseMode
             ? redirectWeb
-            : 'http://localhost:9000/%23/auth-callback'
+            : 'http://localhost:9000/#/auth-callback'
         : redirect;
 
     try {
@@ -141,7 +142,7 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
     final redirectTo = GetPlatform.isWeb
         ? kReleaseMode
             ? redirectWeb
-            : 'http://localhost:9000/%23/auth-callback'
+            : 'http://localhost:9000/#/auth-callback'
         : redirect;
 
     try {
@@ -174,6 +175,7 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
     busy.value = false;
   }
 
+  // sign up or sign in
   Future<void> authenticate({
     required String email,
     required String password,
@@ -242,4 +244,25 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
   Future<void> deleteAccount() async {
     auth.signOut();
   }
+
+  // Future<bool> customSignInWithOAuth(
+  //   Provider provider, {
+  //   String? redirectTo,
+  //   String? scopes,
+  //   Map<String, String>? queryParams,
+  // }) async {
+  //   final res = await auth.getOAuthSignInUrl(
+  //     provider: provider,
+  //     redirectTo: redirectTo,
+  //     scopes: scopes,
+  //     queryParams: queryParams,
+  //   );
+  //   final url = Uri.parse(res.url!);
+  //   final result = await launchUrl(
+  //     url,
+  //     mode: LaunchMode.platformDefault,
+  //     webOnlyWindowName: '_self',
+  //   );
+  //   return result;
+  // }
 }
