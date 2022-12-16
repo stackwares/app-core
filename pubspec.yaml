@@ -67,13 +67,6 @@ dependencies:
   firebase_analytics: 10.0.7
   firebase_crashlytics: 3.0.7
   firebase_performance: 0.9.0+7
-  cloud_functions: ^4.0.6
-  # -- FIREBASE DESKTOP --
-  firebase_dart: ^1.0.11
-  firebase_core_desktop: 1.0.2
-  firebase_functions_desktop: 0.2.0+3
-  firebase_core_platform_interface: 4.5.2
-  # -- FIREBASE DESKTOP --
 
   # API / NETWORKS
   purchases_flutter: ^4.5.0
@@ -88,7 +81,6 @@ dependencies:
 dependency_overrides:
   package_info_plus: ^3.0.2
   firebase_core: ^2.4.0
-  cloud_functions: ^4.0.4
 
 dev_dependencies:
   flutter_lints: ^2.0.1

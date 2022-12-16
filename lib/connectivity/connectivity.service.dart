@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:app_core/firebase/config/config.service.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get/get.dart';
 import 'package:console_mixin/console_mixin.dart';
@@ -31,10 +30,6 @@ class ConnectivityService extends GetxService with ConsoleMixin {
         connectivity.onConnectivityChanged.listen((result) {
       connected.value = result != ConnectivityResult.none;
       console.info('connected: ${connected()}');
-
-      if (connected.value && !ConfigService.to.fetched) {
-        ConfigService.to.fetchFromFunctions();
-      }
     });
 
     super.onInit();

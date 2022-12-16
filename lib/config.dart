@@ -16,7 +16,6 @@ import 'controllers/pro.controller.dart';
 import 'firebase/analytics.service.dart';
 import 'firebase/config/config.service.dart';
 import 'firebase/crashlytics.service.dart';
-import 'firebase/functions.service.dart';
 import 'globals.dart';
 import 'notifications/notifications.manager.dart';
 
@@ -109,7 +108,6 @@ class CoreConfig with ConsoleMixin {
     Get.lazyPut(() => MainService());
     Get.lazyPut(() => ConnectivityService());
     Get.lazyPut(() => LocalAuthService());
-    Get.lazyPut(() => FirebaseFunctionsService());
     Get.lazyPut(() => ConfigService());
 
     // controllers
