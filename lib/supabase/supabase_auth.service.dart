@@ -81,6 +81,10 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
     ProController.to.login(user_);
     SupabaseFunctionsService.to.sync(user_);
     AnalyticsService.to.logSignIn();
+
+    if (GetPlatform.isIOS) {
+      closeInAppWebView();
+    }
   }
 
   void initAuthState() {
@@ -120,7 +124,12 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
 
     try {
       busy.value = true;
-      await auth.signInWithOAuth(provider, redirectTo: redirectTo);
+
+      if (GetPlatform.isIOS) {
+        await customSignInWithOAuth(provider, redirectTo: redirectTo);
+      } else {
+        await auth.signInWithOAuth(provider, redirectTo: redirectTo);
+      }
     } on AuthException catch (e) {
       busy.value = false;
       return Left('signIn error: $e');
@@ -245,24 +254,26 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
     auth.signOut();
   }
 
-  // Future<bool> customSignInWithOAuth(
-  //   Provider provider, {
-  //   String? redirectTo,
-  //   String? scopes,
-  //   Map<String, String>? queryParams,
-  // }) async {
-  //   final res = await auth.getOAuthSignInUrl(
-  //     provider: provider,
-  //     redirectTo: redirectTo,
-  //     scopes: scopes,
-  //     queryParams: queryParams,
-  //   );
-  //   final url = Uri.parse(res.url!);
-  //   final result = await launchUrl(
-  //     url,
-  //     mode: LaunchMode.platformDefault,
-  //     webOnlyWindowName: '_self',
-  //   );
-  //   return result;
-  // }
+  // use safari web view controller
+  // to get approved on the app store
+  Future<bool> customSignInWithOAuth(
+    Provider provider, {
+    String? redirectTo,
+    String? scopes,
+    Map<String, String>? queryParams,
+  }) async {
+    final res = await auth.getOAuthSignInUrl(
+      provider: provider,
+      redirectTo: redirectTo,
+      scopes: scopes,
+      queryParams: queryParams,
+    );
+    final url = Uri.parse(res.url!);
+    final result = await launchUrl(
+      url,
+      mode: LaunchMode.inAppWebView,
+      webOnlyWindowName: '_self',
+    );
+    return result;
+  }
 }

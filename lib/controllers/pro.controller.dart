@@ -91,27 +91,44 @@ class ProController extends GetxController with ConsoleMixin {
 
   void initScreen() async {
     if (!SupabaseAuthService.to.authenticated) return;
-    await Future.delayed(3.seconds);
     Persistence.to.sessionCount.val++;
     console.wtf('session count: ${Persistence.to.sessionCount.val}');
 
-    // show upgrade screen every after nth times opened
-    if (!isPro && (Persistence.to.sessionCount.val % 2) == 0) {
-      if (isIAPSupported) {
-        await Utils.adaptiveRouteOpen(name: Routes.upgrade);
-      }
-    } else {
-      if (!Persistence.to.rateDialogShown.val &&
-          Persistence.to.sessionCount.val > 16 &&
-          isRateReviewSupported) {
-        Persistence.to.rateDialogShown.val = true;
+    // // show upgrade screen every after nth times opened
+    // if (!isPro && (Persistence.to.sessionCount.val % 2) == 0) {
+    //   if (isIAPSupported) {
+    //     await Utils.adaptiveRouteOpen(name: Routes.upgrade);
+    //   }
+    // } else {
+    //   if (!Persistence.to.rateDialogShown.val &&
+    //       Persistence.to.sessionCount.val > 16 &&
+    //       isRateReviewSupported) {
+    //     Persistence.to.rateDialogShown.val = true;
 
-        const dialog = AlertDialog(
-          content: SizedBox(width: 400, child: RateWidget()),
-        );
+    //     const dialog = AlertDialog(
+    //       content: SizedBox(width: 400, child: RateWidget()),
+    //     );
 
-        Get.dialog(dialog);
-      }
+    //     Get.dialog(dialog);
+    //   }
+    // }
+
+    await Future.delayed(5.seconds);
+
+    if (!Persistence.to.rateDialogShown.val &&
+        Persistence.to.sessionCount.val > 10 &&
+        isRateReviewSupported) {
+      Persistence.to.rateDialogShown.val = true;
+
+      const dialog = AlertDialog(
+        content: SizedBox(width: 400, child: RateWidget()),
+      );
+
+      Get.dialog(dialog);
+    }
+
+    if (isIAPSupported) {
+      await Utils.adaptiveRouteOpen(name: Routes.upgrade);
     }
   }
 
