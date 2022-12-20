@@ -102,7 +102,7 @@ class UpgradeScreenController extends GetxController
 
   Future<void> _loadGumroad() async {
     change(null, status: RxStatus.loading());
-    final result = await SupabaseFunctionsService.to.gumroadProductDetail();
+    final result = await FunctionsService.to.gumroadProductDetail();
     change(null, status: RxStatus.success());
 
     result.fold(

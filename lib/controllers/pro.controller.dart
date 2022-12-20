@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:app_core/config.dart';
+import 'package:app_core/firebase/analytics.service.dart';
+import 'package:app_core/firebase/crashlytics.service.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/persistence/persistence.dart';
 import 'package:app_core/supabase/supabase_auth.service.dart';
@@ -49,6 +51,18 @@ class ProController extends GetxController with ConsoleMixin {
       ? 'none'.tr
       : '${licenseKey.substring(0, 7)}...${licenseKey.substring(licenseKey.value.length - 7)} ${verifiedPro.value ? '' : '- Inactive'}';
 
+  String get planId {
+    final entitlements = ProController.to.info.value.entitlements;
+    if (entitlements.active.isEmpty) return 'free';
+    return entitlements.active.entries.first.key;
+  }
+
+  // String get planSource {
+  //   final entitlements = ProController.to.info.value.entitlements;
+  //   if (entitlements.active.isEmpty) return 'free';
+  //   return entitlements.active.entries.first.key;
+  // }
+
   // INIT
 
   @override
@@ -85,12 +99,13 @@ class ProController extends GetxController with ConsoleMixin {
       info.value = info_;
     });
 
+    setAttributes();
     sync();
     initScreen();
   }
 
   void initScreen() async {
-    if (!SupabaseAuthService.to.authenticated) return;
+    if (!AuthService.to.authenticated) return;
     Persistence.to.sessionCount.val++;
     console.wtf('session count: ${Persistence.to.sessionCount.val}');
 
@@ -141,12 +156,6 @@ class ProController extends GetxController with ConsoleMixin {
     if (!isIAPSupported) return;
     await Purchases.logIn(user.id);
     await Purchases.setEmail(user.email!);
-
-    Purchases.setAttributes({
-      'version': metadataApp.formattedVersion,
-      'platform': Utils.platformName(),
-      'device-id': metadataDevice.id,
-    });
   }
 
   Future<void> logout() async {
@@ -181,9 +190,9 @@ class ProController extends GetxController with ConsoleMixin {
                 ?.availablePackages ??
             [];
       }
-    } on PlatformException catch (e) {
+    } on PlatformException catch (e, s) {
       console.error('load error: $e');
-      return _showError(e);
+      return _showError(e, s);
     }
 
     console.info('packages: ${packages.length}');
@@ -200,6 +209,53 @@ class ProController extends GetxController with ConsoleMixin {
     }
   }
 
+  void setAttributes() {
+    Purchases.setAttributes({
+      'version': metadataApp.formattedVersion,
+      'platform': Utils.platform,
+      'device-id': metadataDevice.id,
+    });
+
+    AnalyticsService.to.setUserProperty(
+      name: 'plan',
+      value: planId,
+    );
+
+    AnalyticsService.to.setUserProperty(
+      name: 'theme',
+      value: Get.isDarkMode ? 'Dark' : 'Light',
+    );
+
+    AnalyticsService.to.setUserProperty(
+      name: 'platform',
+      value: Utils.platform,
+    );
+
+    AnalyticsService.to.setUserProperty(
+      name: 'device_type',
+      value: Utils.deviceType,
+    );
+
+    AnalyticsService.to.setUserProperty(
+      name: 'version',
+      value: metadataApp.formattedVersion,
+    );
+
+    if (Get.locale?.languageCode != null) {
+      AnalyticsService.to.setUserProperty(
+        name: 'language',
+        value: Get.locale!.languageCode,
+      );
+    }
+
+    if (Get.locale?.countryCode != null) {
+      AnalyticsService.to.setUserProperty(
+        name: 'country',
+        value: Get.locale!.countryCode,
+      );
+    }
+  }
+
   Future<void> purchase(Package package) async {
     if (!isIAPSupported) return;
     timeLockEnabled = false; // temporarily disable
@@ -208,10 +264,10 @@ class ProController extends GetxController with ConsoleMixin {
     try {
       info_ = await Purchases.purchasePackage(package);
       console.warning('purchase: ${jsonEncode(info_.toJson())}');
-    } on PlatformException catch (e) {
+    } on PlatformException catch (e, s) {
       console.error('purchase error: $e');
       timeLockEnabled = true;
-      _showError(e);
+      _showError(e, s);
       return;
     }
 
@@ -226,15 +282,15 @@ class ProController extends GetxController with ConsoleMixin {
     try {
       info_ = await Purchases.restorePurchases();
       console.warning('restore: ${jsonEncode(info_.toJson())}');
-    } on PlatformException catch (e) {
-      _showError(e);
+    } on PlatformException catch (e, s) {
+      _showError(e, s);
       return;
     }
 
     info.value = info_;
   }
 
-  Future<void> _showError(PlatformException e) async {
+  Future<void> _showError(PlatformException e, StackTrace s) async {
     final errorCode = PurchasesErrorHelper.getErrorCode(e);
     console.error('errorCode: ${errorCode.name}');
 
@@ -312,6 +368,8 @@ class ProController extends GetxController with ConsoleMixin {
 
     if (errorMessage.isNotEmpty) {
       await UIUtils.showSimpleDialog('Purchase Error', errorMessage);
+    } else {
+      CrashlyticsService.to.record(e, s);
     }
   }
 }

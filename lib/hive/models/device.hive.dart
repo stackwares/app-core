@@ -53,7 +53,7 @@ class HiveMetadataDevice extends HiveObject {
       };
 
   static Future<HiveMetadataDevice> get() async {
-    final device = HiveMetadataDevice(platform: Utils.platformName());
+    final device = HiveMetadataDevice(platform: Utils.platform);
     final deviceInfo = DeviceInfoPlugin();
     device.id = (await PlatformDeviceId.getDeviceId)!;
 

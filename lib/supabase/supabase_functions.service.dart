@@ -15,8 +15,8 @@ import 'model/gumroad_product.model.dart';
 import 'model/server_response.model.dart';
 import 'model/sync_user_response.model.dart';
 
-class SupabaseFunctionsService extends GetxService with ConsoleMixin {
-  static SupabaseFunctionsService get to => Get.find();
+class FunctionsService extends GetxService with ConsoleMixin {
+  static FunctionsService get to => Get.find();
 
   // VARIABLES
   final config = Get.find<ConfigService>();

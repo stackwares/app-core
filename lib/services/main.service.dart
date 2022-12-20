@@ -21,7 +21,7 @@ class MainService extends GetxService with ConsoleMixin, WindowListener {
 
   // VARIABLES
   final persistence = Get.find<Persistence>();
-  final supabase = Get.find<SupabaseAuthService>();
+  final supabase = Get.find<AuthService>();
   final analytics = Get.find<AnalyticsService>();
 
   DateTime? lastInactiveTime;

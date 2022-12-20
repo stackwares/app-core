@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../controllers/pro.controller.dart';
+import '../firebase/analytics.service.dart';
 import '../globals.dart';
 import '../persistence/persistence.dart';
 import '../supabase/supabase_database.service.dart';
@@ -180,6 +181,8 @@ class UIUtils {
     } else if (GetPlatform.isMacOS) {
       Utils.openUrl(store.apple);
     }
+
+    AnalyticsService.to.logEvent('rate_review');
   }
 
   static Future<void> setLicenseKey() async {
@@ -191,7 +194,7 @@ class UIUtils {
       if (!formKey.currentState!.validate()) return;
       busy.value = true;
       final key = keyController.text.trim();
-      final verifyResult = await SupabaseFunctionsService.to.verifyGumroad(
+      final verifyResult = await FunctionsService.to.verifyGumroad(
         key,
         updateEntitlement: false,
       );
@@ -211,7 +214,7 @@ class UIUtils {
             );
           }
 
-          final updateResult = await SupabaseDBService.to.updateLicenseKey(key);
+          final updateResult = await DatabaseService.to.updateLicenseKey(key);
 
           updateResult.fold(
             (left) => UIUtils.showSimpleDialog(
@@ -233,6 +236,8 @@ class UIUtils {
               CoreConfig().onSuccessfulUpgrade?.call();
             },
           );
+
+          AnalyticsService.to.logEvent('set_license_key');
         },
       );
 

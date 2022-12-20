@@ -16,8 +16,8 @@ import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class SupabaseAuthService extends GetxService with ConsoleMixin {
-  static SupabaseAuthService get to => Get.find();
+class AuthService extends GetxService with ConsoleMixin {
+  static AuthService get to => Get.find();
 
   // VARIABLES
   // final persistence = Get.find<Persistence>();
@@ -74,12 +74,12 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
     CoreConfig().onSignedIn?.call();
 
     if (!isWindowsLinux) {
+      AnalyticsService.to.setUserID(user_.id);
       await CrashlyticsService.to.setUserID(user_.id);
-      await AnalyticsService.to.setUserID(user_.id);
     }
 
     ProController.to.login(user_);
-    SupabaseFunctionsService.to.sync(user_);
+    FunctionsService.to.sync(user_);
     AnalyticsService.to.logSignIn();
 
     if (GetPlatform.isIOS) {
@@ -251,6 +251,7 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
   }
 
   Future<void> deleteAccount() async {
+    AnalyticsService.to.logEvent('delete-account');
     auth.signOut();
   }
 

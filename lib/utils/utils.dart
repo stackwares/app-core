@@ -1,5 +1,6 @@
 import 'dart:ui' as ui;
 import 'package:app_core/config.dart';
+import 'package:app_core/firebase/analytics.service.dart';
 import 'package:app_core/firebase/config/config.service.dart';
 import 'package:app_core/supabase/supabase_auth.service.dart';
 import 'package:app_core/utils/ui_utils.dart';
@@ -34,6 +35,8 @@ class Utils {
       icon: const Icon(Iconsax.copy),
       seconds: 2,
     );
+
+    AnalyticsService.to.logEvent('copy_clipboard');
   }
 
   static String timeAgo(DateTime dateTime, {bool short = true}) {
@@ -135,7 +138,12 @@ class Utils {
     return 'Invalid Server URL';
   }
 
-  static String platformName() {
+  static String get deviceType {
+    if (GetPlatform.isDesktop) return 'Desktop';
+    return Get.mediaQuery.size.shortestSide < 600 ? 'Phone' : 'Tablet';
+  }
+
+  static String get platform {
     if (GetPlatform.isWeb) {
       return "Web";
     } else if (GetPlatform.isAndroid) {
@@ -174,13 +182,12 @@ class Utils {
 
     body += 'Rating: $ratingEmojis$ln';
 
-    if (SupabaseAuthService.to.authenticated) {
-      body += 'User ID: ${SupabaseAuthService.to.user!.id}$ln';
+    if (AuthService.to.authenticated) {
+      body += 'User ID: ${AuthService.to.user!.id}$ln';
     }
 
     // TODO: Entitlement
-    // body += 'Entitlement: ${ProController.to.limits.id}$ln';
-    body += 'Pro: ${ProController.to.isPro}$ln';
+    body += 'Plan: ${ProController.to.planId}$ln';
     body += 'RC User ID: ${ProController.to.info.value.originalAppUserId}$ln';
 
     if (Get.locale != null) {
@@ -188,7 +195,7 @@ class Utils {
     }
 
     body += 'App Version: ${metadataApp.formattedVersion}$ln';
-    body += 'Platform: ${Utils.platformName()}$ln';
+    body += 'Platform: $platform$ln';
     body += 'Route: $previousRoute$ln';
 
     final emails = ConfigService.to.general.app.emails;
@@ -200,6 +207,14 @@ class Utils {
 
     final url = 'mailto:$email?subject=$subject&body=$body';
     openUrl(Uri.encodeFull(url));
+
+    AnalyticsService.to.logEvent(
+      'contact',
+      parameters: {
+        'rating': rating,
+        'type': feedbackType,
+      },
+    );
   }
 
   static Future<void> openUrl(

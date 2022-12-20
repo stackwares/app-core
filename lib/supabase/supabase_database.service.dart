@@ -4,8 +4,8 @@ import 'package:either_dart/either.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class SupabaseDBService extends GetxService with ConsoleMixin {
-  static SupabaseDBService get to => Get.find();
+class DatabaseService extends GetxService with ConsoleMixin {
+  static DatabaseService get to => Get.find();
 
   // VARIABLES
 

@@ -12,4 +12,5 @@ class Routes {
   static const update = '/update';
   static const disabledBeta = '/disabled_beta';
   static const unknown = '/unknown';
+  static const admin = '/admin';
 }

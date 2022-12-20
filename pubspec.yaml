@@ -36,6 +36,7 @@ dependencies:
   flutter_displaymode: ^0.4.1 # allow higher refresh rates
   flutter_rating_bar: ^4.0.1
   google_fonts: ^3.0.1
+  locale_emoji_flutter: ^0.2.1
 
   # IO
   hive: ^2.2.3 # database

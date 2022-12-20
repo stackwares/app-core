@@ -5,6 +5,7 @@ import 'package:app_core/services/main.service.dart';
 import 'package:app_core/supabase/supabase_auth.service.dart';
 import 'package:app_core/supabase/supabase_database.service.dart';
 import 'package:app_core/supabase/supabase_functions.service.dart';
+import 'package:app_core/supabase/supabase_realtime.service.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
@@ -111,9 +112,10 @@ class CoreConfig with ConsoleMixin {
     Get.lazyPut(() => ConfigService());
 
     // controllers
-    Get.put(SupabaseAuthService());
-    Get.put(SupabaseDBService());
-    Get.put(SupabaseFunctionsService());
+    Get.put(AuthService());
+    Get.put(DatabaseService());
+    Get.put(FunctionsService());
+    Get.put(RealtimeService());
     Get.put(AnalyticsService());
     Get.put(ProController());
   }
