@@ -1,3 +1,4 @@
+import 'package:app_core/license/license.service.dart';
 import 'package:app_core/pages/upgrade/upgrade_config.dart';
 import 'package:app_core/persistence/persistence.dart';
 import 'package:app_core/services/local_auth.service.dart';
@@ -13,7 +14,7 @@ import 'package:get/get.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'connectivity/connectivity.service.dart';
-import 'controllers/pro.controller.dart';
+import 'purchases/purchases.services.dart';
 import 'firebase/analytics.service.dart';
 import 'firebase/config/config.service.dart';
 import 'firebase/crashlytics.service.dart';
@@ -117,7 +118,8 @@ class CoreConfig with ConsoleMixin {
     Get.put(FunctionsService());
     Get.put(RealtimeService());
     Get.put(AnalyticsService());
-    Get.put(ProController());
+    Get.put(LicenseService());
+    Get.put(PurchasesService());
   }
 
   Future<void> postInit() async {

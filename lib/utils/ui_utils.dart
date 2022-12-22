@@ -7,7 +7,6 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../controllers/pro.controller.dart';
 import '../firebase/analytics.service.dart';
 import '../globals.dart';
 import '../persistence/persistence.dart';
@@ -224,8 +223,8 @@ class UIUtils {
             (right) {
               Get.back();
 
-              ProController.to.licenseKey.value = right.gumroadLicenseKey;
-              ProController.to.verifiedPro.value = true;
+              // PurchasesService.to.licenseKey.value = right.gumroadLicenseKey;
+              // PurchasesService.to.verifiedPro.value = true;
 
               NotificationsManager.notify(
                 title: 'License Key Updated',

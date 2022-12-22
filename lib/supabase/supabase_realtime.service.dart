@@ -1,7 +1,5 @@
-import 'dart:convert';
-
-import 'package:app_core/controllers/pro.controller.dart';
 import 'package:app_core/globals.dart';
+import 'package:app_core/license/license.service.dart';
 import 'package:app_core/supabase/model/user_presence.model.dart';
 import 'package:app_core/supabase/supabase_auth.service.dart';
 import 'package:console_mixin/console_mixin.dart';
@@ -96,7 +94,7 @@ class RealtimeService extends GetxService with ConsoleMixin {
     final Map<String, dynamic> data = {
       'id': AuthService.to.user?.id,
       'email': AuthService.to.user?.email,
-      'plan': ProController.to.planId,
+      'plan': LicenseService.to.id,
       'locale': Get.locale?.languageCode ?? 'none',
       'country': Get.locale?.countryCode ?? 'none',
       'theme': Get.isDarkMode ? 'Dark' : 'Light',

@@ -4,7 +4,6 @@ import 'package:app_core/widgets/appbar_leading.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:locale_emoji_flutter/locale_emoji_flutter.dart';
 

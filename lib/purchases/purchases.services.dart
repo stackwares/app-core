@@ -5,24 +5,18 @@ import 'package:app_core/config.dart';
 import 'package:app_core/firebase/analytics.service.dart';
 import 'package:app_core/firebase/crashlytics.service.dart';
 import 'package:app_core/globals.dart';
-import 'package:app_core/persistence/persistence.dart';
-import 'package:app_core/supabase/supabase_auth.service.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../firebase/config/models/config_secrets.model.dart';
-import '../pages/routes.dart';
-import '../rate/rate.widget.dart';
 
-class ProController extends GetxController with ConsoleMixin {
-  static ProController get to => Get.find();
+class PurchasesService extends GetxService with ConsoleMixin {
+  static PurchasesService get to => Get.find();
 
   // VARIABLES
 
@@ -30,35 +24,35 @@ class ProController extends GetxController with ConsoleMixin {
   final info = Rx<CustomerInfo>(CustomerInfo.fromJson(kPurchaserInfoInitial));
   final offerings = Rx<Offerings>(Offerings.fromJson(kOfferingsInitial));
   final packages = <Package>[].obs;
-  final verifiedPro = Persistence.to.verifiedProCache.val.obs;
-  final licenseKey = ''.obs;
+  // final verifiedPro = Persistence.to.verifiedProCache.val.obs;
+  // final licenseKey = ''.obs;
 
   // GETTERS
 
-  bool get isPro => proEntitlement?.isActive == true || verifiedPro.value;
+  // bool get isPro => proEntitlement?.isActive == true || verifiedPro.value;
 
-  EntitlementInfo? get proEntitlement => info.value.entitlements.all['pro'];
+  // EntitlementInfo? get proEntitlement => info.value.entitlements.all['pro'];
 
-  String get proPrefixString =>
-      proEntitlement?.willRenew == true ? 'renews'.tr : 'expires'.tr;
+  // String get proPrefixString =>
+  //     proEntitlement?.willRenew == true ? 'renews'.tr : 'expires'.tr;
 
-  String get proDateString => DateFormat.yMMMMd()
-      .add_jm()
-      .format(DateTime.parse(proEntitlement!.expirationDate!).toLocal());
+  // String get proDateString => DateFormat.yMMMMd()
+  //     .add_jm()
+  //     .format(DateTime.parse(proEntitlement!.expirationDate!).toLocal());
 
-  String get shortLicenseKey => licenseKey.isEmpty ||
-          licenseKey.value.length < 35
-      ? 'none'.tr
-      : '${licenseKey.substring(0, 7)}...${licenseKey.substring(licenseKey.value.length - 7)} ${verifiedPro.value ? '' : '- Inactive'}';
+  // String get shortLicenseKey => licenseKey.isEmpty ||
+  //         licenseKey.value.length < 35
+  //     ? 'none'.tr
+  //     : '${licenseKey.substring(0, 7)}...${licenseKey.substring(licenseKey.value.length - 7)} ${verifiedPro.value ? '' : '- Inactive'}';
 
   String get planId {
-    final entitlements = ProController.to.info.value.entitlements;
+    final entitlements = info.value.entitlements;
     if (entitlements.active.isEmpty) return 'free';
     return entitlements.active.entries.first.key;
   }
 
   // String get planSource {
-  //   final entitlements = ProController.to.info.value.entitlements;
+  //   final entitlements = PurchasesService.to.info.value.entitlements;
   //   if (entitlements.active.isEmpty) return 'free';
   //   return entitlements.active.entries.first.key;
   // }
@@ -74,15 +68,8 @@ class ProController extends GetxController with ConsoleMixin {
 
   @override
   void onInit() {
-    verifiedPro.listen((value) => Persistence.to.verifiedProCache.val = value);
     init();
     super.onInit();
-  }
-
-  @override
-  void onReady() {
-    verifiedPro.value = Persistence.to.verifiedProCache.val;
-    super.onReady();
   }
 
   // FUNCTIONS
@@ -101,50 +88,6 @@ class ProController extends GetxController with ConsoleMixin {
 
     setAttributes();
     sync();
-    initScreen();
-  }
-
-  void initScreen() async {
-    if (!AuthService.to.authenticated) return;
-    Persistence.to.sessionCount.val++;
-    console.wtf('session count: ${Persistence.to.sessionCount.val}');
-
-    // // show upgrade screen every after nth times opened
-    // if (!isPro && (Persistence.to.sessionCount.val % 2) == 0) {
-    //   if (isIAPSupported) {
-    //     await Utils.adaptiveRouteOpen(name: Routes.upgrade);
-    //   }
-    // } else {
-    //   if (!Persistence.to.rateDialogShown.val &&
-    //       Persistence.to.sessionCount.val > 16 &&
-    //       isRateReviewSupported) {
-    //     Persistence.to.rateDialogShown.val = true;
-
-    //     const dialog = AlertDialog(
-    //       content: SizedBox(width: 400, child: RateWidget()),
-    //     );
-
-    //     Get.dialog(dialog);
-    //   }
-    // }
-
-    await Future.delayed(5.seconds);
-
-    if (!Persistence.to.rateDialogShown.val &&
-        Persistence.to.sessionCount.val > 10 &&
-        isRateReviewSupported) {
-      Persistence.to.rateDialogShown.val = true;
-
-      const dialog = AlertDialog(
-        content: SizedBox(width: 400, child: RateWidget()),
-      );
-
-      Get.dialog(dialog);
-    }
-
-    if (isIAPSupported) {
-      await Utils.adaptiveRouteOpen(name: Routes.upgrade);
-    }
   }
 
   Future<void> invalidate() async {
@@ -159,8 +102,8 @@ class ProController extends GetxController with ConsoleMixin {
   }
 
   Future<void> logout() async {
-    verifiedPro.value = false;
-    licenseKey.value = '';
+    // verifiedPro.value = false;
+    // licenseKey.value = '';
     if (!isIAPSupported) return;
 
     // prevent exception if logging out with an anonymous user
@@ -232,11 +175,6 @@ class ProController extends GetxController with ConsoleMixin {
     );
 
     AnalyticsService.to.setUserProperty(
-      name: 'device_type',
-      value: Utils.deviceType,
-    );
-
-    AnalyticsService.to.setUserProperty(
       name: 'version',
       value: metadataApp.formattedVersion,
     );
@@ -254,6 +192,13 @@ class ProController extends GetxController with ConsoleMixin {
         value: Get.locale!.countryCode,
       );
     }
+
+    Future.delayed(10.seconds).then(
+      (value) => AnalyticsService.to.setUserProperty(
+        name: 'device_type',
+        value: Utils.deviceType,
+      ),
+    );
   }
 
   Future<void> purchase(Package package) async {

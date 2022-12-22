@@ -1,83 +1,62 @@
 import 'package:app_core/pages/upgrade/extensions.dart';
 import 'package:app_core/pages/upgrade/upgrade_screen.controller.dart';
+import 'package:app_core/widgets/gradient.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
-import '../../controllers/pro.controller.dart';
 import '../../globals.dart';
+import '../../purchases/purchases.services.dart';
 import '../../supabase/model/gumroad_product.model.dart';
+import '../../widgets/remote_image.widget.dart';
 
 class IAPProductTile extends StatelessWidget {
   final Package package;
   const IAPProductTile({super.key, required this.package});
 
+  bool get isSelected =>
+      UpgradeScreenController.to.packageId == package.identifier;
+
   @override
   Widget build(BuildContext context) {
     final product = package.storeProduct;
-
     final currencySymbol = product.priceString.substring(0, 1);
     String savedText = '';
 
+    final prefixId = product.identifier.split('.sub.')[0];
+
     if (product.isAnnually) {
-      final monthly = ProController.to.packages
-          .where((e) => e.identifier.contains('month'));
+      final monthly = PurchasesService.to.packages.where(
+        (e) =>
+            e.storeProduct.isMonthly &&
+            e.storeProduct.identifier.contains(prefixId),
+      );
       if (monthly.isNotEmpty) {
         final price =
             ((monthly.first.storeProduct.price * 12) - product.price).round();
         savedText =
-            ' - Save $currencySymbol${currencyFormatter.format(price)} vs ${'monthly'.tr.toLowerCase()}';
+            'Save $currencySymbol${currencyFormatter.format(price)} vs ${'monthly'.tr.toLowerCase()}';
       }
     } else if (product.isMonthly) {
-      final weekly =
-          ProController.to.packages.where((e) => e.identifier.contains('week'));
+      final weekly = PurchasesService.to.packages.where(
+        (e) =>
+            e.storeProduct.isWeekly &&
+            e.storeProduct.identifier.contains(prefixId),
+      );
       if (weekly.isNotEmpty) {
         final price =
             ((weekly.first.storeProduct.price * 4) - product.price).round();
         savedText =
-            ' - Save $currencySymbol${currencyFormatter.format(price)} vs ${'weekly'.tr.toLowerCase()}';
+            'Save $currencySymbol${currencyFormatter.format(price)} vs ${'weekly'.tr.toLowerCase()}';
       }
     }
 
-    const subTitleStyle = TextStyle(
-      fontSize: 12,
-      fontWeight: FontWeight.w500,
-      color: Colors.grey,
-    );
-
-    const titleStyle = TextStyle(
-      fontWeight: FontWeight.w500,
-      fontSize: 16,
-    );
-
-    final title = Row(
-      children: [
-        Text(
-          product.itemTitle,
-          style: titleStyle,
-        ),
-        Text(
-          product.itemTitleNext,
-          style: titleStyle.copyWith(
-            color: Get.theme.colorScheme.tertiary,
-          ),
-        ),
-      ],
-    );
-
-    final subTitle = Row(
-      children: [
-        Text(
-          product.itemSubTitle,
-          style: subTitleStyle,
-        ),
-        Text(
-          savedText,
-          style: subTitleStyle.copyWith(
-            color: Get.theme.primaryColor,
-          ),
-        ),
-      ],
+    final titleText = Text(
+      GetUtils.capitalizeFirst(product.planId)!,
+      style: const TextStyle(
+        fontSize: 30,
+        fontWeight: FontWeight.w500,
+      ),
     );
 
     final content = Padding(
@@ -85,28 +64,77 @@ class IAPProductTile extends StatelessWidget {
         horizontal: 15,
         vertical: 10,
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              title,
-              const SizedBox(height: 5),
-              subTitle,
-            ],
-          ),
+          // TITLE
           Obx(
             () => Visibility(
-              visible:
-                  UpgradeScreenController.to.packageId == package.identifier,
-              replacement: const Icon(
-                Icons.circle_outlined,
-                color: Colors.grey,
+              visible: isSelected,
+              replacement: titleText,
+              child: GradientWidget(
+                gradient: const LinearGradient(
+                  colors: [
+                    Color.fromARGB(255, 255, 0, 212),
+                    Color.fromARGB(255, 0, 166, 255),
+                  ],
+                ),
+                child: titleText,
               ),
-              child: Icon(
-                Icons.check_circle,
-                color: Get.theme.primaryColor,
+            ),
+          ),
+          // PRICE & PERIOD
+          const SizedBox(height: 5),
+          Text(
+            product.itemTitle,
+            style: const TextStyle(
+              fontSize: 17,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          // SUB PERIOD
+          Text(
+            product.itemSubTitle,
+            style: const TextStyle(
+              fontSize: 12,
+              color: Colors.grey,
+            ),
+          ),
+          // SAVED
+          Visibility(
+            visible: savedText.isNotEmpty,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 1),
+              child: Text(
+                savedText,
+                style: const TextStyle(fontSize: 12, color: Colors.amber),
+              ),
+            ),
+          ),
+          const Divider(height: 6),
+          // PRIMARY FEATURE
+          const SizedBox(height: 5),
+          Text(
+            product.primaryFeature.tr,
+            style: TextStyle(
+              color: Get.theme.primaryColor,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          // TRIAL DURATION
+          Visibility(
+            visible: product.hasFreeTrial,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 2),
+              child: Text(
+                product.trialDurationText,
+                style: TextStyle(
+                  fontSize: 13,
+                  // fontWeight: FontWeight.w500,
+                  color: Get.theme.colorScheme.tertiary,
+                ),
               ),
             ),
           ),
@@ -116,17 +144,34 @@ class IAPProductTile extends StatelessWidget {
 
     return InkWell(
       onTap: () => UpgradeScreenController.to.package.value = package,
-      child: Obx(
-        () => Card(
-          elevation: Get.isDarkMode ? 10 : 1,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-            side: UpgradeScreenController.to.packageId == package.identifier
-                ? BorderSide(color: Get.theme.primaryColor, width: 2)
-                : const BorderSide(color: Colors.grey, width: 0.2),
+      child: Stack(
+        alignment: Alignment.topRight,
+        children: [
+          Obx(
+            () => Card(
+              elevation: Get.isDarkMode ? 10 : 1,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+                side: isSelected
+                    ? BorderSide(color: Get.theme.primaryColor, width: 2)
+                    : const BorderSide(color: Colors.grey, width: 0.2),
+              ),
+              child: content,
+            ),
           ),
-          child: content,
-        ),
+          Visibility(
+            visible: UpgradeScreenController.to.data.first == package,
+            child: const Positioned(
+              top: 10,
+              right: 10,
+              child: RemoteImage(
+                url: 'https://cdn-icons-png.flaticon.com/512/6895/6895182.png',
+                width: 32,
+                height: 32,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

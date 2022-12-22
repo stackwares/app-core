@@ -46,6 +46,13 @@ class Persistence extends GetxController {
 
   // GETTERS
 
+  // INIT
+  @override
+  void onInit() {
+    sessionCount.val++;
+    super.onInit();
+  }
+
   // FUNCTIONS
   static Future<void> open() async {
     await Hive.initFlutter();

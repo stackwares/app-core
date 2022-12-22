@@ -14,7 +14,8 @@ import 'package:intl/intl.dart';
 import 'package:launch_at_startup/launch_at_startup.dart';
 import 'package:window_manager/window_manager.dart';
 
-import '../controllers/pro.controller.dart';
+import '../purchases/purchases.services.dart';
+import '../rate/rate.widget.dart';
 
 class MainService extends GetxService with ConsoleMixin, WindowListener {
   static MainService get to => Get.find();
@@ -61,14 +62,30 @@ class MainService extends GetxService with ConsoleMixin, WindowListener {
     super.onClose();
   }
 
+  void requestReview() {
+    if (!AuthService.to.authenticated ||
+        persistence.rateDialogShown.val ||
+        !isRateReviewSupported) {
+      return;
+    }
+
+    persistence.rateDialogShown.val = true;
+
+    const dialog = AlertDialog(
+      content: SizedBox(width: 400, child: RateWidget()),
+    );
+
+    Get.dialog(dialog);
+  }
+
   // FUNCTIONS
   Future<void> reset() async {
     console.info('resetting...');
     // reset persistence
     await Persistence.reset();
     // invalidate purchases
-    await ProController.to.invalidate();
-    await ProController.to.logout();
+    await PurchasesService.to.invalidate();
+    await PurchasesService.to.logout();
     console.info('reset!');
   }
 

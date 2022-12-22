@@ -1,3 +1,4 @@
+import 'package:app_core/config.dart';
 import 'package:app_core/pages/upgrade/currency_data.dart';
 import 'package:get/get.dart';
 import 'package:purchases_flutter/object_wrappers.dart';
@@ -5,13 +6,26 @@ import 'package:purchases_flutter/object_wrappers.dart';
 import '../../globals.dart';
 
 extension StoreProductExtension on StoreProduct {
-  bool get isFreeTrial => introductoryPrice?.price == 0;
+  bool get hasFreeTrial => introductoryPrice?.price == 0;
   bool get isSubscription => identifier.contains('.sub.');
   bool get isNonConsumable => identifier.contains('.iap.');
   bool get isLifetime => isNonConsumable;
   bool get isAnnually => identifier.contains('annual');
   bool get isMonthly => identifier.contains('month');
   bool get isWeekly => identifier.contains('week');
+
+  bool get isStarter => identifier.contains('.starter.');
+  bool get isPlus => identifier.contains('.plus.');
+  bool get isPro => identifier.contains('.pro.');
+  bool get isMax => identifier.contains('.max.');
+
+  String get planId {
+    return CoreConfig().upgradeConfig.pricing[identifier]!.id;
+  }
+
+  String get primaryFeature {
+    return CoreConfig().upgradeConfig.pricing[identifier]!.primaryFeature;
+  }
 
   String get periodUnitName {
     if (isAnnually) {
@@ -32,7 +46,7 @@ extension StoreProductExtension on StoreProduct {
   }
 
   String get itemTitleNext {
-    if (isAnnually) {
+    if (isAnnually && identifier.contains('.pro.')) {
       return ' - ${'best_deal'.tr}';
     } else if (isMonthly) {
       return '';
@@ -79,7 +93,7 @@ extension StoreProductExtension on StoreProduct {
   }
 
   String get buttonTitle {
-    return isFreeTrial ? 'redeem_trial'.tr : 'upgrade_to_pro'.tr;
+    return hasFreeTrial ? 'redeem_trial'.tr : 'upgrade_to_pro'.tr;
   }
 
   String get buttonSubTitle {
@@ -87,7 +101,7 @@ extension StoreProductExtension on StoreProduct {
   }
 
   String get trialDurationText {
-    return '${introductoryPrice!.periodNumberOfUnits} ${GetUtils.capitalizeFirst(introductoryPrice!.periodUnit.name.tr)}';
+    return '${introductoryPrice!.periodNumberOfUnits}-${GetUtils.capitalizeFirst(introductoryPrice!.periodUnit.name.tr)} ${'free_trial'.tr}';
   }
 
   String get discount {
@@ -96,19 +110,19 @@ extension StoreProductExtension on StoreProduct {
     return '${'from'.tr} $origPrice ${'to_only'.tr} $discountedPrice';
   }
 
-  List<String> get features {
-    final features_ = ['money_back_guarantee'.tr];
+  // List<String> get features {
+  //   final features_ = ['money_back_guarantee'.tr];
 
-    if (isFreeTrial) {
-      features_.add('$trialDurationText ${'free_trial'.tr}');
-    }
+  //   if (hasFreeTrial) {
+  //     features_.add('$trialDurationText ${'free_trial'.tr}');
+  //   }
 
-    if (isSubscription) {
-      features_.add('cancel_anytime'.tr);
-    }
+  //   if (isSubscription) {
+  //     features_.add('cancel_anytime'.tr);
+  //   }
 
-    features_.add('join_over_users'.tr);
+  //   features_.add('join_over_users'.tr);
 
-    return features_;
-  }
+  //   return features_;
+  // }
 }

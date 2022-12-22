@@ -14,8 +14,9 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-import '../controllers/pro.controller.dart';
+import '../purchases/purchases.services.dart';
 import '../globals.dart';
+import '../license/license.service.dart';
 import '../pages/feedback/feedback_screen.controller.dart';
 import '../pages/routes.dart';
 
@@ -71,8 +72,11 @@ class Utils {
     Size dialogSize = const Size(600, 900),
     Map<String, String> parameters = const {},
     dynamic arguments,
+    bool ignoreUpgradeGuard = true,
   }) {
-    if (ProController.to.isPro && name == Routes.upgrade) {
+    if (LicenseService.to.isPremium &&
+        name == Routes.upgrade &&
+        ignoreUpgradeGuard) {
       console.info('ignored upgrade screen');
       return Future.value(false);
     }
@@ -187,8 +191,9 @@ class Utils {
     }
 
     // TODO: Entitlement
-    body += 'Plan: ${ProController.to.planId}$ln';
-    body += 'RC User ID: ${ProController.to.info.value.originalAppUserId}$ln';
+    body += 'Plan: ${LicenseService.to.id}$ln';
+    body +=
+        'RC User ID: ${PurchasesService.to.info.value.originalAppUserId}$ln';
 
     if (Get.locale != null) {
       body += 'Locale: ${Get.locale?.languageCode}$ln';

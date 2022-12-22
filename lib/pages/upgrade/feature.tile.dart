@@ -6,11 +6,13 @@ import 'package:get/get.dart';
 class FeatureTile extends StatelessWidget {
   final String title;
   final bool highlighted;
+  final double fontSize;
 
   const FeatureTile({
     Key? key,
     required this.title,
     this.highlighted = false,
+    this.fontSize = 17,
   }) : super(key: key);
 
   @override
@@ -32,9 +34,9 @@ class FeatureTile extends StatelessWidget {
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                  fontSize: 17,
+                  fontSize: fontSize,
                   fontWeight: FontWeight.w500,
-                  color: highlighted ? Get.theme.primaryColor : null,
+                  color: highlighted ? Get.theme.colorScheme.tertiary : null,
                 ),
               ),
             )

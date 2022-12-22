@@ -6,10 +6,12 @@ import '../firebase/config/config.service.dart';
 class ProText extends StatelessWidget {
   final String text;
   final double? size;
+  final double? premiumSize;
 
   const ProText({
     Key? key,
     this.size,
+    this.premiumSize,
     required this.text,
   }) : super(key: key);
 
@@ -23,7 +25,7 @@ class ProText extends StatelessWidget {
           style: TextStyle(fontSize: size, fontWeight: FontWeight.bold),
         ),
         const SizedBox(width: 4),
-        PremiumCard(text: text, size: size),
+        PremiumCard(text: text, size: premiumSize ?? size),
       ],
     );
   }

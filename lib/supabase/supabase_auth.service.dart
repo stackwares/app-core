@@ -1,5 +1,5 @@
 import 'package:app_core/config.dart';
-import 'package:app_core/controllers/pro.controller.dart';
+import 'package:app_core/purchases/purchases.services.dart';
 import 'package:app_core/firebase/analytics.service.dart';
 import 'package:app_core/firebase/config/config.service.dart';
 import 'package:app_core/firebase/config/models/config_secrets.model.dart';
@@ -78,7 +78,7 @@ class AuthService extends GetxService with ConsoleMixin {
       await CrashlyticsService.to.setUserID(user_.id);
     }
 
-    ProController.to.login(user_);
+    PurchasesService.to.login(user_);
     FunctionsService.to.sync(user_);
     AnalyticsService.to.logSignIn();
 
@@ -100,7 +100,7 @@ class AuthService extends GetxService with ConsoleMixin {
       } else if (data.event == AuthChangeEvent.signedOut) {
         EasyDebounce.debounce('auth-sign-out', 1.seconds, () async {
           AnalyticsService.to.logSignOut();
-          ProController.to.logout();
+          PurchasesService.to.logout();
           CoreConfig().onSignedOut?.call();
         });
       } else if (data.event == AuthChangeEvent.tokenRefreshed) {

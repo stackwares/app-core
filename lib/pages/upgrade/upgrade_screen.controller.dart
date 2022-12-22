@@ -3,6 +3,7 @@ import 'package:app_core/firebase/config/config.service.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/notifications/notifications.manager.dart';
 import 'package:app_core/pages/upgrade/extensions.dart';
+import 'package:app_core/pages/upgrade/pricing.model.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:app_core/widgets/gradient.widget.dart';
@@ -11,7 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
-import '../../controllers/pro.controller.dart';
+import '../../license/license.service.dart';
+import '../../purchases/purchases.services.dart';
 import '../../supabase/model/gumroad_product.model.dart';
 import '../../supabase/supabase_functions.service.dart';
 import '../routes.dart';
@@ -25,7 +27,9 @@ class UpgradeScreenController extends GetxController
   // PROPERTIES
   final busy = false.obs;
   final showMoreFeatures = false.obs;
+  final showYearlyPlans = false.obs;
   final tabIndex = 0.obs;
+  final data = <Package>[].obs;
   final package = Rx<Package>(Package.fromJson(kPackageInitial));
   final gumroadProduct = const Product().obs;
 
@@ -33,12 +37,19 @@ class UpgradeScreenController extends GetxController
   String get packageId => package.value.identifier;
   StoreProduct get product => package.value.storeProduct;
 
+  Pricing get pricing {
+    return CoreConfig()
+            .upgradeConfig
+            .pricing[package.value.storeProduct.identifier] ??
+        Pricing();
+  }
+
   String get buttonText {
     return busy.value
         ? '${'please_wait'.tr}...'
         : isIAPSupported
             ? product.buttonTitle
-            : 'Redeem Your Free Trial';
+            : 'redeem_trial'.tr;
   }
 
   String get buttonSubText {
@@ -54,6 +65,7 @@ class UpgradeScreenController extends GetxController
   // INIT
   @override
   void onInit() async {
+    showYearlyPlans.listen((yearly) => _select());
     _load();
     change(null, status: RxStatus.success());
     super.onInit();
@@ -61,6 +73,8 @@ class UpgradeScreenController extends GetxController
 
   @override
   void onReady() {
+    console.wtf('data: ${data.length}');
+
     final title = Get.parameters['title'];
     final body = Get.parameters['body'];
 
@@ -93,11 +107,22 @@ class UpgradeScreenController extends GetxController
   // FUNCTIONS
   Future<void> _load() async {
     if (!isIAPSupported) return _loadGumroad();
-    await ProController.to.load();
+    await PurchasesService.to.load();
+    showYearlyPlans.value =
+        PurchasesService.to.packages.first.storeProduct.isAnnually;
+    _select();
+  }
 
-    if (ProController.to.packages.isNotEmpty) {
-      package.value = ProController.to.packages.first;
-    }
+  void _select() {
+    data.value = PurchasesService.to.packages.where((e) {
+      if (showYearlyPlans.value) {
+        return !e.storeProduct.isMonthly;
+      } else {
+        return e.storeProduct.isMonthly;
+      }
+    }).toList();
+
+    if (data.isNotEmpty) package.value = data.first;
   }
 
   Future<void> _loadGumroad() async {
@@ -133,20 +158,20 @@ class UpgradeScreenController extends GetxController
       );
     }
 
-    if (ProController.to.packages.isEmpty) {
+    if (data.isEmpty) {
       return console.error('empty packages');
     }
 
     change(null, status: RxStatus.loading());
 
-    final package = ProController.to.packages.firstWhere(
+    final package = data.firstWhere(
       (e) => e.identifier == packageId,
     );
 
-    await ProController.to.purchase(package);
+    await PurchasesService.to.purchase(package);
     change(null, status: RxStatus.success());
 
-    if (ProController.to.isPro) {
+    if (LicenseService.to.isPremium) {
       NotificationsManager.notify(
         title: '${ConfigService.to.appName} ${'pro_activated'.tr}',
         body: 'pro_thanks'.tr,
@@ -167,13 +192,13 @@ class UpgradeScreenController extends GetxController
 
     if (busy.value) return console.error('still busy');
     change(null, status: RxStatus.loading());
-    await ProController.to.restore();
+    await PurchasesService.to.restore();
     change(null, status: RxStatus.success());
 
-    if (ProController.to.isPro) {
+    if (LicenseService.to.isPremium) {
       NotificationsManager.notify(
         title: '${ConfigService.to.appName} ${'pro_restored'.tr}',
-        body: 'Thanks for being a ${ConfigService.to.appName} Pro rockstar!',
+        body: 'Thanks for being a ${ConfigService.to.appName} rockstar!',
       );
 
       Get.back();

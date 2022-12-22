@@ -1,7 +1,7 @@
+import 'package:app_core/animations/animations.dart';
 import 'package:app_core/config.dart';
 import 'package:app_core/firebase/config/config.service.dart';
 import 'package:app_core/globals.dart';
-import 'package:app_core/pages/upgrade/extensions.dart';
 import 'package:app_core/pages/upgrade/item.tile.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:app_core/widgets/pro.widget.dart';
@@ -12,7 +12,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
-import '../../controllers/pro.controller.dart';
 import '../routes.dart';
 import 'feature.tile.dart';
 import 'upgrade_screen.controller.dart';
@@ -23,7 +22,6 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(UpgradeScreenController());
-    final upgradeConfig = CoreConfig().upgradeConfig;
 
     final benefits = ListView(
       shrinkWrap: true,
@@ -38,41 +36,25 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
         ),
         const Divider(),
         Obx(
-          () => Visibility(
-            visible: isIAPSupported,
-            // gumroad
-            replacement: Column(
-              children: [
-                FeatureTile(
-                  title: 'money_back_guarantee'.tr,
-                  highlighted: true,
-                ),
-                FeatureTile(
-                  title: '7-Day ${'free_trial'.tr}',
-                  highlighted: true,
-                ),
-                FeatureTile(
-                  title: 'cancel_anytime'.tr,
-                  highlighted: true,
-                ),
-                FeatureTile(
-                  title: 'join_over_users'.tr,
-                  highlighted: true,
-                ),
-              ],
-            ),
-            child: Column(
-              children: controller.product.features
-                  .map((e) => FeatureTile(title: e.tr, highlighted: true))
-                  .toList(),
-            ),
+          () => Column(
+            children: controller.pricing.features
+                .map(
+                  (e) => FeatureTile(
+                    title: e.tr,
+                    highlighted: [
+                      'money_back_guarantee',
+                      'cancel_anytime',
+                      'join_over_users',
+                    ].contains(e),
+                  ),
+                )
+                .toList(),
           ),
         ),
-        ...upgradeConfig.features.map((e) => FeatureTile(title: e.tr)).toList(),
         Obx(
           () => Visibility(
             visible: controller.showMoreFeatures.value &&
-                upgradeConfig.upcomingFeatures.isNotEmpty,
+                controller.pricing.upcomingFeatures.isNotEmpty,
             replacement: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
               child: Row(
@@ -104,7 +86,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                     style: const TextStyle(color: Colors.grey),
                   ),
                 ),
-                ...upgradeConfig.upcomingFeatures
+                ...controller.pricing.upcomingFeatures
                     .map((e) => FeatureTile(title: e.tr))
                     .toList(),
               ],
@@ -114,18 +96,21 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
       ],
     );
 
-    Widget itemBuilder(_, index) {
-      final package = ProController.to.packages[index];
-      return IAPProductTile(package: package);
-    }
-
-    final productsListView = Obx(
-      () => ListView.builder(
-        shrinkWrap: true,
-        padding: EdgeInsets.zero,
-        controller: ScrollController(),
-        itemCount: ProController.to.packages.length,
-        itemBuilder: itemBuilder,
+    final productsListView = SizedBox(
+      height: 200,
+      child: Obx(
+        () => ListView.builder(
+          shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+          itemCount: controller.data.length,
+          itemBuilder: (context, index) => ListItemAnimation(
+            axis: Axis.horizontal,
+            offset: const Offset(100, 0),
+            child: IAPProductTile(
+              package: controller.data[index],
+            ),
+          ),
+        ),
       ),
     );
 
@@ -179,7 +164,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
             width: 32,
             height: 32,
           ),
-        )
+        ),
       ],
     );
 
@@ -192,6 +177,37 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              Align(
+                alignment: Alignment.centerRight,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          'pay_yearly'.tr,
+                          style: const TextStyle(fontWeight: FontWeight.w500),
+                        ),
+                        Text(
+                          'pay_yearly_sub'.tr,
+                          style: TextStyle(
+                            color: Get.theme.colorScheme.tertiary,
+                            fontSize: 10,
+                          ),
+                        )
+                      ],
+                    ),
+                    Obx(
+                      () => Switch(
+                        value: controller.showYearlyPlans.value,
+                        onChanged: (value) =>
+                            controller.showYearlyPlans.value = value,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               isIAPSupported
                   ? productsListView
                   : Obx(
@@ -283,7 +299,11 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
       elevation: 0.0,
       automaticallyImplyLeading: false,
       centerTitle: false,
-      title: const ProText(size: 20, text: 'PRO'),
+      title: ProText(
+        size: 20,
+        premiumSize: 15,
+        text: 'premium'.tr.toUpperCase(),
+      ),
       actions: [
         IconButton(
           icon: const Icon(Icons.close),

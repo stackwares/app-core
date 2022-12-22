@@ -1,4 +1,4 @@
-import 'package:app_core/controllers/pro.controller.dart';
+import 'package:app_core/purchases/purchases.services.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/persistence/persistence.dart';
 import 'package:console_mixin/console_mixin.dart';
