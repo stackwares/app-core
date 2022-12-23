@@ -13,7 +13,7 @@ import 'package:get/get.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../firebase/config/models/config_secrets.model.dart';
+import '../config/secrets.model.dart';
 
 class PurchasesService extends GetxService with ConsoleMixin {
   static PurchasesService get to => Get.find();
@@ -77,9 +77,8 @@ class PurchasesService extends GetxService with ConsoleMixin {
     if (!isIAPSupported) return;
     await Purchases.setDebugLogsEnabled(false);
 
-    final secrets = ConfigSecrets.fromJson(CoreConfig().secretsConfig);
     await Purchases.configure(
-      PurchasesConfiguration(secrets.revenuecat.apiKey),
+      PurchasesConfiguration(secretConfig.revenuecat.key),
     );
 
     Purchases.addCustomerInfoUpdateListener((info_) {

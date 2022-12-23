@@ -1,7 +1,8 @@
 import 'dart:ui' as ui;
 import 'package:app_core/config.dart';
 import 'package:app_core/firebase/analytics.service.dart';
-import 'package:app_core/firebase/config/config.service.dart';
+import 'package:app_core/config/app.model.dart';
+
 import 'package:app_core/supabase/supabase_auth.service.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:console_mixin/console_mixin.dart';
@@ -69,7 +70,7 @@ class Utils {
   static Future<dynamic>? adaptiveRouteOpen({
     required String name,
     String method = 'toNamed',
-    Size dialogSize = const Size(600, 900),
+    Size dialogSize = const Size(650, 900),
     Map<String, String> parameters = const {},
     dynamic arguments,
     bool ignoreUpgradeGuard = true,
@@ -203,7 +204,7 @@ class Utils {
     body += 'Platform: $platform$ln';
     body += 'Route: $previousRoute$ln';
 
-    final emails = ConfigService.to.general.app.emails;
+    final emails = appConfig.emails;
     String email = emails.support;
 
     if (feedbackType == FeedbackType.issue) {

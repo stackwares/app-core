@@ -1,12 +1,11 @@
 import 'package:app_core/config.dart';
-import 'package:app_core/purchases/purchases.services.dart';
 import 'package:app_core/firebase/analytics.service.dart';
-import 'package:app_core/firebase/config/config.service.dart';
-import 'package:app_core/firebase/config/models/config_secrets.model.dart';
+
 import 'package:app_core/firebase/crashlytics.service.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/notifications/notifications.manager.dart';
 import 'package:app_core/pages/routes.dart';
+import 'package:app_core/purchases/purchases.services.dart';
 import 'package:app_core/supabase/supabase_functions.service.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:easy_debounce/easy_debounce.dart';
@@ -16,12 +15,13 @@ import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../config/app.model.dart';
+import '../config/secrets.model.dart';
+
 class AuthService extends GetxService with ConsoleMixin {
   static AuthService get to => Get.find();
 
   // VARIABLES
-  // final persistence = Get.find<Persistence>();
-  final config = Get.find<ConfigService>();
 
   // PROPERTIES
   final busy = false.obs;
@@ -35,7 +35,7 @@ class AuthService extends GetxService with ConsoleMixin {
 
   @override
   void onInit() async {
-    final s = ConfigSecrets.fromJson(CoreConfig().secretsConfig).supabase;
+    final s = secretConfig.supabase;
 
     await Supabase.initialize(
       url: s.url,
@@ -112,7 +112,7 @@ class AuthService extends GetxService with ConsoleMixin {
   }
 
   Future<Either<String, bool>> providerAuth(Provider provider) async {
-    final s = config.secrets.supabase;
+    final s = secretConfig.supabase;
     final redirect = s.redirectUrl;
     final redirectWeb = s.redirectUrlWeb;
 
@@ -144,7 +144,7 @@ class AuthService extends GetxService with ConsoleMixin {
   }
 
   Future<Either<String, bool>> magicLink(String email) async {
-    final s = config.secrets.supabase;
+    final s = secretConfig.supabase;
     final redirect = s.redirectUrl;
     final redirectWeb = s.redirectUrlWeb;
 
@@ -228,7 +228,7 @@ class AuthService extends GetxService with ConsoleMixin {
     updateUserAttribute(attributes);
 
     NotificationsManager.notify(
-      title: '${'welcome_to'.tr} ${config.appName}',
+      title: '${'welcome_to'.tr} ${appConfig.name}',
       body: 'welcome_notif_body'.tr,
     );
   }

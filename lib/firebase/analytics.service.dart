@@ -1,4 +1,3 @@
-import 'package:app_core/purchases/purchases.services.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/persistence/persistence.dart';
 import 'package:console_mixin/console_mixin.dart';
@@ -30,18 +29,20 @@ class AnalyticsService extends GetxService with ConsoleMixin {
   void onReady() {
     if (isWindowsLinux) return;
 
-    instance.setDefaultEventParameters({
-      'version': metadataApp.formattedVersion,
-      'platform': Utils.platform,
-      'theme': Get.isDarkMode ? 'Dark' : 'Light',
-      'device_type': Utils.deviceType,
-      if (Get.locale?.languageCode != null) ...{
-        'language': Get.locale!.languageCode,
-      },
-      if (Get.locale?.countryCode != null) ...{
-        'country': Get.locale!.countryCode,
-      },
-    });
+    if (!GetPlatform.isWeb) {
+      instance.setDefaultEventParameters({
+        'version': metadataApp.formattedVersion,
+        'platform': Utils.platform,
+        'theme': Get.isDarkMode ? 'Dark' : 'Light',
+        'device_type': Utils.deviceType,
+        if (Get.locale?.languageCode != null) ...{
+          'language': Get.locale!.languageCode,
+        },
+        if (Get.locale?.countryCode != null) ...{
+          'country': Get.locale!.countryCode,
+        },
+      });
+    }
 
     super.onReady();
   }

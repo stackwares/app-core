@@ -1,6 +1,6 @@
 import 'package:app_core/animations/animations.dart';
 import 'package:app_core/config.dart';
-import 'package:app_core/firebase/config/config.service.dart';
+
 import 'package:app_core/globals.dart';
 import 'package:app_core/pages/upgrade/item.tile.dart';
 import 'package:app_core/utils/utils.dart';
@@ -12,6 +12,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
+import '../../config/app.model.dart';
 import '../routes.dart';
 import 'feature.tile.dart';
 import 'upgrade_screen.controller.dart';
@@ -264,8 +265,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                   foregroundColor: Get.theme.primaryColor,
                   textStyle: const TextStyle(fontSize: 10),
                 ),
-                onPressed: () =>
-                    Utils.openUrl(ConfigService.to.general.app.links.terms),
+                onPressed: () => Utils.openUrl(appConfig.links.terms),
                 child: Text('terms_of_use'.tr),
               ),
               const Text('|'),
@@ -274,9 +274,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                   foregroundColor: Get.theme.primaryColor,
                   textStyle: const TextStyle(fontSize: 10),
                 ),
-                onPressed: () => Utils.openUrl(
-                  ConfigService.to.general.app.links.privacy,
-                ),
+                onPressed: () => Utils.openUrl(appConfig.links.privacy),
                 child: Text('privacy_policy'.tr),
               ),
               const Text('|'),

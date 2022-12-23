@@ -1,5 +1,5 @@
 import 'package:app_core/config.dart';
-import 'package:app_core/firebase/config/config.service.dart';
+
 import 'package:app_core/globals.dart';
 import 'package:app_core/notifications/notifications.manager.dart';
 import 'package:app_core/pages/upgrade/extensions.dart';
@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
+import '../../config/app.model.dart';
 import '../../license/license.service.dart';
 import '../../purchases/purchases.services.dart';
 import '../../supabase/model/gumroad_product.model.dart';
@@ -91,7 +92,7 @@ class UpgradeScreenController extends GetxController
         ),
         title: title,
         body: body,
-        closeText: 'try_app_pro'.trParams({'w1': ConfigService.to.appName}),
+        closeText: 'try_app_pro'.trParams({'w1': appConfig.name}),
       );
     }
 
@@ -146,10 +147,7 @@ class UpgradeScreenController extends GetxController
     if (busy.value) return console.error('still busy');
 
     if (!isIAPSupported) {
-      Utils.openUrl(
-        ConfigService.to.general.app.links.store.gumroad,
-      );
-
+      Utils.openUrl(appConfig.links.store.gumroad);
       Get.back();
 
       return Utils.adaptiveRouteOpen(
@@ -173,7 +171,7 @@ class UpgradeScreenController extends GetxController
 
     if (LicenseService.to.isPremium) {
       NotificationsManager.notify(
-        title: '${ConfigService.to.appName} ${'pro_activated'.tr}',
+        title: '${appConfig.name} ${'pro_activated'.tr}',
         body: 'pro_thanks'.tr,
       );
 
@@ -197,8 +195,8 @@ class UpgradeScreenController extends GetxController
 
     if (LicenseService.to.isPremium) {
       NotificationsManager.notify(
-        title: '${ConfigService.to.appName} ${'pro_restored'.tr}',
-        body: 'Thanks for being a ${ConfigService.to.appName} rockstar!',
+        title: '${appConfig.name} ${'pro_restored'.tr}',
+        body: 'Thanks for being a ${appConfig.name} rockstar!',
       );
 
       Get.back();
@@ -207,7 +205,7 @@ class UpgradeScreenController extends GetxController
     } else {
       UIUtils.showSimpleDialog(
         'no_purchases'.tr,
-        'not_subscribed'.trParams({'w1': ConfigService.to.appName}),
+        'not_subscribed'.trParams({'w1': appConfig.name}),
       );
     }
   }

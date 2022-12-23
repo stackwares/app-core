@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:app_core/config.dart';
-import 'package:app_core/firebase/config/config.service.dart';
+
 import 'package:app_core/globals.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:either_dart/either.dart';
@@ -18,7 +18,6 @@ class FunctionsService extends GetxService with ConsoleMixin {
   static FunctionsService get to => Get.find();
 
   // VARIABLES
-  final config = Get.find<ConfigService>();
   int sessionId = 0;
 
   // GETTERS

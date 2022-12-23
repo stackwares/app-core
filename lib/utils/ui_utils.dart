@@ -1,5 +1,5 @@
 import 'package:app_core/config.dart';
-import 'package:app_core/firebase/config/config.service.dart';
+
 import 'package:app_core/notifications/notifications.manager.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:app_review/app_review.dart';
@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../firebase/analytics.service.dart';
+import '../config/app.model.dart';
 import '../globals.dart';
 import '../persistence/persistence.dart';
 import '../supabase/supabase_database.service.dart';
@@ -159,7 +160,7 @@ class UIUtils {
   }
 
   static void rateAndReview() async {
-    final store = ConfigService.to.general.app.links.store;
+    final store = appConfig.links.store;
     final available = await AppReview.isRequestReviewAvailable;
     console.info('review available: $available');
 
@@ -228,8 +229,7 @@ class UIUtils {
 
               NotificationsManager.notify(
                 title: 'License Key Updated',
-                body:
-                    'Thanks for subscribing to ${ConfigService.to.appName} Pro 🎉',
+                body: 'Thanks for subscribing to ${appConfig.name} Pro 🎉',
               );
 
               CoreConfig().onSuccessfulUpgrade?.call();

@@ -4,7 +4,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
-import '../../firebase/config/config.service.dart';
+import '../../config/app.model.dart';
 import '../../utils/utils.dart';
 import '../../widgets/appbar_leading.widget.dart';
 import 'feedback_screen.controller.dart';
@@ -98,13 +98,13 @@ class FeedbackScreen extends StatelessWidget with ConsoleMixin {
                       onPressed: controller.review,
                       icon: const Icon(Icons.star_border),
                       label: Text(
-                        '${'rate_review'.tr} ${ConfigService.to.appName}',
+                        '${'rate_review'.tr} ${appConfig.name}',
                       ),
                     ),
                     const SizedBox(height: 10),
                     Text(
                       'spread_word'.trParams(
-                        {'w1': ConfigService.to.appName},
+                        {'w1': appConfig.name},
                       ),
                       style: const TextStyle(color: Colors.grey),
                     ),
@@ -114,9 +114,7 @@ class FeedbackScreen extends StatelessWidget with ConsoleMixin {
             ),
             const SizedBox(height: 20),
             ElevatedButton.icon(
-              onPressed: () => Utils.openUrl(
-                ConfigService.to.general.app.links.faqs,
-              ),
+              onPressed: () => Utils.openUrl(appConfig.links.faqs),
               icon: const Icon(Icons.help_outline),
               label: Text('faqs'.tr),
             ),
@@ -126,7 +124,7 @@ class FeedbackScreen extends StatelessWidget with ConsoleMixin {
     );
 
     final appBar = AppBar(
-      title: Text('${'contact'.tr} ${ConfigService.to.appName}'),
+      title: Text('${'contact'.tr} ${appConfig.name}'),
       leading: const AppBarLeadingButton(),
       actions: [
         TextButton.icon(

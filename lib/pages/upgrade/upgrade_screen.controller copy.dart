@@ -1,7 +1,7 @@
 // import 'dart:convert';
 
 // import 'package:app_core/config.dart';
-// import 'package:app_core/firebase/config/config.service.dart';
+// 
 // import 'package:app_core/globals.dart';
 // import 'package:app_core/notifications/notifications.manager.dart';
 // import 'package:app_core/pages/upgrade/extensions.dart';
@@ -80,7 +80,7 @@
 //         ),
 //         title: title,
 //         body: body,
-//         closeText: 'try_app_pro'.trParams({'w1': ConfigService.to.appName}),
+//         closeText: 'try_app_pro'.trParams({'w1': appConfig.name}),
 //       );
 //     }
 
@@ -151,7 +151,7 @@
 
 //     if (LicenseService.to.isPremium) {
 //       NotificationsManager.notify(
-//         title: '${ConfigService.to.appName} ${'pro_activated'.tr}',
+//         title: '${appConfig.name} ${'pro_activated'.tr}',
 //         body: 'pro_thanks'.tr,
 //       );
 
@@ -175,8 +175,8 @@
 
 //     if (LicenseService.to.isPremium) {
 //       NotificationsManager.notify(
-//         title: '${ConfigService.to.appName} ${'pro_restored'.tr}',
-//         body: 'Thanks for being a ${ConfigService.to.appName} rockstar!',
+//         title: '${appConfig.name} ${'pro_restored'.tr}',
+//         body: 'Thanks for being a ${appConfig.name} rockstar!',
 //       );
 
 //       Get.back();
@@ -185,7 +185,7 @@
 //     } else {
 //       UIUtils.showSimpleDialog(
 //         'no_purchases'.tr,
-//         'not_subscribed'.trParams({'w1': ConfigService.to.appName}),
+//         'not_subscribed'.trParams({'w1': appConfig.name}),
 //       );
 //     }
 //   }

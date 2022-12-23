@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../firebase/analytics.service.dart';
-import '../../firebase/config/config.service.dart';
+
+import '../../config/app.model.dart';
 import '../../globals.dart';
 import '../../utils/utils.dart';
 import '../../widgets/logo.widget.dart';
@@ -43,7 +44,7 @@ class UpdateScreen extends StatelessWidget {
               icon: const Icon(Iconsax.arrow_down_2),
               onPressed: () {
                 AnalyticsService.to.logEvent('download_required_update');
-                Utils.openUrl(ConfigService.to.general.app.links.website);
+                Utils.openUrl(appConfig.links.website);
               },
             ),
           ),
@@ -54,10 +55,11 @@ class UpdateScreen extends StatelessWidget {
             'Current build # ${metadataApp.buildNumber}',
             style: const TextStyle(color: Colors.grey),
           ),
-          Text(
-            'Minimum build # ${ConfigService.to.app.build.min}',
-            style: const TextStyle(color: Colors.grey),
-          ),
+          // TODO: supabase config app build minimum
+          // Text(
+          //   'Minimum build # ${appConfig.app.build.min}',
+          //   style: const TextStyle(color: Colors.grey),
+          // ),
         ],
       ),
     );

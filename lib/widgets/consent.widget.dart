@@ -1,6 +1,7 @@
+import 'package:app_core/config/app.model.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/utils/utils.dart';
-import 'package:app_core/firebase/config/config.service.dart';
+
 import 'package:app_core/persistence/persistence.dart';
 import 'package:app_core/persistence/persistence_builder.widget.dart';
 import 'package:app_core/widgets/gradient.widget.dart';
@@ -73,9 +74,7 @@ class ConsentWidget extends StatelessWidget {
           ),
           const Divider(),
           TextButton(
-            onPressed: () => Utils.openUrl(
-              ConfigService.to.general.app.links.privacy,
-            ),
+            onPressed: () => Utils.openUrl(appConfig.links.privacy),
             child: Text(
               'privacy_policy'.tr,
               style: const TextStyle(fontSize: 12),

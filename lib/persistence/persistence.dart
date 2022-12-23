@@ -4,6 +4,7 @@ import 'package:app_core/config.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import '../config/secrets.model.dart';
 import '../globals.dart';
 import 'mutable_value.dart';
 
@@ -56,14 +57,11 @@ class Persistence extends GetxController {
   // FUNCTIONS
   static Future<void> open() async {
     await Hive.initFlutter();
-
-    final core = CoreConfig();
+    final cipher = HiveAesCipher(base64Decode(secretConfig.persistence.key));
 
     box = await Hive.openBox(
-      core.persistenceBoxName,
-      encryptionCipher: HiveAesCipher(base64Decode(
-        core.persistenceCipherKey,
-      )),
+      secretConfig.persistence.box,
+      encryptionCipher: cipher,
     );
 
     _initLocale();

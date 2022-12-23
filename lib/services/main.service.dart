@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:app_core/firebase/analytics.service.dart';
-import 'package:app_core/firebase/config/config.service.dart';
+
 import 'package:app_core/globals.dart';
 import 'package:app_core/persistence/persistence.dart';
 import 'package:app_core/supabase/supabase_auth.service.dart';
@@ -14,6 +14,7 @@ import 'package:intl/intl.dart';
 import 'package:launch_at_startup/launch_at_startup.dart';
 import 'package:window_manager/window_manager.dart';
 
+import '../config/app.model.dart';
 import '../purchases/purchases.services.dart';
 import '../rate/rate.widget.dart';
 
@@ -99,7 +100,7 @@ class MainService extends GetxService with ConsoleMixin, WindowListener {
     if (!isDesktop) return;
 
     launchAtStartup.setup(
-      appName: ConfigService.to.appName,
+      appName: appConfig.name,
       appPath: Platform.resolvedExecutable,
     );
 

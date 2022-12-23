@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
-import '../../firebase/config/config.service.dart';
+import '../../config/app.model.dart';
 import '../../utils/ui_utils.dart';
 import '../../utils/utils.dart';
 
@@ -50,7 +50,7 @@ class FeedbackScreenController extends GetxController
 
     Utils.contactEmail(
       subject:
-          '${ConfigService.to.appName} ${feedbackType.toString().replaceAll('FeedbackType.', '').capitalizeFirst}',
+          '${appConfig.name} ${feedbackType.toString().replaceAll('FeedbackType.', '').capitalizeFirst}',
       preBody: textController.text,
       rating: rating.value,
       previousRoute: Get.previousRoute,

@@ -1,3 +1,5 @@
+import 'package:get/get.dart';
+
 class License {
   const License({
     this.data = const {},
@@ -32,4 +34,9 @@ class License {
         "entitlementId": entitlementId,
         "licenseKey": licenseKey,
       };
+
+  String get key {
+    if (licenseKey.isEmpty) return 'update'.tr;
+    return '${licenseKey.substring(0, 10)}...';
+  }
 }

@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'pricing.model.dart';
 
 class UpgradeConfig {

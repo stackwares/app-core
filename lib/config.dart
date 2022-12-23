@@ -16,13 +16,11 @@ import 'package:window_manager/window_manager.dart';
 import 'connectivity/connectivity.service.dart';
 import 'purchases/purchases.services.dart';
 import 'firebase/analytics.service.dart';
-import 'firebase/config/config.service.dart';
 import 'firebase/crashlytics.service.dart';
 import 'globals.dart';
 import 'notifications/notifications.manager.dart';
 
 class CoreConfig with ConsoleMixin {
-  late String persistenceCipherKey;
   late Map<String, dynamic> translationKeys;
   late String logoDarkPath;
   late String logoLightPath;
@@ -36,9 +34,6 @@ class CoreConfig with ConsoleMixin {
   late List<Color> gradientColors;
   late UpgradeConfig upgradeConfig;
   late bool allowAnonymousRcUserSync;
-  late Map<String, dynamic> secretsConfig;
-  late Map<String, dynamic> appConfig;
-  late Map<String, dynamic> generalConfig;
   late String offeringId;
 
   late Function()? onCancelledUpgradeScreen;
@@ -55,7 +50,6 @@ class CoreConfig with ConsoleMixin {
 
   // INIT
   Future<CoreConfig> init({
-    required String persistenceCipherKey,
     required Map<String, dynamic> translationKeys,
     required List<GetPage<dynamic>> pages,
     required String logoDarkPath,
@@ -68,16 +62,12 @@ class CoreConfig with ConsoleMixin {
     BuildMode buildMode = BuildMode.production,
     BoxConstraints mainConstraints = const BoxConstraints(maxWidth: 500),
     bool allowAnonymousRcUserSync = true,
-    Map<String, dynamic> secretsConfig = const {},
-    Map<String, dynamic> appConfig = const {},
-    Map<String, dynamic> generalConfig = const {},
     String offeringId = '',
     Function()? onCancelledUpgradeScreen,
     Function()? onSuccessfulUpgrade,
     Function()? onSignedOut,
     Function()? onSignedIn,
   }) async {
-    this.persistenceCipherKey = persistenceCipherKey;
     this.translationKeys = translationKeys;
     this.pages = pages;
     this.logoDarkPath = logoDarkPath;
@@ -90,9 +80,6 @@ class CoreConfig with ConsoleMixin {
     this.mainConstraints = mainConstraints;
     this.gradientColors = gradientColors;
     this.allowAnonymousRcUserSync = allowAnonymousRcUserSync;
-    this.secretsConfig = secretsConfig;
-    this.appConfig = appConfig;
-    this.generalConfig = generalConfig;
     this.offeringId = offeringId;
     this.onCancelledUpgradeScreen = onCancelledUpgradeScreen;
     this.onSuccessfulUpgrade = onSuccessfulUpgrade;
@@ -110,7 +97,6 @@ class CoreConfig with ConsoleMixin {
     Get.lazyPut(() => MainService());
     Get.lazyPut(() => ConnectivityService());
     Get.lazyPut(() => LocalAuthService());
-    Get.lazyPut(() => ConfigService());
 
     // controllers
     Get.put(AuthService());

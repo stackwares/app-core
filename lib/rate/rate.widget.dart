@@ -1,4 +1,3 @@
-import 'package:app_core/firebase/config/config.service.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/widgets/gradient.widget.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 
+import '../config/app.model.dart';
 import 'rate_widget.controller.dart';
 
 class RateWidget extends StatelessWidget {
@@ -61,8 +61,7 @@ class RateWidget extends StatelessWidget {
               labelText: '${'write_review_here'.tr}...',
               alignLabelWithHint: true,
               helperMaxLines: 5,
-              helperText:
-                  "why_love_hate".trParams({'w1': ConfigService.to.appName}),
+              helperText: "why_love_hate".trParams({'w1': appConfig.name}),
             ),
           ),
           const SizedBox(height: 20),
@@ -105,12 +104,12 @@ class RateWidget extends StatelessWidget {
                       onPressed: controller.submit,
                       icon: const Icon(Icons.star_border),
                       label: Text(
-                        'Submit to ${'rate_review'.tr} ${ConfigService.to.appName}',
+                        'Submit to ${'rate_review'.tr} ${appConfig.name}',
                       ),
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      'spread_word'.trParams({'w1': ConfigService.to.appName}),
+                      'spread_word'.trParams({'w1': appConfig.name}),
                       style: const TextStyle(color: Colors.grey, fontSize: 13),
                     ),
                   ] else ...[

@@ -1,7 +1,7 @@
 import 'package:app_core/config.dart';
 import 'package:flutter/material.dart';
 
-import '../firebase/config/config.service.dart';
+import '../config/app.model.dart';
 
 class ProText extends StatelessWidget {
   final String text;
@@ -21,7 +21,7 @@ class ProText extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          ConfigService.to.appName,
+          appConfig.name,
           style: TextStyle(fontSize: size, fontWeight: FontWeight.bold),
         ),
         const SizedBox(width: 4),

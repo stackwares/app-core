@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 
-import '../../firebase/config/config.service.dart';
+import '../../config/app.model.dart';
 import '../../utils/utils.dart';
 import '../../widgets/version.widget.dart';
 
@@ -42,7 +42,7 @@ class DisabledBetaScreen extends StatelessWidget {
               label: const Text('Check'),
               icon: const Icon(Iconsax.document_download),
               onPressed: () => Utils.openUrl(
-                ConfigService.to.general.app.links.website,
+                appConfig.links.website,
               ),
             ),
           ),

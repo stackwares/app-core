@@ -1,4 +1,3 @@
-import 'package:app_core/firebase/config/config.service.dart';
 import 'package:app_core/firebase/crashlytics.service.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/services.dart';
@@ -10,6 +9,7 @@ import 'package:local_auth_android/local_auth_android.dart';
 // ignore: depend_on_referenced_packages
 import 'package:local_auth_ios/local_auth_ios.dart';
 
+import '../config/app.model.dart';
 import '../utils/ui_utils.dart';
 
 // import 'package:local_auth_windows/local_auth_windows.dart';
@@ -39,7 +39,7 @@ class LocalAuthService extends GetxService with ConsoleMixin {
         options: const AuthenticationOptions(stickyAuth: true),
         authMessages: [
           AndroidAuthMessages(
-            signInTitle: '${ConfigService.to.appName} Biometrics',
+            signInTitle: '${appConfig.name} Biometrics',
             biometricHint: subTitle,
             cancelButton: 'Cancel',
           ),

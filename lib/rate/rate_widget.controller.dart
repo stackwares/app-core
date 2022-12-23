@@ -1,11 +1,11 @@
-import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/firebase/analytics.service.dart';
-import 'package:app_core/firebase/config/config.service.dart';
+import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../config/app.model.dart';
 import '../pages/feedback/feedback_screen.controller.dart';
 
 class RateWidgetController extends GetxController with ConsoleMixin {
@@ -33,7 +33,7 @@ class RateWidgetController extends GetxController with ConsoleMixin {
       UIUtils.rateAndReview();
     } else {
       Utils.contactEmail(
-        subject: '${ConfigService.to.appName} Review',
+        subject: '${appConfig.name} Review',
         preBody: textController.text,
         rating: rating.value,
         previousRoute: Get.previousRoute,
