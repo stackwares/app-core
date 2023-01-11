@@ -20,6 +20,7 @@ import '../globals.dart';
 import '../license/license.service.dart';
 import '../pages/feedback/feedback_screen.controller.dart';
 import '../pages/routes.dart';
+import 'blocked_domains.dart';
 
 class Utils {
   // VARIABLES
@@ -262,5 +263,13 @@ class Utils {
     Color color = Color(rgbaToArgb(byteData!.getUint32(byteOffset)));
     if (color == Colors.transparent) color = Colors.white;
     return color;
+  }
+
+  static bool isDisposableEmail(String email) {
+    final splittedEmail = email.split('@');
+    if (splittedEmail.isEmpty) return false;
+    final domain = splittedEmail.last;
+    console.info('email domain: $domain');
+    return kBlockedEmailDomains.contains(domain);
   }
 }

@@ -39,10 +39,11 @@ class UpgradeScreenController extends GetxController
   StoreProduct get product => package.value.storeProduct;
 
   Pricing get pricing {
+    // TODO: this is just temporary for NexBot
     return CoreConfig()
             .upgradeConfig
             .pricing[package.value.storeProduct.identifier] ??
-        Pricing();
+        CoreConfig().upgradeConfig.pricing['nexbot.pro.sub.monthly']!;
   }
 
   String get buttonText {
@@ -170,6 +171,8 @@ class UpgradeScreenController extends GetxController
     change(null, status: RxStatus.success());
 
     if (LicenseService.to.isPremium) {
+      // TODO: record purchase, trial or not
+
       NotificationsManager.notify(
         title: '${appConfig.name} ${'pro_activated'.tr}',
         body: 'pro_thanks'.tr,
