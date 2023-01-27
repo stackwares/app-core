@@ -125,11 +125,13 @@ class AuthService extends GetxService with ConsoleMixin {
     try {
       busy.value = true;
 
-      if (GetPlatform.isIOS) {
-        await customSignInWithOAuth(provider, redirectTo: redirectTo);
-      } else {
-        await auth.signInWithOAuth(provider, redirectTo: redirectTo);
-      }
+      await auth.signInWithOAuth(
+        provider,
+        redirectTo: redirectTo,
+        authScreenLaunchMode: GetPlatform.isIOS
+            ? LaunchMode.inAppWebView
+            : LaunchMode.externalApplication,
+      );
     } on AuthException catch (e) {
       busy.value = false;
       return Left('signIn error: $e');
@@ -253,28 +255,5 @@ class AuthService extends GetxService with ConsoleMixin {
   Future<void> deleteAccount() async {
     AnalyticsService.to.logEvent('delete-account');
     auth.signOut();
-  }
-
-  // use safari web view controller
-  // to get approved on the app store
-  Future<bool> customSignInWithOAuth(
-    Provider provider, {
-    String? redirectTo,
-    String? scopes,
-    Map<String, String>? queryParams,
-  }) async {
-    final res = await auth.getOAuthSignInUrl(
-      provider: provider,
-      redirectTo: redirectTo,
-      scopes: scopes,
-      queryParams: queryParams,
-    );
-    final url = Uri.parse(res.url!);
-    final result = await launchUrl(
-      url,
-      mode: LaunchMode.inAppWebView,
-      webOnlyWindowName: '_self',
-    );
-    return result;
   }
 }

@@ -12,6 +12,7 @@ class UserPresence {
     this.deviceType = '',
     this.theme = '',
     this.version = '',
+    this.createdAt = '',
   });
 
   final String email;
@@ -26,6 +27,7 @@ class UserPresence {
   final String deviceType;
   final String theme;
   final String version;
+  final String createdAt;
   // user since
   // last used date
 
@@ -44,6 +46,7 @@ class UserPresence {
         deviceType: json["device_type"],
         theme: json["theme"],
         version: json["version"],
+        createdAt: json["created_at"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -59,6 +62,7 @@ class UserPresence {
         "device_type": deviceType,
         "theme": theme,
         "version": version,
+        "created_at": createdAt,
       };
 }
 

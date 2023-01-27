@@ -21,12 +21,10 @@ class AdminScreen extends StatelessWidget with ConsoleMixin {
       () => ListView.separated(
         shrinkWrap: true,
         itemCount: RealtimeService.to.data.length,
-        padding: const EdgeInsets.symmetric(horizontal: 15),
         separatorBuilder: (context, index) => const Divider(),
         itemBuilder: (context, index) {
           final item = RealtimeService.to.data[index];
-          final emojiFlag =
-              Locale(item.country ?? item.locale).flagEmoji ?? '🌍';
+          final emojiFlag = Locale(item.locale).flagEmoji ?? '🌍';
 
           var platformIcon = Icons.circle;
           Color? platformColor;
@@ -71,58 +69,68 @@ class AdminScreen extends StatelessWidget with ConsoleMixin {
             planColor = Colors.pink;
           }
 
-          return Tooltip(
-            message: item.id,
-            child: ListTile(
-              title: Row(
-                children: [
-                  Tooltip(
-                    message: item.country,
-                    child: Text(emojiFlag),
-                  ),
-                  const SizedBox(width: 10),
-                  Text(item.email),
-                ],
-              ),
-              onLongPress: () => Utils.copyToClipboard(item.id),
-              // leading: Tooltip(
-              //   message: item.locale,
-              //   child: Text(emojiFlag, style: const TextStyle(fontSize: 25)),
-              // ),
-              // trailing: Column(
-              //   children: [
-              //     Icon(platformIcon, color: platformColor),
-              //     const SizedBox(height: 2),
-              //     Text(
-              //       item.platform,
-              //       style: const TextStyle(fontWeight: FontWeight.bold),
-              //     ),
-              //   ],
-              // ),
-              subtitle: Padding(
-                padding: const EdgeInsets.only(top: 5),
-                child: Wrap(
-                  spacing: 5,
-                  runSpacing: 5,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    SmallChip(
-                      text: plan.toUpperCase(),
-                      color: planColor,
-                    ),
-                    if (item.license != null) ...[
-                      SmallChip(
-                        text:
-                            '${kFormatter.format(item.license!.usedTokens)} / ${kFormatter.format(item.license!.maxTokens)}',
-                      ),
-                    ],
-                    SmallChip(text: item.platform),
-                    SmallChip(text: item.deviceType),
-                    SmallChip(text: item.version),
-                    SmallChip(text: item.theme),
-                    SmallChip(text: item.locale),
-                  ],
+          return ListTile(
+            title: Row(
+              children: [
+                Tooltip(
+                  message: item.country,
+                  child: Text(emojiFlag),
                 ),
+                const SizedBox(width: 3),
+                Expanded(
+                  child: Text(
+                    item.email,
+                    overflow: TextOverflow.fade,
+                    maxLines: 1,
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                ),
+                if (DateTime.tryParse(item.createdAt) != null) ...[
+                  Text(
+                    '${Utils.timeAgo(DateTime.parse(item.createdAt))} ago',
+                    style: const TextStyle(fontSize: 10, color: Colors.grey),
+                  ),
+                ]
+              ],
+            ),
+            onLongPress: () => Utils.copyToClipboard(item.id),
+            // leading: Tooltip(
+            //   message: item.locale,
+            //   child: Text(emojiFlag, style: const TextStyle(fontSize: 25)),
+            // ),
+            // trailing: Column(
+            //   children: [
+            //     Icon(platformIcon, color: platformColor),
+            //     const SizedBox(height: 2),
+            //     Text(
+            //       item.platform,
+            //       style: const TextStyle(fontWeight: FontWeight.bold),
+            //     ),
+            //   ],
+            // ),
+            subtitle: Padding(
+              padding: const EdgeInsets.only(top: 5),
+              child: Wrap(
+                spacing: 5,
+                runSpacing: 5,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  SmallChip(
+                    text: plan.toUpperCase(),
+                    color: planColor,
+                  ),
+                  if (item.license != null) ...[
+                    SmallChip(
+                      text:
+                          '${kFormatter.format(item.license!.usedTokens)} / ${kFormatter.format(item.license!.maxTokens)}',
+                    ),
+                  ],
+                  SmallChip(text: item.platform),
+                  SmallChip(text: item.deviceType),
+                  SmallChip(text: item.version),
+                  SmallChip(text: item.theme),
+                  SmallChip(text: item.locale),
+                ],
               ),
             ),
           );

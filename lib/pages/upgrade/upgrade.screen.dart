@@ -201,6 +201,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                               )
                             ],
                           ),
+                          const SizedBox(width: 10),
                           Obx(
                             () => Switch(
                               value: controller.showYearlyPlans.value,

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:app_core/globals.dart';
 import 'package:app_core/license/license.service.dart';
 import 'package:app_core/supabase/model/user_presence.model.dart';
@@ -95,12 +97,13 @@ class RealtimeService extends GetxService with ConsoleMixin {
       'id': AuthService.to.user?.id,
       'email': AuthService.to.user?.email,
       'plan': LicenseService.to.id,
-      'locale': Get.locale?.languageCode ?? 'none',
+      'locale': Platform.localeName,
       'country': Get.locale?.countryCode ?? 'none',
       'theme': Get.isDarkMode ? 'Dark' : 'Light',
       'platform': Utils.platform,
       'device_type': Utils.deviceType,
       'version': metadataApp.formattedVersion,
+      'created_at': AuthService.to.user?.createdAt,
     }..addAll(extra);
 
     final response = await channel!.track(data);
