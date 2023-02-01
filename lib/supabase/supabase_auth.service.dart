@@ -95,7 +95,10 @@ class AuthService extends GetxService with ConsoleMixin {
       if (data.event == AuthChangeEvent.signedIn) {
         EasyDebounce.debounce('auth-sign-in', 2.seconds, () async {
           onSignedIn(data.session!.user);
-          Get.offNamedUntil(Routes.main, (route) => false);
+
+          if (Get.currentRoute != Routes.main) {
+            Get.offNamedUntil(Routes.main, (route) => false);
+          }
         });
       } else if (data.event == AuthChangeEvent.signedOut) {
         EasyDebounce.debounce('auth-sign-out', 1.seconds, () async {

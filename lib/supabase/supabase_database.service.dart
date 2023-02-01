@@ -48,10 +48,10 @@ class DatabaseService extends GetxService with ConsoleMixin {
   }
 
   Future<Either<dynamic, ConfigResponse>> configuration() async {
-    if (user == null) {
-      console.warning('not authenticated');
-      return const Left('not authenticated');
-    }
+    // if (user == null) {
+    //   console.warning('not authenticated');
+    //   return const Left('not authenticated');
+    // }
 
     // UPDATE PROFILE
     try {

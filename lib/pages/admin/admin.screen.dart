@@ -21,7 +21,10 @@ class AdminScreen extends StatelessWidget with ConsoleMixin {
       () => ListView.separated(
         shrinkWrap: true,
         itemCount: RealtimeService.to.data.length,
-        separatorBuilder: (context, index) => const Divider(),
+        separatorBuilder: (context, index) => Divider(
+          height: 5,
+          color: Colors.grey.withOpacity(0.1),
+        ),
         itemBuilder: (context, index) {
           final item = RealtimeService.to.data[index];
           final emojiFlag = Locale(item.locale).flagEmoji ?? '🌍';

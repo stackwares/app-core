@@ -14,6 +14,7 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../config/secrets.model.dart';
+import '../pages/routes.dart';
 
 class PurchasesService extends GetxService with ConsoleMixin {
   static PurchasesService get to => Get.find();
@@ -311,7 +312,12 @@ class PurchasesService extends GetxService with ConsoleMixin {
     }
 
     if (errorMessage.isNotEmpty) {
-      await UIUtils.showSimpleDialog('Purchase Error', errorMessage);
+      await UIUtils.showSimpleDialog(
+        'Purchase Error',
+        errorMessage,
+        actionText: 'need_help'.tr,
+        action: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
+      );
     } else {
       CrashlyticsService.to.record(e, s);
     }

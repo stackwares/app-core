@@ -35,7 +35,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
             style: const TextStyle(fontSize: 12),
           ),
         ),
-        const Divider(),
+        Divider(color: Colors.grey.withOpacity(0.1)),
         Obx(
           () => Column(
             children: controller.pricing.features
@@ -97,18 +97,25 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
       ],
     );
 
+    final scrollController = ScrollController();
+
     final productsListView = SizedBox(
       height: 200,
       child: Obx(
-        () => ListView.builder(
-          shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-          itemCount: controller.data.length,
-          itemBuilder: (context, index) => ListItemAnimation(
-            axis: Axis.horizontal,
-            offset: const Offset(100, 0),
-            child: IAPProductTile(
-              package: controller.data[index],
+        () => Scrollbar(
+          controller: scrollController,
+          thumbVisibility: isDesktop,
+          child: ListView.builder(
+            controller: scrollController,
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            itemCount: controller.data.length,
+            itemBuilder: (context, index) => ListItemAnimation(
+              axis: Axis.horizontal,
+              offset: const Offset(100, 0),
+              child: IAPProductTile(
+                package: controller.data[index],
+              ),
             ),
           ),
         ),
