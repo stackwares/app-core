@@ -125,16 +125,28 @@ class AuthService extends GetxService with ConsoleMixin {
             : 'http://localhost:9000/#/auth-callback'
         : redirect;
 
-    try {
-      busy.value = true;
+    busy.value = true;
 
-      await auth.signInWithOAuth(
-        provider,
-        redirectTo: redirectTo,
-        authScreenLaunchMode: GetPlatform.isIOS
-            ? LaunchMode.inAppWebView
-            : LaunchMode.externalApplication,
-      );
+    try {
+      if (provider == Provider.apple && isApple) {
+        console.info('APPLE SIGNING IN...');
+        final response = await auth.signInWithApple();
+        console.info('APPLE RESPONSE: $response');
+      } else {
+        await auth.signInWithOAuth(
+          provider,
+          redirectTo: redirectTo,
+          authScreenLaunchMode: LaunchMode.externalApplication,
+        );
+      }
+
+      // await auth.signInWithOAuth(
+      //   provider,
+      //   redirectTo: redirectTo,
+      //   authScreenLaunchMode: GetPlatform.isIOS
+      //       ? LaunchMode.inAppWebView
+      //       : LaunchMode.externalApplication,
+      // );
     } on AuthException catch (e) {
       busy.value = false;
       return Left('signIn error: $e');

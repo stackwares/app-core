@@ -277,6 +277,7 @@ class PurchasesService extends GetxService with ConsoleMixin {
       case PurchasesErrorCode.invalidSubscriberAttributesError:
         break;
       case PurchasesErrorCode.missingReceiptFileError:
+        errorMessage = '';
         break;
       case PurchasesErrorCode.networkError:
         errorMessage = 'A network error occurred. Please try again.';
