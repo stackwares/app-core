@@ -2,10 +2,10 @@ import 'package:app_core/config.dart';
 
 import 'package:app_core/notifications/notifications.manager.dart';
 import 'package:app_core/utils/utils.dart';
-import 'package:app_review/app_review.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:in_app_review/in_app_review.dart';
 
 import '../firebase/analytics.service.dart';
 import '../config/app.model.dart';
@@ -161,25 +161,23 @@ class UIUtils {
 
   static void rateAndReview() async {
     final store = appConfig.links.store;
-    final available = await AppReview.isRequestReviewAvailable;
+
+    final inAppReview = InAppReview.instance;
+    final available = await inAppReview.isAvailable();
     console.info('review available: $available');
 
     if (GetPlatform.isAndroid) {
       if (available) {
-        final result = await AppReview.openAndroidReview();
-        console.info('review result: $result');
+        inAppReview.requestReview();
       } else {
         Utils.openUrl(store.google);
       }
-    } else if (GetPlatform.isIOS) {
+    } else if (isApple) {
       if (available) {
-        final result = await AppReview.openIosReview();
-        console.info('review result: $result');
+        inAppReview.requestReview();
       } else {
         Utils.openUrl(store.apple);
       }
-    } else if (GetPlatform.isMacOS) {
-      Utils.openUrl(store.apple);
     }
 
     AnalyticsService.to.logEvent('rate_review');

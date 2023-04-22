@@ -17,7 +17,7 @@ dependencies:
   # ICONS
   line_icons: ^2.0.1 # icons
   iconsax: ^0.0.8
-  lucide_icons: ^0.162.0
+  lucide_icons: ^0.171.0
 
   # ANIMATIONS
   simple_animations: ^5.0.0+3
@@ -25,14 +25,14 @@ dependencies:
   flutter_animate: ^4.1.1+1
 
   # DESKTOP
-  system_tray: ^2.0.2
+  system_tray: ^2.0.3
   launch_at_startup: ^0.2.2
   window_manager: ^0.3.2
   hotkey_manager: ^0.1.7
 
   # UI
   extended_image: ^7.0.2
-  flex_color_scheme: 7.0.2 # themes
+  flex_color_scheme: 7.0.3 # themes
   flutter_displaymode: ^0.5.0 # allow higher refresh rates
   flutter_rating_bar: ^4.0.1
   google_fonts: ^4.0.3
@@ -51,9 +51,9 @@ dependencies:
   supercharged: ^2.1.1 # useful utils
   flutter_local_notifications: ^13.0.0
   either_dart: ^0.3.0 # functional programming + error handling
-  app_review: ^2.1.2+1
+  in_app_review: ^2.0.6
   app_settings: ^4.2.0
-  intl: ^0.18.0 # date formatting
+  intl: ^0.18.1 # date formatting
   uuid: ^3.0.7
   timeago: ^3.4.0
   permission_handler: ^10.2.0
@@ -65,12 +65,12 @@ dependencies:
 
   # FIREBASE
   # firebase_core: 2.4.1
-  firebase_analytics: 10.2.0
-  firebase_crashlytics: 3.1.0
-  firebase_performance: 0.9.1
+  firebase_analytics: 10.2.1
+  firebase_crashlytics: 3.1.1
+  firebase_performance: 0.9.1+1
 
   # API / NETWORKS
-  purchases_flutter: ^4.11.2
+  purchases_flutter: ^4.11.3
   connectivity_plus: ^3.0.4
   supabase_flutter: ^1.7.0
 
