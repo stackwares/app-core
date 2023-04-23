@@ -8,6 +8,7 @@ class Routes {
   static const about = '/about';
   static const feedback = '/feedback';
   static const artGenerator = '/art_generator';
+  static const generateStream = '/generate_stream';
   static const upgrade = '/upgrade';
   static const update = '/update';
   static const disabledBeta = '/disabled_beta';
