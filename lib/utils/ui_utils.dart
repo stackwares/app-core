@@ -161,20 +161,19 @@ class UIUtils {
 
   static void rateAndReview() async {
     final store = appConfig.links.store;
-
     final inAppReview = InAppReview.instance;
     final available = await inAppReview.isAvailable();
     console.info('review available: $available');
 
     if (GetPlatform.isAndroid) {
       if (available) {
-        inAppReview.requestReview();
+        await inAppReview.requestReview();
       } else {
         Utils.openUrl(store.google);
       }
     } else if (isApple) {
       if (available) {
-        inAppReview.requestReview();
+        await inAppReview.requestReview();
       } else {
         Utils.openUrl(store.apple);
       }
