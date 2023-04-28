@@ -17,7 +17,7 @@ dependencies:
   # ICONS
   line_icons: ^2.0.1 # icons
   iconsax: ^0.0.8
-  lucide_icons: ^0.171.0
+  lucide_icons: ^0.181.0
 
   # ANIMATIONS
   simple_animations: ^5.0.0+3
@@ -32,8 +32,8 @@ dependencies:
 
   # UI
   extended_image: ^7.0.2
-  flex_color_scheme: 7.0.3 # themes
-  flutter_displaymode: ^0.5.0 # allow higher refresh rates
+  flex_color_scheme: 7.0.4 # themes
+  flutter_displaymode: ^0.6.0 # allow higher refresh rates
   flutter_rating_bar: ^4.0.1
   google_fonts: ^4.0.3
   locale_emoji_flutter: ^0.2.1
@@ -49,7 +49,7 @@ dependencies:
   console_mixin: ^0.0.1
   url_launcher: ^6.1.10
   supercharged: ^2.1.1 # useful utils
-  flutter_local_notifications: ^13.0.0
+  flutter_local_notifications: ^14.0.0
   either_dart: ^0.3.0 # functional programming + error handling
   in_app_review: ^2.0.6
   app_settings: ^4.2.0
@@ -58,7 +58,7 @@ dependencies:
   timeago: ^3.4.0
   permission_handler: ^10.2.0
   easy_debounce: ^2.0.3
-  sentry_flutter: ^7.4.2 # error reporting for windows and linux
+  sentry_flutter: ^7.5.0 # error reporting for windows and linux
 
   # SECURITY
   local_auth: ^2.1.6
@@ -71,11 +71,11 @@ dependencies:
 
   # API / NETWORKS
   purchases_flutter: ^4.11.3
-  connectivity_plus: ^3.0.4
+  connectivity_plus: ^3.0.5
   supabase_flutter: ^1.7.0
 
   # INFO
-  device_info_plus: 8.2.0
+  device_info_plus: 8.2.1
   platform_device_id: ^1.0.1
   # package_info_plus: ^3.0.2
 
