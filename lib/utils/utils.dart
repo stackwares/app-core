@@ -32,6 +32,7 @@ class Utils {
 
   static void copyToClipboard(text) async {
     await Clipboard.setData(ClipboardData(text: text));
+
     UIUtils.showSnackBar(
       title: 'Copied',
       message: 'Successfully copied to clipboard',

@@ -45,6 +45,8 @@ bool get isMobile =>
 bool get isIAPSupported =>
     !GetPlatform.isWeb && (GetPlatform.isMacOS || GetPlatform.isMobile);
 
+bool get isAdSupportedPlatform => GetPlatform.isIOS || GetPlatform.isAndroid;
+
 bool get isGumroadSupported => !isIAPSupported;
 
 bool get isLocalAuthSupported =>

@@ -17,7 +17,7 @@ dependencies:
   # ICONS
   line_icons: ^2.0.1 # icons
   iconsax: ^0.0.8
-  lucide_icons: ^0.181.0
+  lucide_icons: ^0.190.0
 
   # ANIMATIONS
   simple_animations: ^5.0.0+3
@@ -32,10 +32,10 @@ dependencies:
 
   # UI
   extended_image: ^7.0.2
-  flex_color_scheme: 7.0.4 # themes
+  flex_color_scheme: 7.0.5 # themes
   flutter_displaymode: ^0.6.0 # allow higher refresh rates
   flutter_rating_bar: ^4.0.1
-  google_fonts: ^4.0.3
+  google_fonts: ^4.0.4
   locale_emoji_flutter: ^0.2.1
 
   # IO
@@ -49,8 +49,8 @@ dependencies:
   console_mixin: ^0.0.1
   url_launcher: ^6.1.10
   supercharged: ^2.1.1 # useful utils
-  flutter_local_notifications: ^14.0.0
-  either_dart: ^0.3.0 # functional programming + error handling
+  flutter_local_notifications: ^14.0.0+1
+  either_dart: ^0.4.0 # functional programming + error handling
   in_app_review: ^2.0.6
   app_settings: ^4.2.0
   intl: ^0.18.1 # date formatting
@@ -66,16 +66,16 @@ dependencies:
   # FIREBASE
   # firebase_core: 2.4.1
   firebase_analytics: 10.2.1
-  firebase_crashlytics: 3.1.1
+  firebase_crashlytics: 3.1.2
   firebase_performance: 0.9.1+1
 
   # API / NETWORKS
   purchases_flutter: ^4.11.3
-  connectivity_plus: ^3.0.5
-  supabase_flutter: ^1.7.0
+  connectivity_plus: ^3.0.6
+  supabase_flutter: ^1.8.1
 
   # INFO
-  device_info_plus: 8.2.1
+  device_info_plus: 8.2.2
   platform_device_id: ^1.0.1
   # package_info_plus: ^3.0.2
 

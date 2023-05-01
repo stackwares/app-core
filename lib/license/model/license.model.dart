@@ -35,6 +35,24 @@ class License {
         "licenseKey": licenseKey,
       };
 
+  License copyWith({
+    Map<String, dynamic>? data,
+    bool? trial,
+    String? source,
+    DateTime? updatedAt,
+    String? entitlementId,
+    String? licenseKey,
+  }) {
+    return License(
+      data: data ?? this.data,
+      trial: trial ?? this.trial,
+      source: source ?? this.source,
+      updatedAt: updatedAt ?? this.updatedAt,
+      entitlementId: entitlementId ?? this.entitlementId,
+      licenseKey: licenseKey ?? this.licenseKey,
+    );
+  }
+
   String get key {
     if (licenseKey.isEmpty) return 'update'.tr;
     return '${licenseKey.substring(0, 10)}...';

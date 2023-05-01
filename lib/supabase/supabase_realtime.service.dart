@@ -1,14 +1,7 @@
-import 'dart:io';
-
-import 'package:app_core/globals.dart';
-import 'package:app_core/license/license.service.dart';
 import 'package:app_core/supabase/model/user_presence.model.dart';
-import 'package:app_core/supabase/supabase_auth.service.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
-import '../utils/utils.dart';
 
 class RealtimeService extends GetxService with ConsoleMixin {
   static RealtimeService get to => Get.find();

@@ -1,6 +1,5 @@
 import 'package:app_core/config.dart';
 import 'package:app_core/firebase/analytics.service.dart';
-
 import 'package:app_core/firebase/crashlytics.service.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/notifications/notifications.manager.dart';
@@ -45,28 +44,7 @@ class AuthService extends GetxService with ConsoleMixin {
     );
 
     initAuthState();
-
     super.onInit();
-  }
-
-  @override
-  void onReady() async {
-    try {
-      final initialSession = await SupabaseAuth.instance.initialSession;
-      console.warning('initialSession user id: ${initialSession?.user.id}');
-      if (initialSession != null) authenticatedInit(initialSession.user);
-    } catch (e) {
-      // Handle initial auth state fetch error here
-      console.error('initialSession error: $e');
-    }
-
-    super.onReady();
-  }
-
-  // FUNCTIONS
-
-  void authenticatedInit(User user_) async {
-    onSignedIn(user_);
   }
 
   void onSignedIn(User user_) async {
@@ -81,16 +59,14 @@ class AuthService extends GetxService with ConsoleMixin {
     PurchasesService.to.login(user_);
     FunctionsService.to.sync(user_);
     AnalyticsService.to.logSignIn();
-
-    if (GetPlatform.isIOS) {
-      closeInAppWebView();
-    }
+    if (GetPlatform.isIOS) closeInAppWebView();
   }
 
   void initAuthState() {
-    auth.onAuthStateChange.listen((data) {
-      console.wtf('onAuthStateChange! ${data.event}');
-      console.info('User ID: ${data.session?.user.id}');
+    auth.onAuthStateChange.listen((data) async {
+      console.wtf(
+        'onAuthStateChange! ${data.event} => ${data.session?.user.id}',
+      );
 
       if (data.event == AuthChangeEvent.signedIn) {
         EasyDebounce.debounce('auth-sign-in', 2.seconds, () async {
@@ -101,11 +77,9 @@ class AuthService extends GetxService with ConsoleMixin {
           }
         });
       } else if (data.event == AuthChangeEvent.signedOut) {
-        EasyDebounce.debounce('auth-sign-out', 1.seconds, () async {
-          AnalyticsService.to.logSignOut();
-          PurchasesService.to.logout();
-          CoreConfig().onSignedOut?.call();
-        });
+        AnalyticsService.to.logSignOut();
+        PurchasesService.to.logout();
+        CoreConfig().onSignedOut?.call();
       } else if (data.event == AuthChangeEvent.tokenRefreshed) {
         //
       } else if (data.event == AuthChangeEvent.userUpdated) {
@@ -139,14 +113,6 @@ class AuthService extends GetxService with ConsoleMixin {
           authScreenLaunchMode: LaunchMode.externalApplication,
         );
       }
-
-      // await auth.signInWithOAuth(
-      //   provider,
-      //   redirectTo: redirectTo,
-      //   authScreenLaunchMode: GetPlatform.isIOS
-      //       ? LaunchMode.inAppWebView
-      //       : LaunchMode.externalApplication,
-      // );
     } on AuthException catch (e) {
       busy.value = false;
       return Left('signIn error: $e');
