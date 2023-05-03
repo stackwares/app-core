@@ -29,7 +29,10 @@ class RateWidgetController extends GetxController with ConsoleMixin {
     if (!formKey.currentState!.validate()) return;
 
     if (rating.value >= 4.0) {
-      Utils.copyToClipboard(textController.text);
+      if (textController.text.isNotEmpty) {
+        Utils.copyToClipboard(textController.text);
+      }
+
       UIUtils.rateAndReview();
     } else {
       Utils.contactEmail(

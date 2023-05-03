@@ -25,41 +25,15 @@ class PurchasesService extends GetxService with ConsoleMixin {
   final info = Rx<CustomerInfo>(CustomerInfo.fromJson(kPurchaserInfoInitial));
   final offerings = Rx<Offerings>(Offerings.fromJson(kOfferingsInitial));
   final packages = <Package>[].obs;
-  // final verifiedPro = Persistence.to.verifiedProCache.val.obs;
-  // final licenseKey = ''.obs;
 
   // GETTERS
-
-  // bool get isPro => proEntitlement?.isActive == true || verifiedPro.value;
-
-  // EntitlementInfo? get proEntitlement => info.value.entitlements.all['pro'];
-
-  // String get proPrefixString =>
-  //     proEntitlement?.willRenew == true ? 'renews'.tr : 'expires'.tr;
-
-  // String get proDateString => DateFormat.yMMMMd()
-  //     .add_jm()
-  //     .format(DateTime.parse(proEntitlement!.expirationDate!).toLocal());
-
-  // String get shortLicenseKey => licenseKey.isEmpty ||
-  //         licenseKey.value.length < 35
-  //     ? 'none'.tr
-  //     : '${licenseKey.substring(0, 7)}...${licenseKey.substring(licenseKey.value.length - 7)} ${verifiedPro.value ? '' : '- Inactive'}';
-
   String get planId {
     final entitlements = info.value.entitlements;
     if (entitlements.active.isEmpty) return 'free';
     return entitlements.active.entries.first.key;
   }
 
-  // String get planSource {
-  //   final entitlements = PurchasesService.to.info.value.entitlements;
-  //   if (entitlements.active.isEmpty) return 'free';
-  //   return entitlements.active.entries.first.key;
-  // }
-
   // INIT
-
   @override
   void onClose() {
     if (!isIAPSupported) return;
@@ -67,16 +41,16 @@ class PurchasesService extends GetxService with ConsoleMixin {
     super.onClose();
   }
 
-  @override
-  void onInit() {
-    init();
-    super.onInit();
-  }
+  // @override
+  // void onInit() {
+  //   init();
+  //   super.onInit();
+  // }
 
   // FUNCTIONS
   Future<void> init() async {
     if (!isIAPSupported) return;
-    await Purchases.setDebugLogsEnabled(false);
+    // await Purchases.setLogLevel(LogLevel.debug);
 
     await Purchases.configure(
       PurchasesConfiguration(secretConfig.revenuecat.key),
@@ -97,6 +71,7 @@ class PurchasesService extends GetxService with ConsoleMixin {
 
   Future<void> login(User user) async {
     if (!isIAPSupported) return;
+    await init();
     await Purchases.logIn(user.id);
     await Purchases.setEmail(user.email!);
   }

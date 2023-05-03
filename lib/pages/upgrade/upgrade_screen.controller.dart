@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app_core/config.dart';
 
 import 'package:app_core/globals.dart';
@@ -24,6 +26,7 @@ class UpgradeScreenController extends GetxController
   static UpgradeScreenController get to => Get.find();
 
   // VARIABLES
+  Timer? cooldownTimer;
 
   // PROPERTIES
   final busy = false.obs;
@@ -33,6 +36,7 @@ class UpgradeScreenController extends GetxController
   final data = <Package>[].obs;
   final package = Rx<Package>(Package.fromJson(kPackageInitial));
   final gumroadProduct = const Product().obs;
+  final timerSeconds = 0.obs;
 
   // GETTERS
   String get packageId => package.value.identifier;
@@ -66,6 +70,12 @@ class UpgradeScreenController extends GetxController
 
   // INIT
   @override
+  void onClose() {
+    cooldownTimer?.cancel();
+    super.onClose();
+  }
+
+  @override
   void onInit() async {
     showYearlyPlans.listen((yearly) => _select());
     _load();
@@ -95,6 +105,20 @@ class UpgradeScreenController extends GetxController
         body: body,
         closeText: 'try_app_pro'.trParams({'w1': appConfig.name}),
       );
+    }
+
+    if (Get.parameters['cooldown'] != null) {
+      final cooldown = int.tryParse(Get.parameters['cooldown']!) ?? 10;
+      timerSeconds.value = cooldown;
+
+      cooldownTimer = Timer.periodic(1.seconds, (timer) {
+        timerSeconds.value = cooldown - timer.tick;
+
+        if (timerSeconds.value <= 0) {
+          cooldownTimer?.cancel();
+          console.info('cancelled cooldown timer');
+        }
+      });
     }
 
     super.onReady();

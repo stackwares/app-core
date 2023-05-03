@@ -314,12 +314,31 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
         text: 'premium'.tr.toUpperCase(),
       ),
       actions: [
-        IconButton(
-          icon: const Icon(Icons.close),
-          onPressed: () {
-            Get.back();
-            CoreConfig().onCancelledUpgradeScreen?.call();
-          },
+        Obx(
+          () => IconButton(
+            icon: controller.timerSeconds.value == 0
+                ? const Icon(Icons.close)
+                : Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      const SizedBox(
+                        width: 30,
+                        height: 30,
+                        child: CircularProgressIndicator(),
+                      ),
+                      Text(
+                        controller.timerSeconds.value.toString(),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+            onPressed: controller.timerSeconds.value == 0
+                ? () {
+                    Get.back();
+                    CoreConfig().onCancelledUpgradeScreen?.call();
+                  }
+                : null,
+          ),
         ),
         TextButton(
           onPressed: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
@@ -329,11 +348,14 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
       ],
     );
 
-    return Scaffold(
-      backgroundColor:
-          Get.isDarkMode ? const Color.fromARGB(255, 29, 29, 29) : null,
-      appBar: appBar,
-      body: content,
+    return WillPopScope(
+      onWillPop: () async => controller.timerSeconds.value == 0,
+      child: Scaffold(
+        backgroundColor:
+            Get.isDarkMode ? const Color.fromARGB(255, 29, 29, 29) : null,
+        appBar: appBar,
+        body: content,
+      ),
     );
   }
 }
