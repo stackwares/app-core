@@ -193,16 +193,17 @@ class Utils {
       body += 'User ID: ${AuthService.to.user!.id}$ln';
     }
 
-    // TODO: Entitlement
     body += 'Plan: ${LicenseService.to.id}$ln';
-    body +=
-        'RC User ID: ${PurchasesService.to.info.value.originalAppUserId}$ln';
+
+    final rc = PurchasesService.to.info.value;
+    body += 'RC ID: ${rc.originalAppUserId}$ln';
+    body += 'Since: ${rc.firstSeen}$ln';
 
     if (Get.locale != null) {
       body += 'Locale: ${Get.locale?.languageCode}$ln';
     }
 
-    body += 'App Version: ${metadataApp.formattedVersion}$ln';
+    body += 'Version: ${metadataApp.formattedVersion}$ln';
     body += 'Platform: $platform$ln';
     body += 'Route: $previousRoute$ln';
 
