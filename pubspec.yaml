@@ -17,7 +17,7 @@ dependencies:
   # ICONS
   line_icons: ^2.0.1 # icons
   iconsax: ^0.0.8
-  lucide_icons: ^0.190.0
+  lucide_icons: ^0.211.0
 
   # ANIMATIONS
   simple_animations: ^5.0.0+3
@@ -65,12 +65,12 @@ dependencies:
 
   # FIREBASE
   # firebase_core: 2.4.1
-  firebase_analytics: 10.2.1
-  firebase_crashlytics: 3.1.2
-  firebase_performance: 0.9.1+1
+  firebase_analytics: 10.3.0
+  firebase_crashlytics: 3.2.0
+  firebase_performance: 0.9.1+2
 
   # API / NETWORKS
-  purchases_flutter: ^4.11.3
+  purchases_flutter: ^4.12.0
   connectivity_plus: ^3.0.6
   supabase_flutter: ^1.8.1
 

@@ -268,8 +268,8 @@ class PurchasesService extends GetxService with ConsoleMixin {
       case PurchasesErrorCode.receiptInUseByOtherSubscriberError:
         break;
       case PurchasesErrorCode.storeProblemError:
-        errorMessage =
-            'There was a problem with ${GetPlatform.isIOS || GetPlatform.isMacOS ? 'the App Store' : 'Google Play'}';
+        // errorMessage =
+        //     'There was a problem with ${GetPlatform.isIOS || GetPlatform.isMacOS ? 'the App Store' : 'Google Play'}';
         break;
       case PurchasesErrorCode.unexpectedBackendResponseError:
         break;

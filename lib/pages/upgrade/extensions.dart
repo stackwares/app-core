@@ -97,7 +97,7 @@ extension StoreProductExtension on StoreProduct {
   }
 
   String get buttonSubTitle {
-    return '${!isSubscription ? '${'now_only'.tr} $itemTitle' : '${'now_only'.tr} $itemTitle'} - ${'cancel_anytime'.tr}';
+    return '${!isSubscription ? '${'now_only'.tr} $itemTitle' : '${'now_only'.tr} $itemTitle'}${!isApple ? ' - ${'cancel_anytime'.tr}' : ''}';
   }
 
   String get trialDurationText {
