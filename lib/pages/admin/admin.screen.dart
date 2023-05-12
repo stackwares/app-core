@@ -4,7 +4,6 @@ import 'package:app_core/widgets/appbar_leading.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:line_icons/line_icons.dart';
 import 'package:locale_emoji_flutter/locale_emoji_flutter.dart';
 
 import '../../utils/utils.dart';
@@ -29,28 +28,28 @@ class AdminScreen extends StatelessWidget with ConsoleMixin {
           final item = RealtimeService.to.data[index];
           final emojiFlag = Locale(item.locale).flagEmoji ?? '🌍';
 
-          var platformIcon = Icons.circle;
-          Color? platformColor;
-          final platform_ = item.platform.toLowerCase();
+          // var platformIcon = Icons.circle;
+          // Color? platformColor;
+          // final platform_ = item.platform.toLowerCase();
 
-          if (platform_.contains('android')) {
-            platformIcon = LineIcons.android;
-            platformColor = Colors.lightGreen;
-          } else if (platform_.contains('ios')) {
-            platformIcon = Icons.phone_iphone;
-          } else if (platform_.contains('macos')) {
-            platformIcon = LineIcons.apple;
-            platformColor = Colors.grey;
-          } else if (platform_.contains('web')) {
-            platformIcon = LineIcons.chrome;
-            platformColor = Colors.yellow;
-          } else if (platform_.contains('windows')) {
-            platformIcon = LineIcons.windows;
-            platformColor = Colors.blue;
-          } else if (platform_.contains('linux')) {
-            platformIcon = LineIcons.linux;
-            platformColor = Colors.brown;
-          }
+          // if (platform_.contains('android')) {
+          //   platformIcon = LineIcons.android;
+          //   platformColor = Colors.lightGreen;
+          // } else if (platform_.contains('ios')) {
+          //   platformIcon = Icons.phone_iphone;
+          // } else if (platform_.contains('macos')) {
+          //   platformIcon = LineIcons.apple;
+          //   platformColor = Colors.grey;
+          // } else if (platform_.contains('web')) {
+          //   platformIcon = LineIcons.chrome;
+          //   platformColor = Colors.yellow;
+          // } else if (platform_.contains('windows')) {
+          //   platformIcon = LineIcons.windows;
+          //   platformColor = Colors.blue;
+          // } else if (platform_.contains('linux')) {
+          //   platformIcon = LineIcons.linux;
+          //   platformColor = Colors.brown;
+          // }
 
           final plan = item.plan != 'free'
               ? '${item.plan}${item.planTrial ? ' - trial' : ''}'
