@@ -63,6 +63,7 @@ class UIUtils {
     Function()? action,
     String? actionText,
   }) async {
+    if (body.isEmpty) return;
     final content = SingleChildScrollView(child: Text(body));
 
     await Get.dialog(

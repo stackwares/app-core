@@ -101,6 +101,7 @@ extension StoreProductExtension on StoreProduct {
   }
 
   String get trialDurationText {
+    if (introductoryPrice == null) return '';
     return '${introductoryPrice!.periodNumberOfUnits}-${GetUtils.capitalizeFirst(introductoryPrice!.periodUnit.name.tr)} ${'free_trial'.tr}';
   }
 

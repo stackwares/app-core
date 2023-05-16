@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:app_core/config.dart';
-
 import 'package:app_core/globals.dart';
 import 'package:app_core/notifications/notifications.manager.dart';
 import 'package:app_core/pages/upgrade/extensions.dart';
@@ -43,11 +42,10 @@ class UpgradeScreenController extends GetxController
   StoreProduct get product => package.value.storeProduct;
 
   Pricing get pricing {
-    // TODO: this is just temporary for NexBot
     return CoreConfig()
             .upgradeConfig
             .pricing[package.value.storeProduct.identifier] ??
-        CoreConfig().upgradeConfig.pricing['nexbot.pro.sub.monthly']!;
+        Pricing();
   }
 
   String get buttonText {
