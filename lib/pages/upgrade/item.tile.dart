@@ -1,3 +1,4 @@
+import 'package:app_core/config.dart';
 import 'package:app_core/pages/upgrade/extensions.dart';
 import 'package:app_core/pages/upgrade/upgrade_screen.controller.dart';
 import 'package:app_core/widgets/gradient.widget.dart';
@@ -74,12 +75,7 @@ class IAPProductTile extends StatelessWidget {
               visible: isSelected,
               replacement: titleText,
               child: GradientWidget(
-                gradient: const LinearGradient(
-                  colors: [
-                    Color.fromARGB(255, 255, 0, 212),
-                    Color.fromARGB(255, 0, 166, 255),
-                  ],
-                ),
+                gradient: LinearGradient(colors: CoreConfig().gradientColors),
                 child: titleText,
               ),
             ),
