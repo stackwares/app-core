@@ -38,6 +38,8 @@ class HiveMetadataApp extends HiveObject {
 
   String get formattedVersion => 'v$version+$buildNumber';
 
+  int get buildNumberInt => int.parse(buildNumber);
+
   static Future<HiveMetadataApp> get() async {
     final packageInfo = await PackageInfo.fromPlatform();
 

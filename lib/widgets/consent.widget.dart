@@ -8,7 +8,7 @@ import 'package:app_core/widgets/gradient.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class ConsentWidget extends StatelessWidget {
   const ConsentWidget({Key? key}) : super(key: key);
@@ -46,7 +46,7 @@ class ConsentWidget extends StatelessWidget {
               ),
               TextButton.icon(
                 onPressed: submit,
-                icon: const Icon(Iconsax.arrow_right_2),
+                icon: const Icon(LucideIcons.arrowRight),
                 label: Text('continue'.tr),
               ),
             ],
@@ -59,7 +59,7 @@ class ConsentWidget extends StatelessWidget {
           const SizedBox(height: 15),
           SwitchListTile(
             title: Text('errors_crashes'.tr),
-            secondary: const Icon(Iconsax.warning_2),
+            secondary: const Icon(LucideIcons.serverCrash),
             value: p.crashReporting.val,
             subtitle: isSmallScreen ? null : Text("send_reports".tr),
             onChanged: (value) => p.crashReporting.val = value,
@@ -67,7 +67,7 @@ class ConsentWidget extends StatelessWidget {
           const SizedBox(height: 15),
           SwitchListTile(
             title: Text('usage_stats'.tr),
-            secondary: const Icon(Iconsax.chart_square),
+            secondary: const Icon(LucideIcons.barChart),
             value: p.analytics.val,
             subtitle: isSmallScreen ? null : Text('send_stats'.tr),
             onChanged: (value) => p.analytics.val = value,

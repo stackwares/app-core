@@ -1,6 +1,6 @@
 import 'package:app_core/config.dart';
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 import '../../firebase/analytics.service.dart';
 
@@ -41,7 +41,7 @@ class UpdateScreen extends StatelessWidget {
             width: 200,
             child: ElevatedButton.icon(
               label: const Text('Download'),
-              icon: const Icon(Iconsax.arrow_down_2),
+              icon: const Icon(LucideIcons.download),
               onPressed: () {
                 AnalyticsService.to.logEvent('download_required_update');
                 Utils.openUrl(appConfig.links.website);

@@ -1,7 +1,7 @@
 import 'package:app_core/config.dart';
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 import '../../config/app.model.dart';
 import '../../utils/utils.dart';
@@ -40,7 +40,7 @@ class DisabledBetaScreen extends StatelessWidget {
             width: 200,
             child: ElevatedButton.icon(
               label: const Text('Check'),
-              icon: const Icon(Iconsax.document_download),
+              icon: const Icon(LucideIcons.download),
               onPressed: () => Utils.openUrl(
                 appConfig.links.website,
               ),

@@ -10,7 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
+
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -36,7 +37,7 @@ class Utils {
     UIUtils.showSnackBar(
       title: 'Copied',
       message: 'Successfully copied to clipboard',
-      icon: const Icon(Iconsax.copy),
+      icon: const Icon(LucideIcons.copy),
       seconds: 2,
     );
 

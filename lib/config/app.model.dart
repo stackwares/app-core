@@ -36,22 +36,26 @@ class ConfigBuild {
   const ConfigBuild({
     this.min = 0,
     this.latest = 0,
+    this.beta = const [],
     this.disabled = const [],
   });
 
   final int min;
   final int latest;
+  final List<int> beta;
   final List<int> disabled;
 
   factory ConfigBuild.fromJson(Map<String, dynamic> json) => ConfigBuild(
         min: json["min"],
         latest: json["latest"],
+        beta: List<int>.from(json["beta"].map((x) => x)),
         disabled: List<int>.from(json["disabled"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
         "min": min,
         "latest": latest,
+        "beta": List<dynamic>.from(beta.map((x) => x)),
         "disabled": List<dynamic>.from(disabled.map((x) => x)),
       };
 }
