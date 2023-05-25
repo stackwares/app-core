@@ -14,7 +14,6 @@ import 'package:get/get.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 import '../../config/app.model.dart';
-import '../../license/license.service.dart';
 import '../../purchases/purchases.services.dart';
 import '../../supabase/model/gumroad_product.model.dart';
 import '../../supabase/supabase_functions.service.dart';

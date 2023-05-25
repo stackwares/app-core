@@ -10,7 +10,6 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 
 import '../../config/app.model.dart';
 import '../routes.dart';

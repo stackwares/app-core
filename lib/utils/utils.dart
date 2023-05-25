@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 import 'package:timeago/timeago.dart' as timeago;
@@ -197,8 +198,12 @@ class Utils {
     body += 'Plan: ${LicenseService.to.id}$ln';
 
     final rc = PurchasesService.to.info.value;
+    final sinceDate = DateTime.tryParse(rc.firstSeen);
+
     body += 'RC ID: ${rc.originalAppUserId}$ln';
-    body += 'Since: ${rc.firstSeen}$ln';
+    if (sinceDate != null) {
+      body += 'Since: ${DateFormat.yMMMMd().add_jms().format(sinceDate)}$ln';
+    }
 
     if (Get.locale != null) {
       body += 'Locale: ${Get.locale?.languageCode}$ln';
