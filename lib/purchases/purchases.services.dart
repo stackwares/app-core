@@ -33,6 +33,8 @@ class PurchasesService extends GetxService with ConsoleMixin {
     return entitlements.active.entries.first.key;
   }
 
+  bool get isPremium => planId != 'free';
+
   // INIT
   @override
   void onClose() {
@@ -40,12 +42,6 @@ class PurchasesService extends GetxService with ConsoleMixin {
     Purchases.removeCustomerInfoUpdateListener((info_) => info.value = info_);
     super.onClose();
   }
-
-  // @override
-  // void onInit() {
-  //   init();
-  //   super.onInit();
-  // }
 
   // FUNCTIONS
   Future<void> init() async {

@@ -192,7 +192,7 @@ class UpgradeScreenController extends GetxController
     await PurchasesService.to.purchase(package);
     change(null, status: RxStatus.success());
 
-    if (LicenseService.to.isPremium) {
+    if (PurchasesService.to.isPremium) {
       // TODO: record purchase, trial or not
 
       NotificationsManager.notify(
@@ -218,7 +218,7 @@ class UpgradeScreenController extends GetxController
     await PurchasesService.to.restore();
     change(null, status: RxStatus.success());
 
-    if (LicenseService.to.isPremium) {
+    if (PurchasesService.to.isPremium) {
       NotificationsManager.notify(
         title: '${appConfig.name} ${'pro_restored'.tr}',
         body: 'Thanks for being a ${appConfig.name} rockstar!',
