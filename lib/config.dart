@@ -29,6 +29,7 @@ class CoreConfig with ConsoleMixin {
   late Size initialWindowSize;
   late double desktopChangePoint;
   late BuildMode buildMode;
+  late bool isAppStore;
   late BoxConstraints mainConstraints;
   late List<GetPage<dynamic>> pages;
   late List<Color> gradientColors;
@@ -60,6 +61,7 @@ class CoreConfig with ConsoleMixin {
     Size initialWindowSize = const Size(1500, 1000),
     double desktopChangePoint = 800,
     BuildMode buildMode = BuildMode.production,
+    bool isAppStore = true,
     BoxConstraints mainConstraints = const BoxConstraints(maxWidth: 500),
     bool allowAnonymousRcUserSync = true,
     String offeringId = '',
@@ -77,6 +79,7 @@ class CoreConfig with ConsoleMixin {
     this.initialWindowSize = initialWindowSize;
     this.desktopChangePoint = desktopChangePoint;
     this.buildMode = buildMode;
+    this.isAppStore = isAppStore;
     this.mainConstraints = mainConstraints;
     this.gradientColors = gradientColors;
     this.allowAnonymousRcUserSync = allowAnonymousRcUserSync;

@@ -26,6 +26,7 @@ bool get isLinux => GetPlatform.isLinux && !GetPlatform.isWeb;
 bool get isWindows => GetPlatform.isWindows && !GetPlatform.isWeb;
 bool get isMac => GetPlatform.isMacOS && !GetPlatform.isWeb;
 bool get isWeb => GetPlatform.isWeb;
+bool get isAppStore => CoreConfig().isAppStore;
 
 bool get isApple =>
     !GetPlatform.isWeb && (GetPlatform.isMacOS || GetPlatform.isIOS);

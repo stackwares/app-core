@@ -30,6 +30,13 @@ class AuthService extends GetxService with ConsoleMixin {
   User? get user => auth.currentUser;
   GoTrueClient get auth => Supabase.instance.client.auth;
 
+  int get daysOld {
+    if (!authenticated) return 0;
+    final createdDate = DateTime.parse(user!.createdAt);
+    final days = DateTime.now().difference(createdDate).inDays;
+    console.info('user is $days old');
+    return days;
+  }
   // INIT
 
   @override

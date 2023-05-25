@@ -31,7 +31,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
         Padding(
           padding: const EdgeInsets.only(left: 15),
           child: Text(
-            'unlock_all_access'.tr,
+            '${'unlock_all_access'.tr} ⤵',
             style: const TextStyle(fontSize: 12),
           ),
         ),
@@ -52,48 +52,24 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                 .toList(),
           ),
         ),
-        Obx(
-          () => Visibility(
-            visible: controller.showMoreFeatures.value &&
-                controller.pricing.upcomingFeatures.isNotEmpty,
-            replacement: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(LucideIcons.eye, color: Get.theme.primaryColor),
-                  const SizedBox(width: 10),
-                  TextButton(
-                    onPressed: controller.showMoreFeatures.toggle,
-                    child: Text(
-                      'more_upcoming_features'.tr,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Divider(),
-                Padding(
-                  padding: const EdgeInsets.only(left: 15),
-                  child: Text(
-                    'upcoming_features'.tr,
-                    style: const TextStyle(color: Colors.grey),
-                  ),
-                ),
-                ...controller.pricing.upcomingFeatures
-                    .map((e) => FeatureTile(title: e.tr))
-                    .toList(),
-              ],
-            ),
-          ),
-        ),
+        // if (controller.pricing.upcomingFeatures.isNotEmpty) ...[
+        //   Column(
+        //     crossAxisAlignment: CrossAxisAlignment.start,
+        //     children: [
+        //       const Divider(),
+        //       Padding(
+        //         padding: const EdgeInsets.only(left: 15),
+        //         child: Text(
+        //           'upcoming_features'.tr,
+        //           style: const TextStyle(color: Colors.grey),
+        //         ),
+        //       ),
+        //       ...controller.pricing.upcomingFeatures
+        //           .map((e) => FeatureTile(title: e.tr))
+        //           .toList(),
+        //     ],
+        //   ),
+        // ]
       ],
     );
 
@@ -200,7 +176,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                                     fontWeight: FontWeight.w500),
                               ),
                               Text(
-                                'pay_yearly_sub'.tr,
+                                '${'pay_yearly_sub'.tr} ⤴',
                                 style: TextStyle(
                                   color: Get.theme.colorScheme.tertiary,
                                   fontSize: 10,
