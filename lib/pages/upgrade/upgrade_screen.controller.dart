@@ -41,10 +41,8 @@ class UpgradeScreenController extends GetxController
   StoreProduct get product => package.value.storeProduct;
 
   Pricing get pricing {
-    return CoreConfig()
-            .upgradeConfig
-            .pricing[package.value.storeProduct.identifier] ??
-        Pricing();
+    return CoreConfig().upgradeConfig.pricing[product.identifier] ??
+        CoreConfig().upgradeConfig.pricing.entries.first.value;
   }
 
   String get buttonText {
