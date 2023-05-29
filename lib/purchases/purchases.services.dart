@@ -61,6 +61,7 @@ class PurchasesService extends GetxService with ConsoleMixin {
   }
 
   Future<void> invalidate() async {
+    console.wtf('invalidate');
     if (!isIAPSupported) return;
     await Purchases.invalidateCustomerInfoCache();
   }
@@ -73,6 +74,7 @@ class PurchasesService extends GetxService with ConsoleMixin {
   }
 
   Future<void> logout() async {
+    console.wtf('logout');
     // verifiedPro.value = false;
     // licenseKey.value = '';
     if (!isIAPSupported) return;

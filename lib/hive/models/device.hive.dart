@@ -62,9 +62,9 @@ class HiveMetadataDevice extends HiveObject {
       device.info = {'userAgent': ''};
     } else if (GetPlatform.isIOS) {
       final info = await deviceInfo.iosInfo;
-      device.osVersion = info.systemVersion ?? '';
-      device.name = info.name ?? '';
-      device.model = info.utsname.machine ?? '';
+      device.osVersion = info.systemVersion;
+      device.name = info.name;
+      device.model = info.utsname.machine;
       device.info = {
         'identifierForVendor': info.identifierForVendor,
         'isPhysicalDevice': info.isPhysicalDevice,

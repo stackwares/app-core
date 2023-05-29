@@ -1,10 +1,10 @@
 import 'package:app_core/globals.dart';
 import 'package:get/utils.dart';
 
-late Secrets secretConfig;
+late SecretsConfig secretConfig;
 
-class Secrets {
-  const Secrets({
+class SecretsConfig {
+  const SecretsConfig({
     this.persistence = const ConfigPersistence(),
     this.revenuecat = const ConfigRevenuecat(),
     this.sentry = const ConfigSentry(),
@@ -16,7 +16,7 @@ class Secrets {
   final ConfigSentry sentry;
   final ConfigSupabase supabase;
 
-  factory Secrets.fromJson(Map<String, dynamic> json) => Secrets(
+  factory SecretsConfig.fromJson(Map<String, dynamic> json) => SecretsConfig(
         persistence: ConfigPersistence.fromJson(json["persistence"]),
         revenuecat: ConfigRevenuecat.fromJson(json["revenuecat"]),
         sentry: ConfigSentry.fromJson(json["sentry"]),

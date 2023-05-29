@@ -3,7 +3,6 @@ import 'package:app_core/firebase/analytics.service.dart';
 import 'package:app_core/firebase/crashlytics.service.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/notifications/notifications.manager.dart';
-import 'package:app_core/pages/routes.dart';
 import 'package:app_core/purchases/purchases.services.dart';
 import 'package:app_core/supabase/supabase_functions.service.dart';
 import 'package:console_mixin/console_mixin.dart';
@@ -79,9 +78,9 @@ class AuthService extends GetxService with ConsoleMixin {
         EasyDebounce.debounce('auth-sign-in', 2.seconds, () async {
           onSignedIn(data.session!.user);
 
-          if (Get.currentRoute != Routes.main) {
-            Get.offNamedUntil(Routes.main, (route) => false);
-          }
+          // if (Get.currentRoute != Routes.main) {
+          //   Get.offNamedUntil(Routes.main, (route) => false);
+          // }
         });
       } else if (data.event == AuthChangeEvent.signedOut) {
         AnalyticsService.to.logSignOut();
