@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
+import '../config.dart';
 import '../config/app.model.dart';
 import '../utils/utils.dart';
 import 'rate_widget.controller.dart';
@@ -30,12 +31,7 @@ class RateWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 GradientWidget(
-                  gradient: const LinearGradient(
-                    colors: [
-                      Color.fromARGB(255, 255, 0, 212),
-                      Color.fromARGB(255, 0, 166, 255),
-                    ],
-                  ),
+                  gradient: LinearGradient(colors: CoreConfig().gradientColors),
                   child: Text(
                     'rate_review'.tr,
                     textAlign: TextAlign.center,

@@ -10,6 +10,8 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
+import '../config.dart';
+
 class ConsentWidget extends StatelessWidget {
   const ConsentWidget({Key? key}) : super(key: key);
 
@@ -29,12 +31,7 @@ class ConsentWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GradientWidget(
-                gradient: const LinearGradient(
-                  colors: [
-                    Color.fromARGB(255, 255, 0, 212),
-                    Color.fromARGB(255, 0, 166, 255),
-                  ],
-                ),
+                gradient: LinearGradient(colors: CoreConfig().gradientColors),
                 child: Text(
                   'consent'.tr,
                   textAlign: TextAlign.center,

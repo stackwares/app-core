@@ -110,20 +110,4 @@ extension StoreProductExtension on StoreProduct {
     final discountedPrice = '$currencySymbol${currencyFormatter.format(price)}';
     return '${'from'.tr} $origPrice ${'to_only'.tr} $discountedPrice';
   }
-
-  // List<String> get features {
-  //   final features_ = ['money_back_guarantee'.tr];
-
-  //   if (hasFreeTrial) {
-  //     features_.add('$trialDurationText ${'free_trial'.tr}');
-  //   }
-
-  //   if (isSubscription) {
-  //     features_.add('cancel_anytime'.tr);
-  //   }
-
-  //   features_.add('join_over_users'.tr);
-
-  //   return features_;
-  // }
 }

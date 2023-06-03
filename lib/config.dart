@@ -56,6 +56,7 @@ class CoreConfig with ConsoleMixin {
     required String logoDarkPath,
     required String logoLightPath,
     required List<Color> gradientColors,
+    required UpgradeConfig upgradeConfig,
     String persistenceBoxName = 'persistence',
     Size minWindowSize = const Size(350, 700),
     Size initialWindowSize = const Size(1500, 1000),
@@ -82,6 +83,7 @@ class CoreConfig with ConsoleMixin {
     this.isAppStore = isAppStore;
     this.mainConstraints = mainConstraints;
     this.gradientColors = gradientColors;
+    this.upgradeConfig = upgradeConfig;
     this.allowAnonymousRcUserSync = allowAnonymousRcUserSync;
     this.offeringId = offeringId;
     this.onCancelledUpgradeScreen = onCancelledUpgradeScreen;

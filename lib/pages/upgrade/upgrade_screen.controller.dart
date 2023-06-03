@@ -87,14 +87,9 @@ class UpgradeScreenController extends GetxController
 
     if (title != null && body != null) {
       UIUtils.showImageDialog(
-        const GradientWidget(
-          gradient: LinearGradient(
-            colors: [
-              Color.fromARGB(255, 255, 0, 212),
-              Color.fromARGB(255, 0, 166, 255),
-            ],
-          ),
-          child: Icon(Icons.rocket, size: 150),
+        GradientWidget(
+          gradient: LinearGradient(colors: CoreConfig().gradientColors),
+          child: const Icon(Icons.rocket, size: 150),
         ),
         title: title,
         body: body,
