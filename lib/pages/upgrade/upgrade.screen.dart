@@ -75,7 +75,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
     final scrollController = ScrollController();
 
     final productsListView = SizedBox(
-      height: 200,
+      height: CoreConfig().upgradeConfig.listViewHeight,
       child: Obx(
         () => Scrollbar(
           controller: scrollController,
@@ -88,9 +88,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
             itemBuilder: (context, index) => ListItemAnimation(
               axis: Axis.horizontal,
               offset: const Offset(100, 0),
-              child: IAPProductTile(
-                package: controller.data[index],
-              ),
+              child: IAPProductTile(package: controller.data[index]),
             ),
           ),
         ),
@@ -160,7 +158,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              isIAPSupported
+              isIAPSupported && CoreConfig().upgradeConfig.grouped
                   ? Align(
                       alignment: Alignment.centerRight,
                       child: Row(

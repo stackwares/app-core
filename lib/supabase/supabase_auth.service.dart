@@ -62,7 +62,7 @@ class AuthService extends GetxService with ConsoleMixin {
       await CrashlyticsService.to.setUserID(user_.id);
     }
 
-    PurchasesService.to.login(user_);
+    await PurchasesService.to.login(user_);
     FunctionsService.to.sync(user_);
     AnalyticsService.to.logSignIn();
     if (GetPlatform.isIOS) closeInAppWebView();
@@ -77,17 +77,15 @@ class AuthService extends GetxService with ConsoleMixin {
       if (data.event == AuthChangeEvent.signedIn) {
         EasyDebounce.debounce('auth-sign-in', 2.seconds, () async {
           onSignedIn(data.session!.user);
-
-          // if (Get.currentRoute != Routes.main) {
-          //   Get.offNamedUntil(Routes.main, (route) => false);
-          // }
+        });
+      } else if (data.event == AuthChangeEvent.tokenRefreshed) {
+        EasyDebounce.debounce('auth-token-refreshed', 2.seconds, () async {
+          onSignedIn(data.session!.user);
         });
       } else if (data.event == AuthChangeEvent.signedOut) {
         AnalyticsService.to.logSignOut();
         PurchasesService.to.logout();
         CoreConfig().onSignedOut?.call();
-      } else if (data.event == AuthChangeEvent.tokenRefreshed) {
-        //
       } else if (data.event == AuthChangeEvent.userUpdated) {
         //
       }

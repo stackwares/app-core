@@ -98,7 +98,7 @@ class UpgradeScreenController extends GetxController
     }
 
     if (Get.parameters['cooldown'] != null) {
-      final cooldown = int.tryParse(Get.parameters['cooldown']!) ?? 10;
+      final cooldown = int.tryParse(Get.parameters['cooldown']!) ?? 5;
       timerSeconds.value = cooldown;
 
       cooldownTimer = Timer.periodic(1.seconds, (timer) {
@@ -130,13 +130,17 @@ class UpgradeScreenController extends GetxController
   }
 
   void _select() {
-    data.value = PurchasesService.to.packages.where((e) {
-      if (showYearlyPlans.value) {
-        return !e.storeProduct.isMonthly;
-      } else {
-        return e.storeProduct.isMonthly;
-      }
-    }).toList();
+    if (CoreConfig().upgradeConfig.grouped) {
+      data.value = PurchasesService.to.packages.where((e) {
+        if (showYearlyPlans.value) {
+          return !e.storeProduct.isMonthly && !e.storeProduct.isWeekly;
+        } else {
+          return e.storeProduct.isMonthly || e.storeProduct.isWeekly;
+        }
+      }).toList();
+    } else {
+      data.value = PurchasesService.to.packages;
+    }
 
     if (data.isNotEmpty) package.value = data.first;
   }
@@ -185,8 +189,6 @@ class UpgradeScreenController extends GetxController
     change(null, status: RxStatus.success());
 
     if (PurchasesService.to.isPremium) {
-      // TODO: record purchase, trial or not
-
       NotificationsManager.notify(
         title: '${appConfig.name} ${'pro_activated'.tr}',
         body: 'pro_thanks'.tr,

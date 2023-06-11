@@ -75,8 +75,6 @@ class PurchasesService extends GetxService with ConsoleMixin {
 
   Future<void> logout() async {
     console.wtf('logout');
-    // verifiedPro.value = false;
-    // licenseKey.value = '';
     if (!isIAPSupported) return;
 
     // prevent exception if logging out with an anonymous user

@@ -20,7 +20,7 @@ class FeatureTile extends StatelessWidget {
     return ListItemAnimation(
       child: Padding(
         padding: EdgeInsets.symmetric(
-          horizontal: 15,
+          // horizontal: 15,
           vertical: isSmallScreen ? 5 : 10,
         ),
         child: Row(
@@ -31,15 +31,15 @@ class FeatureTile extends StatelessWidget {
             Expanded(
               child: Text(
                 title,
-                maxLines: 2,
+                maxLines: 3,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   fontSize: fontSize,
-                  fontWeight: FontWeight.w500,
+                  // fontWeight: FontWeight.w500,
                   color: highlighted ? Get.theme.colorScheme.tertiary : null,
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

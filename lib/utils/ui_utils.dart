@@ -249,16 +249,16 @@ class UIUtils {
         autovalidateMode: AutovalidateMode.onUserInteraction,
         validator: (data) =>
             data!.length != 35 ? 'Please a valid license key' : null,
-        decoration: const InputDecoration(
-          labelText: 'License Key',
-          hintText: 'Gumroad License Key',
+        decoration: InputDecoration(
+          labelText: 'license_key'.tr,
+          hintText: 'Gumroad ${'license_key'.tr}',
         ),
       ),
     );
 
     Get.dialog(
       AlertDialog(
-        title: const Text('Update License Key'), // TODO: localize
+        title: Text('set_license_key'.tr),
         content: Form(
           key: formKey,
           child: isSmallScreen ? content : SizedBox(width: 450, child: content),
@@ -278,7 +278,7 @@ class UIUtils {
               ),
               child: TextButton(
                 onPressed: submit,
-                child: const Text('Update'), // TODO: localize
+                child: Text('update'.tr),
               ),
             ),
           ),

@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:app_core/config.dart';
-
 import 'package:app_core/globals.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:either_dart/either.dart';
@@ -72,19 +71,7 @@ class FunctionsService extends GetxService with ConsoleMixin {
 
     console.wtf('synced: ${jsonEncode(serverResponse.toJson())}');
     final syncUserResponse = SyncUserResponse.fromJson(serverResponse.data);
-    // PurchasesService.to.licenseKey.value = syncUserResponse.licenseKey;
     sessionId = syncUserResponse.sessionId;
-
-    // // VERIFY PRO
-    // if (PurchasesService.to.proEntitlement?.isActive != true) {
-    //   if (syncUserResponse.licenseKey.length >= 35) {
-    //     verifyGumroad(syncUserResponse.licenseKey);
-    //   } else if (syncUserResponse.rcUserId.isNotEmpty && !isIAPSupported) {
-    //     verifyRevenueCat(syncUserResponse.rcUserId);
-    //   } else {
-    //     PurchasesService.to.verifiedPro.value = false;
-    //   }
-    // }
   }
 
   Future<Either<String, GumroadProduct>> gumroadProductDetail() async {
@@ -166,7 +153,6 @@ class FunctionsService extends GetxService with ConsoleMixin {
       }
 
       console.error('server error: $errors');
-      // PurchasesService.to.verifiedPro.value = false;
       return Left(errors);
     }
 
@@ -174,64 +160,9 @@ class FunctionsService extends GetxService with ConsoleMixin {
     console.info('entitlement: ${jsonEncode(entitlement.toJson())}');
 
     if (updateEntitlement) {
-      // PurchasesService.to.verifiedPro.value = entitlement.entitled;
       if (entitlement.entitled) console.wtf('PRO ENTITLED');
     }
 
     return Right(entitlement);
   }
-
-  // Future<Either<String, EntitlementResponse>> verifyRevenueCat(String rcUserId,
-  //     {bool updateEntitlement = true}) async {
-  //   final user = Supabase.instance.client.auth.currentUser;
-
-  //   if (user == null) {
-  //     console.warning('not authenticated');
-  //     return const Left('Please sign in to continue');
-  //   }
-
-  //   console.info('verifyRevenueCat...');
-  //   FunctionResponse? response;
-
-  //   try {
-  //     response = await functions.invoke(
-  //       'verify-revenuecat',
-  //       body: {"userId": rcUserId},
-  //     );
-  //   } catch (e) {
-  //     final message = 'verifyRevenueCat() invoke error: $e';
-  //     console.error(message);
-  //     return Left(message);
-  //   }
-
-  //   if (response.status != 200) {
-  //     return Left(
-  //       'verifyRevenueCat() response error: ${response.status}: ${response.data}',
-  //     );
-  //   }
-
-  //   final serverResponse = ServerResponse.fromJson(response.data);
-
-  //   if (serverResponse.errors.isNotEmpty) {
-  //     String errors = '';
-
-  //     for (var e in serverResponse.errors) {
-  //       errors += '${e.code}: ${e.message}';
-  //     }
-
-  //     console.error('server error: $errors');
-  //     // PurchasesService.to.verifiedPro.value = false;
-  //     return Left(errors);
-  //   }
-
-  //   final entitlement = EntitlementResponse.fromJson(serverResponse.data);
-  //   console.wtf('entitlement: ${jsonEncode(entitlement.toJson())}');
-
-  //   if (updateEntitlement) {
-  //     // PurchasesService.to.verifiedPro.value = entitlement.entitled;
-  //     if (entitlement.entitled) console.wtf('PRO ENTITLED');
-  //   }
-
-  //   return Right(entitlement);
-  // }
 }

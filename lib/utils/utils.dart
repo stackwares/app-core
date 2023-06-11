@@ -79,11 +79,12 @@ class Utils {
     dynamic arguments,
     bool ignoreUpgradeGuard = true,
   }) {
-    if (LicenseService.to.isPremium &&
-        name == Routes.upgrade &&
-        ignoreUpgradeGuard) {
-      console.info('ignored upgrade screen');
-      return Future.value(false);
+    if (name == Routes.upgrade) {
+      if (!CoreConfig().purchasesEnabled ||
+          LicenseService.to.isPremium && ignoreUpgradeGuard) {
+        console.info('ignored upgrade screen');
+        return Future.value(false);
+      }
     }
 
     // Regular navigation for mobile

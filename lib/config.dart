@@ -35,6 +35,7 @@ class CoreConfig with ConsoleMixin {
   late List<Color> gradientColors;
   late UpgradeConfig upgradeConfig;
   late bool allowAnonymousRcUserSync;
+  late bool purchasesEnabled;
   late String offeringId;
 
   late Function()? onCancelledUpgradeScreen;
@@ -65,6 +66,7 @@ class CoreConfig with ConsoleMixin {
     bool isAppStore = true,
     BoxConstraints mainConstraints = const BoxConstraints(maxWidth: 500),
     bool allowAnonymousRcUserSync = true,
+    bool purchasesEnabled = true,
     String offeringId = '',
     Function()? onCancelledUpgradeScreen,
     Function()? onSuccessfulUpgrade,
@@ -85,6 +87,7 @@ class CoreConfig with ConsoleMixin {
     this.gradientColors = gradientColors;
     this.upgradeConfig = upgradeConfig;
     this.allowAnonymousRcUserSync = allowAnonymousRcUserSync;
+    this.purchasesEnabled = purchasesEnabled;
     this.offeringId = offeringId;
     this.onCancelledUpgradeScreen = onCancelledUpgradeScreen;
     this.onSuccessfulUpgrade = onSuccessfulUpgrade;

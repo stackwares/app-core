@@ -41,9 +41,9 @@ class LocalAuthService extends GetxService with ConsoleMixin {
           AndroidAuthMessages(
             signInTitle: '${appConfig.name} Biometrics',
             biometricHint: subTitle,
-            cancelButton: 'Cancel',
+            cancelButton: 'cancel'.tr,
           ),
-          const IOSAuthMessages(cancelButton: 'Cancel'),
+          IOSAuthMessages(cancelButton: 'cancel'.tr),
           // const WindowsAuthMessages(),
         ],
       );

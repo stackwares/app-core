@@ -22,9 +22,8 @@ class IAPProductTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final product = package.storeProduct;
     final currencySymbol = product.priceString.substring(0, 1);
-    String savedText = '';
-
     final prefixId = product.identifier.split('.sub.')[0];
+    String savedText = '';
 
     if (product.isAnnually) {
       final monthly = PurchasesService.to.packages.where(
@@ -54,17 +53,11 @@ class IAPProductTile extends StatelessWidget {
 
     final titleText = Text(
       GetUtils.capitalizeFirst(product.planId)!,
-      style: const TextStyle(
-        fontSize: 30,
-        fontWeight: FontWeight.w500,
-      ),
+      style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w500),
     );
 
     final content = Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 15,
-        vertical: 10,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -84,18 +77,12 @@ class IAPProductTile extends StatelessWidget {
           const SizedBox(height: 5),
           Text(
             product.itemTitle,
-            style: const TextStyle(
-              fontSize: 17,
-              fontWeight: FontWeight.w500,
-            ),
+            style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
           ),
           // SUB PERIOD
           Text(
             product.itemSubTitle,
-            style: const TextStyle(
-              fontSize: 12,
-              color: Colors.grey,
-            ),
+            style: const TextStyle(fontSize: 12, color: Colors.grey),
           ),
           // SAVED
           Visibility(
@@ -128,7 +115,6 @@ class IAPProductTile extends StatelessWidget {
                 product.trialDurationText,
                 style: TextStyle(
                   fontSize: 13,
-                  // fontWeight: FontWeight.w500,
                   color: Get.theme.colorScheme.tertiary,
                 ),
               ),
@@ -192,10 +178,7 @@ class IAPProductTileWeb extends StatelessWidget {
 
     final title = Row(
       children: [
-        Text(
-          'For only ${product.formattedPrice}',
-          style: titleStyle,
-        ),
+        Text('For only ${product.formattedPrice}', style: titleStyle),
         Text(
           ' - 50% OFF Limited Time Sale',
           style: titleStyle.copyWith(
@@ -208,24 +191,16 @@ class IAPProductTileWeb extends StatelessWidget {
 
     final subTitle = Row(
       children: [
-        const Text(
-          'via Gumroad.com',
-          style: subTitleStyle,
-        ),
+        const Text('via Gumroad.com', style: subTitleStyle),
         Text(
           ' - ${'cancel_anytime'.tr}',
-          style: subTitleStyle.copyWith(
-            color: Get.theme.primaryColor,
-          ),
+          style: subTitleStyle.copyWith(color: Get.theme.primaryColor),
         ),
       ],
     );
 
     final content = Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 15,
-        vertical: 10,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -237,26 +212,18 @@ class IAPProductTileWeb extends StatelessWidget {
               subTitle,
             ],
           ),
-          Icon(
-            Icons.check_circle,
-            color: Get.theme.primaryColor,
-          ),
+          Icon(Icons.check_circle, color: Get.theme.primaryColor),
         ],
       ),
     );
 
-    return InkWell(
-      onTap: () {
-        //
-      },
-      child: Card(
-        elevation: 10.0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-          side: BorderSide(color: Get.theme.primaryColor, width: 2),
-        ),
-        child: content,
+    return Card(
+      elevation: 10.0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+        side: BorderSide(color: Get.theme.primaryColor, width: 2),
       ),
+      child: content,
     );
   }
 }
