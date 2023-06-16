@@ -11,14 +11,13 @@ import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:window_manager/window_manager.dart';
 
 import 'connectivity/connectivity.service.dart';
-import 'purchases/purchases.services.dart';
 import 'firebase/analytics.service.dart';
 import 'firebase/crashlytics.service.dart';
 import 'globals.dart';
 import 'notifications/notifications.manager.dart';
+import 'purchases/purchases.services.dart';
 
 class CoreConfig with ConsoleMixin {
   late Map<String, dynamic> translationKeys;
@@ -27,6 +26,7 @@ class CoreConfig with ConsoleMixin {
   late String persistenceBoxName;
   late Size minWindowSize;
   late Size initialWindowSize;
+  late bool windowMode;
   late double desktopChangePoint;
   late BuildMode buildMode;
   late bool isAppStore;
@@ -61,6 +61,7 @@ class CoreConfig with ConsoleMixin {
     String persistenceBoxName = 'persistence',
     Size minWindowSize = const Size(350, 700),
     Size initialWindowSize = const Size(1500, 1000),
+    bool windowMode = true,
     double desktopChangePoint = 800,
     BuildMode buildMode = BuildMode.production,
     bool isAppStore = true,
@@ -80,6 +81,7 @@ class CoreConfig with ConsoleMixin {
     this.persistenceBoxName = persistenceBoxName;
     this.minWindowSize = minWindowSize;
     this.initialWindowSize = initialWindowSize;
+    this.windowMode = windowMode;
     this.desktopChangePoint = desktopChangePoint;
     this.buildMode = buildMode;
     this.isAppStore = isAppStore;
@@ -118,28 +120,9 @@ class CoreConfig with ConsoleMixin {
 
   Future<void> postInit() async {
     CrashlyticsService.to.init();
-    NotificationsManager.init();
+    if (!isMobile) NotificationsManager.init();
     Utils.setDisplayMode(); // refresh rate
     await Persistence.open();
-    await _initWindow();
-  }
-
-  Future<void> _initWindow() async {
-    if (!isDesktop) return;
-    await windowManager.ensureInitialized();
-
-    final windowOptions = WindowOptions(
-      skipTaskbar: false,
-      minimumSize: minWindowSize,
-      size: Size(
-        Persistence.to.windowWidth.val,
-        Persistence.to.windowHeight.val,
-      ),
-    );
-
-    windowManager.waitUntilReadyToShow(windowOptions, () async {
-      await windowManager.show();
-      await windowManager.focus();
-    });
+    MainService.to.postInitWindow();
   }
 }

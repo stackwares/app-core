@@ -317,6 +317,7 @@ const kOfferingsInitial = {
     "default": {
       "identifier": "",
       "serverDescription": "",
+      "metadata": {},
       "availablePackages": [],
       "lifetime": null,
       "annual": null,
@@ -330,6 +331,7 @@ const kOfferingsInitial = {
   "current": {
     "identifier": "",
     "serverDescription": "",
+    "metadata": {},
     "availablePackages": [],
     "lifetime": null,
     "annual": null,

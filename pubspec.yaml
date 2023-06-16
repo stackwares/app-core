@@ -16,10 +16,10 @@ dependencies:
   # ICONS
   line_icons: ^2.0.1 # icons
   # iconsax: ^0.0.8
-  lucide_icons: ^0.233.0
+  lucide_icons: ^0.244.0
 
   # ANIMATIONS
-  simple_animations: ^5.0.1
+  simple_animations: ^5.0.2
   sa4_migration_kit: ^1.0.0
   flutter_animate: ^4.1.1+1
 
@@ -49,29 +49,29 @@ dependencies:
   url_launcher: ^6.1.10
   supercharged: ^2.1.1 # useful utils
   flutter_local_notifications: ^14.1.1
-  either_dart: ^0.4.0 # functional programming + error handling
+  either_dart: ^1.0.0 # functional programming + error handling
   in_app_review: ^2.0.6
   app_settings: ^4.2.0
   intl: ^0.18.1 # date formatting
   uuid: ^3.0.7
   timeago: ^3.4.0
-  permission_handler: ^10.2.0
+  permission_handler: ^10.3.0
   easy_debounce: ^2.0.3
-  sentry_flutter: ^7.6.3 # error reporting for windows and linux
+  sentry_flutter: ^7.7.0 # error reporting for windows and linux
 
   # SECURITY
   local_auth: ^2.1.6
 
   # FIREBASE
-  firebase_core: ^2.13.1
-  firebase_analytics: 10.4.2
-  firebase_crashlytics: 3.3.2
-  firebase_performance: 0.9.2+2
+  firebase_core: ^2.14.0
+  firebase_analytics: 10.4.3
+  firebase_crashlytics: 3.3.3
+  firebase_performance: 0.9.2+3
 
   # API / NETWORKS
-  purchases_flutter: ^4.12.0
+  purchases_flutter: ^5.0.0
   connectivity_plus: ^4.0.1
-  supabase_flutter: ^1.10.1
+  supabase_flutter: ^1.10.3
   supabase_auth_ui: ^0.2.0
 
   # INFO

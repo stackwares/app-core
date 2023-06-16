@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:app_core/config.dart';
 import 'package:app_core/firebase/analytics.service.dart';
 
 import 'package:app_core/globals.dart';
@@ -94,6 +95,27 @@ class MainService extends GetxService with ConsoleMixin, WindowListener {
     if (!isDesktop) return;
     window.addListener(this);
     window.setPreventClose(true);
+  }
+
+  void postInitWindow() async {
+    if (!isDesktop) return;
+    await window.ensureInitialized();
+
+    if (!isApple || CoreConfig().windowMode) {
+      final windowOptions = WindowOptions(
+        skipTaskbar: false,
+        minimumSize: CoreConfig().minWindowSize,
+        size: Size(
+          Persistence.to.windowWidth.val,
+          Persistence.to.windowHeight.val,
+        ),
+      );
+
+      window.waitUntilReadyToShow(windowOptions, () async {
+        await window.show();
+        await window.focus();
+      });
+    }
   }
 
   void _initLaunchAtStartup() {

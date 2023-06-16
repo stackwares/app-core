@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:purchases_flutter/object_wrappers.dart';
 
 import '../../globals.dart';
+import 'pricing.model.dart';
 
 extension StoreProductExtension on StoreProduct {
   bool get hasFreeTrial => introductoryPrice?.price == 0;
@@ -19,12 +20,14 @@ extension StoreProductExtension on StoreProduct {
   bool get isPro => identifier.contains('.pro.');
   bool get isMax => identifier.contains('.max.');
 
-  String get planId {
-    return CoreConfig().upgradeConfig.pricing[identifier]!.id;
-  }
+  String get planId => pricing.id;
 
-  String get primaryFeature {
-    return CoreConfig().upgradeConfig.pricing[identifier]!.primaryFeature;
+  String get primaryFeature => pricing.primaryFeature;
+
+  Pricing get pricing {
+    final id =
+        identifier.contains(':') ? identifier.split(':').first : identifier;
+    return CoreConfig().upgradeConfig.pricing[id]!;
   }
 
   String get periodUnitName {

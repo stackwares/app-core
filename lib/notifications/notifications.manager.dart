@@ -8,11 +8,12 @@ import '../utils/ui_utils.dart';
 class NotificationsManager {
   static final plugin = FlutterLocalNotificationsPlugin();
   static final console = Console(name: 'NotificationsManager');
+  static bool initialized = false;
 
   static void cancel(int id) => plugin.cancel(id);
   static void cancelAll() => plugin.cancelAll();
 
-  static void init() async {
+  static Future<void> init() async {
     const darwinSettings = DarwinInitializationSettings(
       onDidReceiveLocalNotification: onForegroundPayload,
     );
@@ -29,6 +30,8 @@ class NotificationsManager {
       ),
     );
 
+    initialized = true;
+
     console.info("init");
   }
 
@@ -37,8 +40,9 @@ class NotificationsManager {
     required final String body,
     String payload = '',
   }) async {
-    // show snackbar if permission denied
+    if (!initialized) await init();
 
+    // show snackbar if unsupported or denied
     if (GetPlatform.isWindows || GetPlatform.isLinux || GetPlatform.isWeb) {
       return UIUtils.showSnackBar(title: title, message: body, seconds: 5);
     }
@@ -60,15 +64,9 @@ class NotificationsManager {
       linux: linuxDetails,
     );
 
-    await plugin.show(
-      Persistence.to.notificationId.val++,
-      title,
-      body,
-      details,
-      payload: payload,
-    );
-
-    console.info('notified');
+    final id = Persistence.to.notificationId.val++;
+    await plugin.show(id, title, body, details, payload: payload);
+    console.info('notify: $title');
   }
 
   static void onBackgroundPayload(NotificationResponse? response) async {
