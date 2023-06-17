@@ -1,5 +1,4 @@
 import 'package:app_core/globals.dart';
-import 'package:app_core/persistence/persistence.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -36,9 +35,9 @@ class CrashlyticsService extends GetxService with ConsoleMixin {
 
   void configure() {
     if (!isCrashlyticsSupported) return console.warning('Not Supported');
-    instance.setCrashlyticsCollectionEnabled(
-      Persistence.to.crashReporting.val,
-    );
+    // instance.setCrashlyticsCollectionEnabled(
+    //   Persistence.to.crashReporting.val,
+    // );
   }
 
   void record(Object e, StackTrace? s, {bool fatal = false}) {

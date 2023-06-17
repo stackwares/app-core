@@ -1,5 +1,4 @@
 import 'package:app_core/globals.dart';
-import 'package:app_core/persistence/persistence.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:get/get.dart';
@@ -20,7 +19,7 @@ class AnalyticsService extends GetxService with ConsoleMixin {
   @override
   void onInit() {
     if (isWindowsLinux) return;
-    instance.setAnalyticsCollectionEnabled(Persistence.to.analytics.val);
+    // instance.setAnalyticsCollectionEnabled(Persistence.to.analytics.val);
     instance.logAppOpen();
     super.onInit();
   }

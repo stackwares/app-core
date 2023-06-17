@@ -43,7 +43,6 @@ class MainService extends GetxService with ConsoleMixin, WindowListener {
     _initWindow();
     _initAppLifeCycleEvents();
     _updateBuildNumber();
-    _initLaunchAtStartup();
     super.onInit();
   }
 
@@ -97,7 +96,12 @@ class MainService extends GetxService with ConsoleMixin, WindowListener {
     window.setPreventClose(true);
   }
 
-  void postInitWindow() async {
+  void postInit() async {
+    _initLaunchAtStartup();
+    _postInitWindow();
+  }
+
+  void _postInitWindow() async {
     if (!isDesktop) return;
     await window.ensureInitialized();
 
@@ -106,8 +110,8 @@ class MainService extends GetxService with ConsoleMixin, WindowListener {
         skipTaskbar: false,
         minimumSize: CoreConfig().minWindowSize,
         size: Size(
-          Persistence.to.windowWidth.val,
-          Persistence.to.windowHeight.val,
+          persistence.windowWidth.val,
+          persistence.windowHeight.val,
         ),
       );
 
@@ -125,6 +129,12 @@ class MainService extends GetxService with ConsoleMixin, WindowListener {
       appName: appConfig.name,
       appPath: Platform.resolvedExecutable,
     );
+
+    if (persistence.launchAtStartup.val) {
+      launchAtStartup.enable();
+    } else {
+      launchAtStartup.disable();
+    }
 
     console.info('initLaunchAtStartup');
   }

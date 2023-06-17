@@ -123,6 +123,6 @@ class CoreConfig with ConsoleMixin {
     if (!isMobile) NotificationsManager.init();
     Utils.setDisplayMode(); // refresh rate
     await Persistence.open();
-    MainService.to.postInitWindow();
+    MainService.to.postInit();
   }
 }

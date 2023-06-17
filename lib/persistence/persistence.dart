@@ -20,8 +20,8 @@ class Persistence extends GetxController {
   final sessionCount = 1.val('session-count');
   final rateDialogShown = false.val('rate-dialog-shown');
   final consented = false.val('consented');
-  final crashReporting = (isApple ? true : true).val('crash-reporting');
-  final analytics = (isApple ? true : true).val('analytics');
+  final crashReporting = (isApple ? false : true).val('crash-reporting');
+  final analytics = (isApple ? false : true).val('analytics');
   // WINDOW SIZE
   final windowWidth = CoreConfig().initialWindowSize.width.val('window-width');
 
@@ -29,7 +29,7 @@ class Persistence extends GetxController {
       CoreConfig().initialWindowSize.height.val('window-height');
 
   final minimizeToTray = false.val('minimize-to-tray');
-  final launchAtStartup = true.val('launch-at-startup');
+  final launchAtStartup = (isApple ? false : true).val('launch-at-startup');
   // THEME
   final theme = 'dark'.val('theme');
   // SECURITY
@@ -48,9 +48,9 @@ class Persistence extends GetxController {
 
   // INIT
   @override
-  void onInit() {
+  void onReady() {
     sessionCount.val++;
-    super.onInit();
+    super.onReady();
   }
 
   // FUNCTIONS
