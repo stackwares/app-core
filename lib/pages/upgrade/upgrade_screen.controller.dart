@@ -73,7 +73,7 @@ class UpgradeScreenController extends GetxController
   @override
   void onInit() async {
     showYearlyPlans.listen((yearly) => _select());
-    _load();
+    load();
     change(null, status: RxStatus.success());
     super.onInit();
   }
@@ -121,11 +121,15 @@ class UpgradeScreenController extends GetxController
   }
 
   // FUNCTIONS
-  Future<void> _load() async {
+  Future<void> load() async {
     if (!isIAPSupported) return _loadGumroad();
     await PurchasesService.to.load();
-    showYearlyPlans.value =
-        PurchasesService.to.packages.first.storeProduct.isAnnually;
+
+    if (PurchasesService.to.packages.isNotEmpty) {
+      showYearlyPlans.value =
+          PurchasesService.to.packages.first.storeProduct.isAnnually;
+    }
+
     _select();
   }
 

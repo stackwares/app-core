@@ -16,12 +16,12 @@ dependencies:
   # ICONS
   line_icons: ^2.0.1 # icons
   # iconsax: ^0.0.8
-  lucide_icons: ^0.244.0
+  lucide_icons: ^0.246.0
 
   # ANIMATIONS
   simple_animations: ^5.0.2
   sa4_migration_kit: ^1.0.0
-  flutter_animate: ^4.1.1+1
+  flutter_animate: ^4.2.0
 
   # DESKTOP
   system_tray: ^2.0.3
@@ -57,7 +57,7 @@ dependencies:
   timeago: ^3.4.0
   permission_handler: ^10.3.0
   easy_debounce: ^2.0.3
-  sentry_flutter: ^7.7.0 # error reporting for windows and linux
+  sentry_flutter: ^7.8.0 # error reporting for windows and linux
 
   # SECURITY
   local_auth: ^2.1.6
@@ -71,7 +71,7 @@ dependencies:
   # API / NETWORKS
   purchases_flutter: ^5.0.0
   connectivity_plus: ^4.0.1
-  supabase_flutter: ^1.10.3
+  supabase_flutter: ^1.10.4
   supabase_auth_ui: ^0.2.0
 
   # INFO

@@ -273,6 +273,9 @@ class PurchasesService extends GetxService with ConsoleMixin {
         break;
       case PurchasesErrorCode.unsupportedError:
         break;
+      case PurchasesErrorCode.offlineConnectionError:
+        errorMessage = 'You are offline. Please check your network connection.';
+        break;
       case PurchasesErrorCode.unknownError:
         errorMessage = '';
         // errorMessage = 'Unknown error. Please report to the developer.';
