@@ -48,37 +48,23 @@ class DatabaseService extends GetxService with ConsoleMixin {
   }
 
   Future<Either<dynamic, ConfigResponse>> configuration() async {
-    // if (user == null) {
-    //   console.warning('not authenticated');
-    //   return const Left('not authenticated');
-    // }
+    var response = await client.from('configuration').select().eq(
+          'platform',
+          Utils.platform.toLowerCase(),
+        );
 
-    // UPDATE PROFILE
-    try {
-      var response = await client.from('configuration').select().eq(
+    if (response.isEmpty) {
+      response = await client.from('configuration').select().eq(
             'platform',
-            Utils.platform.toLowerCase(),
+            'all',
           );
 
-      // console.info('platform response! ${jsonEncode(response)}');
-
       if (response.isEmpty) {
-        response = await client.from('configuration').select().eq(
-              'platform',
-              'all',
-            );
-
-        // console.info('all response! ${jsonEncode(response)}');
-
-        if (response.isEmpty) {
-          return const Left('Error: empty all platform configuration');
-        }
+        return const Left('Error: empty all platform configuration');
       }
-
-      final config = ConfigResponse.fromJson(response.first);
-      return Right(config);
-    } catch (e) {
-      return Left('Exception: $e');
     }
+
+    final config = ConfigResponse.fromJson(response.first);
+    return Right(config);
   }
 }

@@ -45,7 +45,7 @@ extension StoreProductExtension on StoreProduct {
   }
 
   String get itemTitle {
-    return '$priceString / ${periodUnitName.tr}';
+    return '$priceString / ${periodUnitName.tr.capitalize!}';
   }
 
   String get itemTitleNext {
@@ -71,13 +71,13 @@ extension StoreProductExtension on StoreProduct {
   String get itemSubTitle {
     if (periodUnitName == 'year') {
       final monthlyPrice = price / 12;
-      return '$currencySymbol${currencyFormatter.format(monthlyPrice)} / ${'month'.tr}';
+      return '$currencySymbol${currencyFormatter.format(monthlyPrice)} / ${'month'.tr.capitalize!}';
     } else if (periodUnitName == 'month') {
       final monthlyPrice = price / 4;
-      return '$currencySymbol${currencyFormatter.format(monthlyPrice)} / ${'week'.tr}';
+      return '$currencySymbol${currencyFormatter.format(monthlyPrice)} / ${'week'.tr.capitalize!}';
     } else if (periodUnitName == 'week') {
       final monthlyPrice = price / 7;
-      return '$currencySymbol${currencyFormatter.format(monthlyPrice)} / ${'day'.tr}';
+      return '$currencySymbol${currencyFormatter.format(monthlyPrice)} / ${'day'.tr.capitalize!}';
     }
 
     return description;
