@@ -15,8 +15,7 @@ dependencies:
 
   # ICONS
   line_icons: ^2.0.1 # icons
-  # iconsax: ^0.0.8
-  lucide_icons: ^0.246.0
+  lucide_icons: ^0.248.0
 
   # ANIMATIONS
   simple_animations: ^5.0.2
