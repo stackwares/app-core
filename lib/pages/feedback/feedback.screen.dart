@@ -113,7 +113,7 @@ class FeedbackScreen extends StatelessWidget with ConsoleMixin {
               ),
             ),
             const SizedBox(height: 20),
-            ElevatedButton.icon(
+            TextButton.icon(
               onPressed: () => Utils.openUrl(appConfig.links.faqs),
               icon: const Icon(Icons.help_outline),
               label: Text('faqs'.tr),
