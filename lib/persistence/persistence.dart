@@ -19,6 +19,7 @@ class Persistence extends GetxController {
   final notificationId = 0.val('notification-id');
   final sessionCount = 1.val('session-count');
   final rateDialogShown = false.val('rate-dialog-shown');
+  final onboarded = false.val('onboarded');
   final consented = false.val('consented');
   final crashReporting = (isApple ? false : true).val('crash-reporting');
   final analytics = (isApple ? false : true).val('analytics');

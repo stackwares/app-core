@@ -37,6 +37,12 @@ class PurchasesService extends GetxService with ConsoleMixin {
 
   // INIT
   @override
+  void onInit() {
+    init();
+    super.onInit();
+  }
+
+  @override
   void onClose() {
     if (!isIAPSupported) return;
     Purchases.removeCustomerInfoUpdateListener((info_) => info.value = info_);
@@ -68,7 +74,8 @@ class PurchasesService extends GetxService with ConsoleMixin {
 
   Future<void> login(User user) async {
     if (!isIAPSupported) return;
-    await init();
+    // await init();
+    setAttributes();
     await Purchases.logIn(user.id);
     await Purchases.setEmail(user.email!);
   }
