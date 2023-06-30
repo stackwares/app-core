@@ -20,7 +20,7 @@ class FeatureTile extends StatelessWidget {
     return ListItemAnimation(
       child: Padding(
         padding: EdgeInsets.symmetric(
-          // horizontal: 15,
+          horizontal: 10,
           vertical: isSmallScreen ? 5 : 10,
         ),
         child: Row(
