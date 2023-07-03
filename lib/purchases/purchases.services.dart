@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:app_core/config.dart';
 import 'package:app_core/firebase/analytics.service.dart';
 import 'package:app_core/firebase/crashlytics.service.dart';
+import 'package:app_core/firebase/fcm.service.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
@@ -136,6 +137,10 @@ class PurchasesService extends GetxService with ConsoleMixin {
       'platform': Utils.platform,
       'device-id': metadataDevice.id,
     });
+
+    if (FCMService.to.token != null) {
+      Purchases.setPushToken(FCMService.to.token!);
+    }
 
     AnalyticsService.to.setUserProperty(
       name: 'plan',

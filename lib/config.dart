@@ -1,3 +1,4 @@
+import 'package:app_core/firebase/fcm.service.dart';
 import 'package:app_core/license/license.service.dart';
 import 'package:app_core/pages/upgrade/upgrade_config.dart';
 import 'package:app_core/persistence/persistence.dart';
@@ -37,11 +38,16 @@ class CoreConfig with ConsoleMixin {
   late bool allowAnonymousRcUserSync;
   late bool purchasesEnabled;
   late String offeringId;
+  late String appodealKey;
+  late String fcmVapidKey;
 
   late Function()? onCancelledUpgradeScreen;
   late Function()? onSuccessfulUpgrade;
   late Function()? onSignedOut;
   late Function()? onSignedIn;
+
+  // Global variables
+  int premiumScreenCooldown = 5;
 
   // SINGLETON
   static final CoreConfig _singleton = CoreConfig._internal();
@@ -69,6 +75,8 @@ class CoreConfig with ConsoleMixin {
     bool allowAnonymousRcUserSync = true,
     bool purchasesEnabled = true,
     String offeringId = '',
+    String appodealKey = '',
+    String fcmVapidKey = '',
     Function()? onCancelledUpgradeScreen,
     Function()? onSuccessfulUpgrade,
     Function()? onSignedOut,
@@ -91,6 +99,8 @@ class CoreConfig with ConsoleMixin {
     this.allowAnonymousRcUserSync = allowAnonymousRcUserSync;
     this.purchasesEnabled = purchasesEnabled;
     this.offeringId = offeringId;
+    this.appodealKey = appodealKey;
+    this.fcmVapidKey = fcmVapidKey;
     this.onCancelledUpgradeScreen = onCancelledUpgradeScreen;
     this.onSuccessfulUpgrade = onSuccessfulUpgrade;
     this.onSignedOut = onSignedOut;
@@ -114,6 +124,7 @@ class CoreConfig with ConsoleMixin {
     Get.put(FunctionsService());
     Get.put(RealtimeService());
     Get.put(AnalyticsService());
+    Get.put(FCMService());
     Get.put(LicenseService());
     Get.put(PurchasesService());
   }

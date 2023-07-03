@@ -23,6 +23,7 @@ class Persistence extends GetxController {
   final consented = false.val('consented');
   final crashReporting = (isApple ? false : true).val('crash-reporting');
   final analytics = (isApple ? false : true).val('analytics');
+  final fullscreenAdsAgreed = false.val('fullscreen-ads-agreed');
   // WINDOW SIZE
   final windowWidth = CoreConfig().initialWindowSize.width.val('window-width');
 
