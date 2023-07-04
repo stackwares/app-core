@@ -21,7 +21,7 @@ class License {
         data: json["data"],
         trial: json["trial"],
         source: json["source"],
-        updatedAt: DateTime.parse(json["updated_at"]),
+        updatedAt: DateTime.tryParse(json["updated_at"]),
         entitlementId: json["entitlementId"],
         licenseKey: json["licenseKey"],
       );
