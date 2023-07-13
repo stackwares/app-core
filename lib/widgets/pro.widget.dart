@@ -1,7 +1,6 @@
 import 'package:app_core/config.dart';
+import 'package:app_core/config/app.model.dart';
 import 'package:flutter/material.dart';
-
-import '../config/app.model.dart';
 
 class ProText extends StatelessWidget {
   final String text;

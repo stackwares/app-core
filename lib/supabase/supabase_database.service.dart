@@ -47,17 +47,25 @@ class DatabaseService extends GetxService with ConsoleMixin {
     }
   }
 
-  Future<Either<dynamic, ConfigResponse>> configuration() async {
-    var response = await client.from('configuration').select().eq(
+  Future<Either<dynamic, ConfigResponse>> configuration({int id = 1}) async {
+    var response = await client
+        .from('configuration')
+        .select()
+        .eq(
           'platform',
           Utils.platform.toLowerCase(),
-        );
+        )
+        .eq('id', id);
 
     if (response.isEmpty) {
-      response = await client.from('configuration').select().eq(
+      response = await client
+          .from('configuration')
+          .select()
+          .eq(
             'platform',
             'all',
-          );
+          )
+          .eq('id', id);
 
       if (response.isEmpty) {
         return const Left('Error: empty all platform configuration');
