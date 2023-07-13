@@ -9,7 +9,9 @@ class ConnectivityBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final content = InkWell(
-      onTap: GetPlatform.isMobile ? AppSettings.openWIFISettings : null,
+      onTap: () => GetPlatform.isMobile
+          ? AppSettings.openAppSettings(type: AppSettingsType.wifi)
+          : null,
       child: Container(
         height: 20,
         color: Colors.red.withOpacity(0.3),

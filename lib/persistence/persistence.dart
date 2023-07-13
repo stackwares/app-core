@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:app_core/config.dart';
+import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -8,7 +9,7 @@ import '../config/secrets.model.dart';
 import '../globals.dart';
 import 'mutable_value.dart';
 
-class Persistence extends GetxController {
+class Persistence extends GetxController with ConsoleMixin {
   // STATIC
   static Persistence get to => Get.find();
   static Box? box;
@@ -52,6 +53,7 @@ class Persistence extends GetxController {
   @override
   void onReady() {
     sessionCount.val++;
+    console.wtf('session count: ${sessionCount.val}');
     super.onReady();
   }
 

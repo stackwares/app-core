@@ -46,7 +46,8 @@ bool get isMobile =>
 bool get isIAPSupported =>
     !GetPlatform.isWeb && (GetPlatform.isMacOS || GetPlatform.isMobile);
 
-bool get isAdSupportedPlatform => GetPlatform.isIOS || GetPlatform.isAndroid;
+bool get isAdSupportedPlatform =>
+    (GetPlatform.isIOS || GetPlatform.isAndroid) && CoreConfig().adsEnabled;
 
 bool get isGumroadSupported => !isIAPSupported;
 

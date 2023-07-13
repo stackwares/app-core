@@ -21,6 +21,8 @@ class FCMService extends GetxService with ConsoleMixin {
 
   // FUNCTIONS
   void init() async {
+    if (!CoreConfig().fcmEnabled) return;
+
     final settings = await instance.requestPermission(
       alert: true,
       announcement: false,

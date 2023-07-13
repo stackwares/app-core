@@ -37,9 +37,13 @@ class CoreConfig with ConsoleMixin {
   late UpgradeConfig upgradeConfig;
   late bool allowAnonymousRcUserSync;
   late bool purchasesEnabled;
+  late bool fcmEnabled;
+  late bool adsEnabled;
   late String offeringId;
   late String appodealKey;
   late String fcmVapidKey;
+  late String androidGoogleClientId;
+  late String appleGoogleClientId;
 
   late Function()? onCancelledUpgradeScreen;
   late Function()? onSuccessfulUpgrade;
@@ -74,9 +78,13 @@ class CoreConfig with ConsoleMixin {
     BoxConstraints mainConstraints = const BoxConstraints(maxWidth: 500),
     bool allowAnonymousRcUserSync = true,
     bool purchasesEnabled = true,
+    bool fcmEnabled = true,
+    bool adsEnabled = true,
     String offeringId = '',
     String appodealKey = '',
     String fcmVapidKey = '',
+    String androidGoogleClientId = '',
+    String appleGoogleClientId = '',
     Function()? onCancelledUpgradeScreen,
     Function()? onSuccessfulUpgrade,
     Function()? onSignedOut,
@@ -98,9 +106,13 @@ class CoreConfig with ConsoleMixin {
     this.upgradeConfig = upgradeConfig;
     this.allowAnonymousRcUserSync = allowAnonymousRcUserSync;
     this.purchasesEnabled = purchasesEnabled;
+    this.fcmEnabled = fcmEnabled;
+    this.adsEnabled = adsEnabled;
     this.offeringId = offeringId;
     this.appodealKey = appodealKey;
     this.fcmVapidKey = fcmVapidKey;
+    this.androidGoogleClientId = androidGoogleClientId;
+    this.appleGoogleClientId = appleGoogleClientId;
     this.onCancelledUpgradeScreen = onCancelledUpgradeScreen;
     this.onSuccessfulUpgrade = onSuccessfulUpgrade;
     this.onSignedOut = onSignedOut;

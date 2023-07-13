@@ -24,7 +24,7 @@ class AppodealService extends GetxService with ConsoleMixin {
   var lastShowTime = DateTime.now().subtract(1.days);
 
   // GETTERS
-  bool get timeToShow => Persistence.to.sessionCount.val > 10;
+  bool get timeToShow => Persistence.to.sessionCount.val >= 5;
 
   // INIT
   @override
@@ -153,12 +153,20 @@ class AppodealService extends GetxService with ConsoleMixin {
     return completer.future;
   }
 
-  Future<AdResult> showFullscreen({FullscreenAdType? adType}) async {
+  Future<AdResult> showFullscreen(
+      {FullscreenAdType? adType, int delay = 0}) async {
+    if (!CoreConfig().adsEnabled) {
+      console.warning('disabled ads');
+      return AdResult(AdResult.failed, description: 'disabled ads');
+    }
+
     if (LicenseService.to.isPremium) {
+      console.warning('premium user');
       return AdResult(AdResult.failed, description: 'premium user');
     }
 
     if (!timeToShow) {
+      console.warning("it's not time");
       return AdResult(AdResult.failed, description: "it's not time");
     }
 
@@ -195,6 +203,10 @@ class AppodealService extends GetxService with ConsoleMixin {
       if (abort) {
         return AdResult(AdResult.failed, description: 'show alternative');
       }
+    }
+
+    if (delay > 0) {
+      await Future.delayed(delay.seconds);
     }
 
     if (!isAdSupportedPlatform) {

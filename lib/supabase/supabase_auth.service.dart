@@ -23,6 +23,7 @@ class AuthService extends GetxService with ConsoleMixin {
 
   // PROPERTIES
   final busy = false.obs;
+  final authenticatedRx = false.obs;
 
   // GETTERS
   bool get authenticated => user != null;
@@ -55,6 +56,7 @@ class AuthService extends GetxService with ConsoleMixin {
 
   void onSignedIn(User user_) async {
     busy.value = false;
+    authenticatedRx.value = true;
     CoreConfig().onSignedIn?.call();
 
     if (!isWindowsLinux) {
@@ -83,6 +85,7 @@ class AuthService extends GetxService with ConsoleMixin {
           onSignedIn(data.session!.user);
         });
       } else if (data.event == AuthChangeEvent.signedOut) {
+        authenticatedRx.value = false;
         AnalyticsService.to.logSignOut();
         PurchasesService.to.logout();
         CoreConfig().onSignedOut?.call();
