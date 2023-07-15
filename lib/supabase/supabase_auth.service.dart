@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:app_core/config.dart';
 import 'package:app_core/firebase/analytics.service.dart';
 import 'package:app_core/firebase/crashlytics.service.dart';
@@ -6,9 +9,11 @@ import 'package:app_core/notifications/notifications.manager.dart';
 import 'package:app_core/purchases/purchases.services.dart';
 import 'package:app_core/supabase/supabase_functions.service.dart';
 import 'package:console_mixin/console_mixin.dart';
+import 'package:crypto/crypto.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:either_dart/either.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -110,9 +115,9 @@ class AuthService extends GetxService with ConsoleMixin {
 
     try {
       if (provider == Provider.apple && isApple) {
-        console.info('APPLE SIGNING IN...');
-        final response = await auth.signInWithApple();
-        console.info('APPLE RESPONSE: $response');
+        await auth.signInWithApple();
+      } else if (provider == Provider.google && !isMac) {
+        await signInWithGoogle();
       } else {
         await auth.signInWithOAuth(
           provider,
@@ -243,5 +248,77 @@ class AuthService extends GetxService with ConsoleMixin {
   Future<void> deleteAccount() async {
     AnalyticsService.to.logEvent('delete-account');
     auth.signOut();
+  }
+
+  // GOOGLE SIGN IN
+  /// Function to generate a random 16 character string.
+  String _generateRandomString() {
+    final random = Random.secure();
+    return base64Url.encode(List<int>.generate(16, (_) => random.nextInt(256)));
+  }
+
+  Future<AuthResponse> signInWithGoogle() async {
+    // Just a random string
+    final rawNonce = _generateRandomString();
+    final hashedNonce = sha256.convert(utf8.encode(rawNonce)).toString();
+
+    final clientId = isApple
+        ? CoreConfig().appleGoogleClientId
+        : CoreConfig().androidGoogleClientId;
+
+    /// reverse DNS form of the client ID + `:/` is set as the redirect URL
+    final redirectUrl = '${clientId.split('.').reversed.join('.')}:/';
+
+    /// Fixed value for google login
+    const discoveryUrl =
+        'https://accounts.google.com/.well-known/openid-configuration';
+
+    const appAuth = FlutterAppAuth();
+
+    // authorize the user by opening the concent page
+    final result = await appAuth.authorize(
+      AuthorizationRequest(
+        clientId,
+        redirectUrl,
+        discoveryUrl: discoveryUrl,
+        nonce: hashedNonce,
+        scopes: [
+          'openid',
+          'email',
+        ],
+      ),
+    );
+
+    if (result == null) {
+      throw 'No result';
+    }
+
+    // Request the access and id token to google
+    final tokenResult = await appAuth.token(
+      TokenRequest(
+        clientId,
+        redirectUrl,
+        authorizationCode: result.authorizationCode,
+        discoveryUrl: discoveryUrl,
+        codeVerifier: result.codeVerifier,
+        nonce: result.nonce,
+        scopes: [
+          'openid',
+          'email',
+        ],
+      ),
+    );
+
+    final idToken = tokenResult?.idToken;
+
+    if (idToken == null) {
+      throw 'No idToken';
+    }
+
+    return auth.signInWithIdToken(
+      provider: Provider.google,
+      idToken: idToken,
+      nonce: rawNonce,
+    );
   }
 }

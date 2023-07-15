@@ -57,9 +57,11 @@ dependencies:
   intl: ^0.18.1 # date formatting
   uuid: ^3.0.7
   timeago: ^3.5.0
-  permission_handler: ^10.4.2
+  permission_handler: ^10.4.3
   easy_debounce: ^2.0.3
   sentry_flutter: ^7.8.0 # error reporting for windows and linux
+  flutter_appauth: ^6.0.0
+  crypto: ^3.0.3
 
   # SECURITY
   local_auth: ^2.1.6
@@ -74,8 +76,8 @@ dependencies:
   # API / NETWORKS
   purchases_flutter: ^5.3.0
   connectivity_plus: ^4.0.1
-  supabase_flutter: ^1.10.6
-  supabase_auth_ui: ^0.2.0
+  supabase_flutter: ^1.10.9
+  supabase_auth_ui: ^0.2.1
 
   # INFO
   device_info_plus: 9.0.2
