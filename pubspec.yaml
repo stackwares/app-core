@@ -23,7 +23,7 @@ dependencies:
   # ANIMATIONS
   simple_animations: ^5.0.2
   sa4_migration_kit: ^1.0.0
-  flutter_animate: ^4.2.0
+  flutter_animate: ^4.2.0+1
 
   # DESKTOP
   system_tray: ^2.0.3
@@ -33,10 +33,10 @@ dependencies:
 
   # UI
   extended_image: ^8.0.2
-  flex_color_scheme: ^7.1.2 # themes
+  flex_color_scheme: ^7.2.0 # themes
   flutter_displaymode: ^0.6.0 # allow higher refresh rates
   flutter_rating_bar: ^4.0.1
-  google_fonts: ^4.0.4
+  google_fonts: ^5.1.0
   locale_emoji_flutter: ^0.2.1
 
   # IO
@@ -60,23 +60,23 @@ dependencies:
   permission_handler: ^10.4.3
   easy_debounce: ^2.0.3
   sentry_flutter: ^7.8.0 # error reporting for windows and linux
-  flutter_appauth: ^6.0.0
+  # flutter_appauth: ^6.0.0
   crypto: ^3.0.3
 
   # SECURITY
   local_auth: ^2.1.6
 
   # FIREBASE
-  firebase_core: ^2.14.0
-  firebase_analytics: ^10.4.3
-  firebase_crashlytics: ^3.3.3
-  firebase_performance: ^0.9.2+3
-  firebase_messaging: ^14.6.4
+  firebase_core: ^2.15.0
+  firebase_analytics: ^10.4.4
+  firebase_crashlytics: ^3.3.4
+  firebase_performance: ^0.9.2+4
+  firebase_messaging: ^14.6.5
 
   # API / NETWORKS
   purchases_flutter: ^5.3.0
   connectivity_plus: ^4.0.1
-  supabase_flutter: ^1.10.9
+  supabase_flutter: ^1.10.10
   supabase_auth_ui: ^0.2.1
 
   # INFO
@@ -85,9 +85,6 @@ dependencies:
   package_info_plus: ^4.0.2
 
 # dependency_overrides:
-
-dev_dependencies:
-  flutter_lints: ^2.0.2
 
 flutter:
   #
