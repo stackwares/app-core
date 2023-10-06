@@ -60,8 +60,12 @@ dependencies:
   permission_handler: ^11.0.0
   easy_debounce: ^2.0.3
   sentry_flutter: ^7.10.1 # error reporting for windows and linux
-  # flutter_appauth: ^6.0.0
   crypto: ^3.0.3
+
+  flutter_appauth:
+    git:
+      url: https://github.com/oliverbytes/flutter_appauth.git
+      path: flutter_appauth #fix conflict with app_links
 
   # SECURITY
   local_auth: ^2.1.7
