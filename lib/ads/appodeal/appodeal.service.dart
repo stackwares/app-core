@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:app_core/config.dart';
 import 'package:app_core/config/app.model.dart';
 import 'package:app_core/globals.dart';
-import 'package:app_core/license/license.service.dart';
 import 'package:app_core/pages/routes.dart';
+import 'package:app_core/purchases/purchases.services.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/foundation.dart';
@@ -74,7 +74,7 @@ class AppodealService extends GetxService with ConsoleMixin {
   }
 
   Future<AdResult> _show(AppodealAdType adType) async {
-    if (LicenseService.to.isPremium || !isAdSupportedPlatform) {
+    if (PurchasesService.to.isPremium || !isAdSupportedPlatform) {
       return AdResult(AdResult.failed, description: 'unsupported');
     }
 
@@ -160,7 +160,7 @@ class AppodealService extends GetxService with ConsoleMixin {
       return AdResult(AdResult.failed, description: 'disabled ads');
     }
 
-    if (LicenseService.to.isPremium) {
+    if (PurchasesService.to.isPremium) {
       console.warning('premium user');
       return AdResult(AdResult.failed, description: 'premium user');
     }

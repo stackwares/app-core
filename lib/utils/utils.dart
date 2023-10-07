@@ -81,7 +81,7 @@ class Utils {
   }) {
     if (name == Routes.upgrade) {
       if (!CoreConfig().purchasesEnabled ||
-          LicenseService.to.isPremium && ignoreUpgradeGuard) {
+          PurchasesService.to.isPremium && ignoreUpgradeGuard) {
         console.info('ignored upgrade screen');
         return Future.value(false);
       }

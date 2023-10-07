@@ -125,7 +125,10 @@ class PurchasesService extends GetxService with ConsoleMixin {
 
     try {
       info.value = await Purchases.getCustomerInfo();
-      // console.warning('sync: ${jsonEncode(info.value.toJson())}');
+
+      console.warning(
+        'isPremium: ${isPremium}, sync: ${jsonEncode(info.value.toJson())}',
+      );
     } on PlatformException catch (e) {
       return console.error('sync error: $e');
     }
