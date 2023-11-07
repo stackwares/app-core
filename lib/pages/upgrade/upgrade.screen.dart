@@ -4,6 +4,7 @@ import 'package:app_core/config.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/pages/upgrade/item.tile.dart';
 import 'package:app_core/utils/utils.dart';
+import 'package:app_core/widgets/gradient.widget.dart';
 import 'package:app_core/widgets/pro.widget.dart';
 import 'package:app_core/widgets/remote_image.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
@@ -45,6 +46,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                       'money_back_guarantee',
                       'cancel_anytime',
                       'join_over_users',
+                      'premium_pro_limit',
                     ].contains(e),
                   ),
                 )
@@ -74,22 +76,20 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
 
     final scrollController = ScrollController();
 
-    final productsListView = SizedBox(
-      height: CoreConfig().upgradeConfig.listViewHeight,
-      child: Obx(
-        () => Scrollbar(
+    final productsListView = Obx(
+      () => Scrollbar(
+        controller: scrollController,
+        thumbVisibility: isDesktop,
+        child: ListView.builder(
           controller: scrollController,
-          thumbVisibility: isDesktop,
-          child: ListView.builder(
-            controller: scrollController,
-            shrinkWrap: true,
-            scrollDirection: Axis.horizontal,
-            itemCount: controller.data.length,
-            itemBuilder: (context, index) => ListItemAnimation(
-              axis: Axis.horizontal,
-              offset: const Offset(100, 0),
-              child: IAPProductTile(package: controller.data[index]),
-            ),
+          shrinkWrap: true,
+          padding: EdgeInsets.zero,
+          // scrollDirection: Axis.horizontal,
+          itemCount: controller.data.length,
+          itemBuilder: (context, index) => ListItemAnimation(
+            axis: Axis.horizontal,
+            offset: const Offset(0, -50),
+            child: IAPProductTile(package: controller.data[index]),
           ),
         ),
       ),
@@ -137,15 +137,15 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
             .animate(onPlay: (c) => c.repeat())
             .shimmer(duration: 2000.ms)
             .then(delay: 2000.ms),
-        const Positioned(
-          top: 7,
-          right: 6,
-          child: RemoteImage(
-            url: 'https://cdn-icons-png.flaticon.com/512/4840/4840351.png',
-            width: 32,
-            height: 32,
-          ),
-        ),
+        // const Positioned(
+        //   top: 7,
+        //   right: 6,
+        //   child: RemoteImage(
+        //     url: 'https://cdn-icons-png.flaticon.com/512/4840/4840351.png',
+        //     width: 32,
+        //     height: 32,
+        //   ),
+        // ),
       ],
     );
 
@@ -154,6 +154,47 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          Align(
+            alignment: Alignment.center,
+            child: Card(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    RemoteImage(
+                      url:
+                          'https://cdn-icons-png.flaticon.com/512/4840/4840351.png',
+                      width: 32,
+                      height: 32,
+                    ),
+                    const SizedBox(width: 10),
+                    Obx(
+                      () => GradientWidget(
+                        gradient: LinearGradient(
+                          colors: CoreConfig().gradientColors,
+                        ),
+                        child: Text(
+                          controller.footerText,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 5),
+                    Icon(
+                      Icons.check_rounded,
+                      color: Get.theme.primaryColor,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 5),
           Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -208,33 +249,8 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                     ),
               const SizedBox(height: 5),
               upgradeButton,
-              const SizedBox(height: 5),
-              Align(
-                alignment: Alignment.center,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Obx(
-                      () => Text(
-                        controller.footerText,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 5),
-                    Icon(
-                      Icons.check_rounded,
-                      color: Get.theme.primaryColor,
-                    ),
-                  ],
-                ),
-              ),
             ],
           ),
-          const SizedBox(height: 10),
         ],
       ),
     );

@@ -1,7 +1,5 @@
-import 'package:app_core/config.dart';
 import 'package:app_core/pages/upgrade/extensions.dart';
 import 'package:app_core/pages/upgrade/upgrade_screen.controller.dart';
-import 'package:app_core/widgets/gradient.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -51,61 +49,68 @@ class IAPProductTile extends StatelessWidget {
       }
     }
 
-    final titleText = Text(
-      GetUtils.capitalizeFirst(product.planId)!,
-      style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w500),
-    );
+    // final titleText = Text(
+    //   GetUtils.capitalizeFirst(product.planId)!,
+    //   style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w500),
+    // );
 
     final content = Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
+        // mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // TITLE
-          Obx(
-            () => Visibility(
-              visible: isSelected,
-              replacement: titleText,
-              child: GradientWidget(
-                gradient: LinearGradient(colors: CoreConfig().gradientColors),
-                child: titleText,
+          Row(
+            children: [
+              // // TITLE
+              // Obx(
+              //   () => Visibility(
+              //     visible: isSelected,
+              //     replacement: titleText,
+              //     child: GradientWidget(
+              //       gradient: LinearGradient(
+              //         colors: CoreConfig().gradientColors,
+              //       ),
+              //       child: titleText,
+              //     ),
+              //   ),
+              // ),
+              // PRICE & PERIOD
+              // const SizedBox(width: 5),
+              Text(
+                product.itemTitle,
+                style:
+                    const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
               ),
-            ),
-          ),
-          // PRICE & PERIOD
-          const SizedBox(height: 5),
-          Text(
-            product.itemTitle,
-            style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
-          ),
-          // SUB PERIOD
-          Text(
-            product.itemSubTitle,
-            style: const TextStyle(fontSize: 12, color: Colors.grey),
-          ),
-          // SAVED
-          Visibility(
-            visible: savedText.isNotEmpty,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 1),
-              child: Text(
-                savedText,
-                style: const TextStyle(fontSize: 12, color: Colors.amber),
+              // SUB PERIOD
+              const SizedBox(width: 10),
+              Text(
+                product.itemSubTitle,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Get.theme.colorScheme.tertiary,
+                ),
               ),
-            ),
+              // SAVED
+              Visibility(
+                visible: savedText.isNotEmpty,
+                child: Text(
+                  savedText,
+                  style: const TextStyle(fontSize: 12, color: Colors.amber),
+                ),
+              ),
+            ],
           ),
-          const Divider(height: 6),
-          // PRIMARY FEATURE
-          const SizedBox(height: 5),
-          Text(
-            product.primaryFeature.tr,
-            style: TextStyle(
-              color: Get.theme.primaryColor,
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
+          // const Divider(height: 10),
+          // // PRIMARY FEATURE
+          // Text(
+          //   product.primaryFeature.tr,
+          //   style: TextStyle(
+          //     color: Get.theme.primaryColor,
+          //     fontSize: 14,
+          //     fontWeight: FontWeight.w500,
+          //   ),
+          // ),
           // TRIAL DURATION
           Visibility(
             visible: product.hasFreeTrial,
@@ -115,6 +120,7 @@ class IAPProductTile extends StatelessWidget {
                 product.trialDurationText,
                 style: TextStyle(
                   fontSize: 13,
+                  fontWeight: FontWeight.bold,
                   color: Get.theme.colorScheme.tertiary,
                 ),
               ),
@@ -127,7 +133,7 @@ class IAPProductTile extends StatelessWidget {
     return InkWell(
       onTap: () => UpgradeScreenController.to.package.value = package,
       child: Stack(
-        alignment: Alignment.topRight,
+        alignment: Alignment.centerRight,
         children: [
           Obx(
             () => Card(
@@ -143,13 +149,12 @@ class IAPProductTile extends StatelessWidget {
           ),
           Visibility(
             visible: UpgradeScreenController.to.data.first == package,
-            child: const Positioned(
-              top: 10,
-              right: 10,
+            child: Padding(
+              padding: EdgeInsets.only(right: 15),
               child: RemoteImage(
-                url: 'https://cdn-icons-png.flaticon.com/512/6895/6895182.png',
-                width: 32,
-                height: 32,
+                url: 'https://cdn-icons-png.flaticon.com/128/477/477406.png',
+                width: 27,
+                height: 27,
               ),
             ),
           ),
