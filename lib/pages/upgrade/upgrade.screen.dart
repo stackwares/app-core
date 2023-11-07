@@ -177,6 +177,8 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                         child: Text(
                           controller.footerText,
                           textAlign: TextAlign.center,
+                          maxLines: 3,
+                          overflow: TextOverflow.fade,
                           style: const TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 15,
