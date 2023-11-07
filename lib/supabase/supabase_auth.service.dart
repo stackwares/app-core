@@ -251,13 +251,15 @@ class AuthService extends GetxService with ConsoleMixin {
   }
 
   // GOOGLE SIGN IN
-  /// Function to generate a random 16 character string.
-  String _generateRandomString() {
-    final random = Random.secure();
-    return base64Url.encode(List<int>.generate(16, (_) => random.nextInt(256)));
-  }
 
   Future<AuthResponse> signInWithGoogle() async {
+    /// Function to generate a random 16 character string.
+    String _generateRandomString() {
+      final random = Random.secure();
+      return base64Url
+          .encode(List<int>.generate(16, (_) => random.nextInt(256)));
+    }
+
     final rawNonce = _generateRandomString();
     final hashedNonce = sha256.convert(utf8.encode(rawNonce)).toString();
 

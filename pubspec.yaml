@@ -2,6 +2,7 @@ name: app_core
 description: Core framework package for apps of Stackwares
 version: 0.0.1
 homepage: https://stackwares.com
+publish_to: "none"
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -62,10 +63,12 @@ dependencies:
   sentry_flutter: ^7.10.1 # error reporting for windows and linux
   crypto: ^3.0.3
 
+  # Used for Google Sign In Only
+  # flutter_appauth: ^6.0.2 
   flutter_appauth:
     git:
       url: https://github.com/oliverbytes/flutter_appauth.git
-      path: flutter_appauth #fix conflict with app_links
+      path: flutter_appauth #fix conflict with app_links that's used by supabase
 
   # SECURITY
   local_auth: ^2.1.7
@@ -80,7 +83,7 @@ dependencies:
   # API / NETWORKS
   purchases_flutter: ^6.0.0
   connectivity_plus: ^4.0.2
-  supabase_flutter: ^1.10.21
+  supabase_flutter: ^1.10.24
   supabase_auth_ui: ^0.2.1
 
   # INFO
