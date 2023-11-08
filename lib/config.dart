@@ -44,6 +44,7 @@ class CoreConfig with ConsoleMixin {
   late String fcmVapidKey;
   late String androidGoogleClientId;
   late String appleGoogleClientId;
+  late String webGoogleClientId;
 
   late Function()? onCancelledUpgradeScreen;
   late Function()? onSuccessfulUpgrade;
@@ -85,6 +86,7 @@ class CoreConfig with ConsoleMixin {
     String fcmVapidKey = '',
     String androidGoogleClientId = '',
     String appleGoogleClientId = '',
+    String webGoogleClientId = '',
     Function()? onCancelledUpgradeScreen,
     Function()? onSuccessfulUpgrade,
     Function()? onSignedOut,
@@ -113,6 +115,7 @@ class CoreConfig with ConsoleMixin {
     this.fcmVapidKey = fcmVapidKey;
     this.androidGoogleClientId = androidGoogleClientId;
     this.appleGoogleClientId = appleGoogleClientId;
+    this.webGoogleClientId = webGoogleClientId;
     this.onCancelledUpgradeScreen = onCancelledUpgradeScreen;
     this.onSuccessfulUpgrade = onSuccessfulUpgrade;
     this.onSignedOut = onSignedOut;

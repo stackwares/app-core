@@ -63,13 +63,6 @@ dependencies:
   sentry_flutter: ^7.12.0 # error reporting for windows and linux
   crypto: ^3.0.3
 
-  # Used for Google Sign In Only
-  # flutter_appauth: ^6.0.2 
-  flutter_appauth:
-    git:
-      url: https://github.com/oliverbytes/flutter_appauth.git
-      path: flutter_appauth #fix conflict with app_links that's used by supabase
-
   # SECURITY
   local_auth: ^2.1.7
 
@@ -83,8 +76,9 @@ dependencies:
   # API / NETWORKS
   purchases_flutter: ^6.2.0
   connectivity_plus: ^5.0.1
-  supabase_flutter: ^1.10.24
+  supabase_flutter: ^1.10.25
   supabase_auth_ui: ^0.2.1
+  google_sign_in: ^6.1.6
 
   # INFO
   device_info_plus: ^9.1.0
