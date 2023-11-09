@@ -112,8 +112,7 @@ class AuthService extends GetxService with ConsoleMixin {
     try {
       if (provider == Provider.apple && isApple) {
         await auth.signInWithApple();
-        // } else if (provider == Provider.google && !isMac) {
-      } else if (provider == Provider.google) {
+      } else if (provider == Provider.google && !isMac && !isWeb) {
         await signInWithGoogle();
       } else {
         await auth.signInWithOAuth(
