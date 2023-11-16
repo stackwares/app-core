@@ -246,11 +246,16 @@ class AuthService extends GetxService with ConsoleMixin {
   // GOOGLE SIGN IN
 
   Future<AuthResponse> signInWithGoogle() async {
+    // final googleSignIn = GoogleSignIn(
+    //   clientId: isWeb
+    //       ? CoreConfig().webGoogleClientId
+    //       : CoreConfig().appleGoogleClientId,
+    //   serverClientId: !isWeb ? CoreConfig().webGoogleClientId : null,
+    // );
+
     final googleSignIn = GoogleSignIn(
-      clientId: isWeb
-          ? CoreConfig().webGoogleClientId
-          : CoreConfig().appleGoogleClientId,
-      serverClientId: !isWeb ? CoreConfig().webGoogleClientId : null,
+      clientId: CoreConfig().appleGoogleClientId,
+      serverClientId: CoreConfig().webGoogleClientId,
     );
 
     final googleUser = await googleSignIn.signIn();
