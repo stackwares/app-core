@@ -39,6 +39,7 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   google_fonts: ^6.1.0
   locale_emoji_flutter: ^0.2.1
+  quick_actions: ^1.0.6
 
   # IO
   hive: ^2.2.3 # database

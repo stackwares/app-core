@@ -33,9 +33,9 @@ class FeedbackScreenController extends GetxController
 
   // FUNCTIONS
 
-  void review() {
+  void requestReview() {
     Utils.copyToClipboard(textController.text);
-    UIUtils.rateAndReview();
+    UIUtils.requestReview();
   }
 
   void send() async {

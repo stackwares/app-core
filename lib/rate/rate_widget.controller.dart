@@ -33,7 +33,7 @@ class RateWidgetController extends GetxController with ConsoleMixin {
         Utils.copyToClipboard(textController.text);
       }
 
-      UIUtils.rateAndReview();
+      UIUtils.requestReview();
     } else {
       Utils.contactEmail(
         subject: '${appConfig.name} Review',

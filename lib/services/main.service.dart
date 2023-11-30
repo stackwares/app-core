@@ -3,19 +3,21 @@ import 'dart:io';
 
 import 'package:app_core/config.dart';
 import 'package:app_core/firebase/analytics.service.dart';
-
 import 'package:app_core/globals.dart';
 import 'package:app_core/persistence/persistence.dart';
 import 'package:app_core/supabase/supabase_auth.service.dart';
+import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:launch_at_startup/launch_at_startup.dart';
+import 'package:quick_actions/quick_actions.dart';
 import 'package:window_manager/window_manager.dart';
 
 import '../config/app.model.dart';
+import '../pages/routes.dart';
 import '../purchases/purchases.services.dart';
 import '../rate/rate.widget.dart';
 
@@ -63,6 +65,33 @@ class MainService extends GetxService with ConsoleMixin, WindowListener {
     super.onClose();
   }
 
+  void postInit() async {
+    _initLaunchAtStartup();
+    _postInitWindow();
+    _initQuickActions();
+  }
+
+  void _initQuickActions() async {
+    if (!isMobile) return;
+
+    final quickActions = const QuickActions();
+
+    quickActions.initialize((shortcutType) {
+      if (shortcutType == 'feedback') {
+        Utils.adaptiveRouteOpen(name: Routes.feedback);
+      }
+    });
+
+    await Future.delayed(5.seconds);
+    quickActions.setShortcutItems(<ShortcutItem>[
+      ShortcutItem(
+        type: 'feedback',
+        localizedTitle: 'need_help'.tr,
+        // icon: 'icon_help',
+      ),
+    ]);
+  }
+
   void requestReview() {
     if (!AuthService.to.authenticated ||
         persistence.rateDialogShown.val ||
@@ -94,11 +123,6 @@ class MainService extends GetxService with ConsoleMixin, WindowListener {
     if (!isDesktop) return;
     window.addListener(this);
     window.setPreventClose(true);
-  }
-
-  void postInit() async {
-    _initLaunchAtStartup();
-    _postInitWindow();
   }
 
   void _postInitWindow() async {

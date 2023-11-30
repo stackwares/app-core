@@ -160,7 +160,7 @@ class UIUtils {
     );
   }
 
-  static void rateAndReview() async {
+  static void requestReview() async {
     final store = appConfig.links.store;
     final inAppReview = InAppReview.instance;
     final available = await inAppReview.isAvailable();

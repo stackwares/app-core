@@ -95,7 +95,7 @@ class FeedbackScreen extends StatelessWidget with ConsoleMixin {
                   children: [
                     const SizedBox(height: 20),
                     ElevatedButton.icon(
-                      onPressed: controller.review,
+                      onPressed: controller.requestReview,
                       icon: const Icon(Icons.star_border),
                       label: Text(
                         '${'rate_review'.tr} ${appConfig.name}',
