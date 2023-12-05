@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:app_core/config.dart';
 import 'package:app_core/firebase/analytics.service.dart';
 import 'package:app_core/firebase/crashlytics.service.dart';
@@ -6,12 +8,15 @@ import 'package:app_core/notifications/notifications.manager.dart';
 import 'package:app_core/purchases/purchases.services.dart';
 import 'package:app_core/supabase/supabase_functions.service.dart';
 import 'package:console_mixin/console_mixin.dart';
+import 'package:crypto/crypto.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:either_dart/either.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:supabase_flutter/src/supabase_auth.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../config/app.model.dart';
@@ -47,7 +52,7 @@ class AuthService extends GetxService with ConsoleMixin {
     await Supabase.initialize(
       url: s.url,
       anonKey: s.key,
-      authCallbackUrlHostname: s.redirect.host,
+      // authCallbackUrlHostname: s.redirect.host,
       debug: kDebugMode,
     );
 
@@ -96,7 +101,7 @@ class AuthService extends GetxService with ConsoleMixin {
     });
   }
 
-  Future<Either<String, bool>> providerAuth(Provider provider) async {
+  Future<Either<String, bool>> providerAuth(OAuthProvider provider) async {
     final s = secretConfig.supabase;
     final redirect = s.redirectUrl;
     final redirectWeb = s.redirectUrlWeb;
@@ -110,9 +115,10 @@ class AuthService extends GetxService with ConsoleMixin {
     busy.value = true;
 
     try {
-      if (provider == Provider.apple && isApple) {
-        await auth.signInWithApple();
-      } else if (provider == Provider.google && !isMac && !isWeb) {
+      if (provider == OAuthProvider.apple && isApple) {
+        // await auth.signInWithApple();
+        await signInWithApple();
+      } else if (provider == OAuthProvider.google && !isMac && !isWeb) {
         await signInWithGoogle();
       } else {
         await auth.signInWithOAuth(
@@ -244,15 +250,7 @@ class AuthService extends GetxService with ConsoleMixin {
   }
 
   // GOOGLE SIGN IN
-
   Future<AuthResponse> signInWithGoogle() async {
-    // final googleSignIn = GoogleSignIn(
-    //   clientId: isWeb
-    //       ? CoreConfig().webGoogleClientId
-    //       : CoreConfig().appleGoogleClientId,
-    //   serverClientId: !isWeb ? CoreConfig().webGoogleClientId : null,
-    // );
-
     final googleSignIn = GoogleSignIn(
       clientId: CoreConfig().appleGoogleClientId,
       serverClientId: CoreConfig().webGoogleClientId,
@@ -267,9 +265,35 @@ class AuthService extends GetxService with ConsoleMixin {
     if (idToken == null) throw 'No ID Token found.';
 
     return auth.signInWithIdToken(
-      provider: Provider.google,
+      provider: OAuthProvider.google,
       idToken: idToken,
       accessToken: accessToken,
+    );
+  }
+
+  // APPLE SIGN IN
+  Future<AuthResponse> signInWithApple() async {
+    final rawNonce = auth.generateRawNonce();
+    final hashedNonce = sha256.convert(utf8.encode(rawNonce)).toString();
+
+    final credential = await SignInWithApple.getAppleIDCredential(
+      scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ],
+      nonce: hashedNonce,
+    );
+
+    final idToken = credential.identityToken;
+    if (idToken == null) {
+      throw const AuthException(
+          'Could not find ID Token from generated credential.');
+    }
+
+    return auth.signInWithIdToken(
+      provider: OAuthProvider.apple,
+      idToken: idToken,
+      nonce: rawNonce,
     );
   }
 }

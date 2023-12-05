@@ -13,25 +13,21 @@ dependencies:
 
   # STATE MANAGEMENT
   get: ^4.6.6
-
   # ICONS
+  iconsax: ^0.0.8
   line_icons: ^2.0.3 # icons
   lucide_icons: ^0.257.0
-
   # ADS
-  stack_appodeal_flutter: ^3.2.0-beta.2
-
+  stack_appodeal_flutter: ^3.2.0-beta.3
   # ANIMATIONS
   simple_animations: ^5.0.2
   sa4_migration_kit: ^1.0.0
-  flutter_animate: ^4.2.0+1
-
+  flutter_animate: ^4.3.0
   # DESKTOP
   system_tray: ^2.0.3
   launch_at_startup: ^0.2.2
   window_manager: ^0.3.7
   hotkey_manager: ^0.1.8
-
   # UI
   extended_image: ^8.2.0
   flex_color_scheme: ^7.3.1 # themes
@@ -40,52 +36,44 @@ dependencies:
   google_fonts: ^6.1.0
   locale_emoji_flutter: ^0.2.1
   quick_actions: ^1.0.6
-
   # IO
   hive: ^2.2.3 # database
   hive_flutter: ^1.1.0
   path: ^1.8.3
   path_provider: ^2.1.1
   flutter_secure_storage: ^9.0.0
-
   # UTILS
   console_mixin: ^0.0.1
   url_launcher: ^6.2.1
   supercharged: ^2.1.1 # useful utils
-  flutter_local_notifications: ^16.1.0
+  flutter_local_notifications: ^16.2.0
   either_dart: ^1.0.0 # functional programming + error handling
   in_app_review: ^2.0.8
   app_settings: ^5.1.1
   intl: ^0.18.1 # date formatting
   uuid: ^3.0.7
   timeago: ^3.6.0
-  permission_handler: ^11.0.1
+  permission_handler: ^11.1.0
   easy_debounce: ^2.0.3
-  sentry_flutter: ^7.12.0 # error reporting for windows and linux
+  sentry_flutter: ^7.13.2 # error reporting for windows and linux
   crypto: ^3.0.3
-
   # SECURITY
   local_auth: ^2.1.7
-
   # FIREBASE
-  firebase_core: ^2.21.0
-  firebase_analytics: ^10.6.3
-  firebase_crashlytics: ^3.4.3
-  firebase_performance: ^0.9.3+3
-  firebase_messaging: ^14.7.3
-
+  firebase_core: ^2.24.0
+  firebase_analytics: ^10.7.2
+  firebase_crashlytics: ^3.4.6
+  firebase_performance: ^0.9.3+6
+  firebase_messaging: ^14.7.6
   # API / NETWORKS
-  purchases_flutter: ^6.2.0
-  connectivity_plus: ^5.0.1
-  supabase_flutter: ^1.10.25
-  supabase_auth_ui: ^0.2.1
+  purchases_flutter: ^6.4.0
+  connectivity_plus: ^5.0.2
+  supabase_flutter: ^2.0.0-dev.3
   google_sign_in: ^6.1.6
-
+  sign_in_with_apple: ^5.0.0
   # INFO
-  device_info_plus: ^9.1.0
-  package_info_plus: ^4.2.0
-
-  # platform_device_id: ^1.0.1
+  device_info_plus: ^9.1.1
+  package_info_plus: ^5.0.1
   platform_device_id:
     git:
       url: https://github.com/oliverbytes/platform_device_id.git
