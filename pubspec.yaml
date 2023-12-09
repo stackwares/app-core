@@ -68,7 +68,7 @@ dependencies:
   # API / NETWORKS
   purchases_flutter: ^6.4.0
   connectivity_plus: ^5.0.2
-  supabase_flutter: ^2.0.0-dev.3
+  supabase_flutter: ^2.0.0-dev.4
   google_sign_in: ^6.1.6
   sign_in_with_apple: ^5.0.0
   # INFO
