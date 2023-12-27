@@ -18,7 +18,7 @@ dependencies:
   line_icons: ^2.0.3 # icons
   lucide_icons: ^0.257.0
   # ADS
-  stack_appodeal_flutter: ^3.2.0-beta.3
+  stack_appodeal_flutter: ^3.2.0
   # ANIMATIONS
   simple_animations: ^5.0.2
   sa4_migration_kit: ^1.0.0
@@ -46,7 +46,7 @@ dependencies:
   console_mixin: ^0.0.1
   url_launcher: ^6.2.2
   supercharged: ^2.1.1 # useful utils
-  flutter_local_notifications: ^16.2.0
+  flutter_local_notifications: ^16.3.0
   either_dart: ^1.0.0 # functional programming + error handling
   in_app_review: ^2.0.8
   app_settings: ^5.1.1
