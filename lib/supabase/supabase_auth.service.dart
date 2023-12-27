@@ -16,7 +16,6 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:supabase_flutter/src/supabase_auth.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../config/app.model.dart';
@@ -102,25 +101,24 @@ class AuthService extends GetxService with ConsoleMixin {
   }
 
   Future<Either<String, bool>> providerAuth(OAuthProvider provider) async {
-    final s = secretConfig.supabase;
-    final redirect = s.redirectUrl;
-    final redirectWeb = s.redirectUrlWeb;
-
-    final redirectTo = GetPlatform.isWeb
-        ? kReleaseMode
-            ? redirectWeb
-            : 'http://localhost:9000/#/auth-callback'
-        : redirect;
-
     busy.value = true;
 
     try {
       if (provider == OAuthProvider.apple && isApple) {
-        // await auth.signInWithApple();
         await signInWithApple();
       } else if (provider == OAuthProvider.google && !isMac && !isWeb) {
         await signInWithGoogle();
       } else {
+        final s = secretConfig.supabase;
+
+        final redirectTo = GetPlatform.isWeb
+            ? kReleaseMode
+                ? s.redirectUrlWeb
+                : 'http://localhost:9000/#/auth-callback'
+            : s.redirectUrl;
+
+        console.info('redirect url: ${redirectTo}');
+
         await auth.signInWithOAuth(
           provider,
           redirectTo: redirectTo,
@@ -141,18 +139,17 @@ class AuthService extends GetxService with ConsoleMixin {
   }
 
   Future<Either<String, bool>> magicLink(String email) async {
-    final s = secretConfig.supabase;
-    final redirect = s.redirectUrl;
-    final redirectWeb = s.redirectUrlWeb;
-
-    final redirectTo = GetPlatform.isWeb
-        ? kReleaseMode
-            ? redirectWeb
-            : 'http://localhost:9000/#/auth-callback'
-        : redirect;
-
     try {
       busy.value = true;
+
+      final s = secretConfig.supabase;
+
+      final redirectTo = GetPlatform.isWeb
+          ? kReleaseMode
+              ? s.redirectUrlWeb
+              : 'http://localhost:9000/#/auth-callback'
+          : s.redirectUrl;
+
       await auth.signInWithOtp(email: email, emailRedirectTo: redirectTo);
     } on AuthException catch (e) {
       busy.value = false;
@@ -208,6 +205,8 @@ class AuthService extends GetxService with ConsoleMixin {
   }
 
   Future<void> signInUri(Uri uri, Map<String, dynamic>? attributes) async {
+    console.wtf('signInUri: $uri');
+
     try {
       busy.value = true;
       final response = await auth.getSessionFromUrl(uri);

@@ -44,7 +44,7 @@ dependencies:
   flutter_secure_storage: ^9.0.0
   # UTILS
   console_mixin: ^0.0.1
-  url_launcher: ^6.2.1
+  url_launcher: ^6.2.2
   supercharged: ^2.1.1 # useful utils
   flutter_local_notifications: ^16.2.0
   either_dart: ^1.0.0 # functional programming + error handling
@@ -60,16 +60,16 @@ dependencies:
   # SECURITY
   local_auth: ^2.1.7
   # FIREBASE
-  firebase_core: ^2.24.0
-  firebase_analytics: ^10.7.2
-  firebase_crashlytics: ^3.4.6
-  firebase_performance: ^0.9.3+6
-  firebase_messaging: ^14.7.6
+  firebase_core: ^2.24.2
+  firebase_analytics: ^10.7.4
+  firebase_crashlytics: ^3.4.8
+  firebase_performance: ^0.9.3+8
+  firebase_messaging: ^14.7.9
   # API / NETWORKS
-  purchases_flutter: ^6.4.0
+  purchases_flutter: ^6.5.1
   connectivity_plus: ^5.0.2
-  supabase_flutter: ^2.0.0-dev.4
-  google_sign_in: ^6.1.6
+  supabase_flutter: ^2.0.2
+  google_sign_in: ^6.2.1
   sign_in_with_apple: ^5.0.0
   # INFO
   device_info_plus: ^9.1.1
@@ -79,7 +79,8 @@ dependencies:
       url: https://github.com/oliverbytes/platform_device_id.git
       path: platform_device_id
 
-# dependency_overrides:
+dependency_overrides:
+  app_links: ^3.5.0 # temporarily fix supabase macos google sign in
 
 flutter:
   #
