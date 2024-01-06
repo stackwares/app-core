@@ -138,6 +138,100 @@ class AuthService extends GetxService with ConsoleMixin {
     return const Right(true);
   }
 
+  void updateUserAttribute(Map<String, dynamic>? data) async {
+    if (data == null) return;
+
+    try {
+      final response = await auth.updateUser(UserAttributes(data: data));
+      console.wtf('updateUser success! ${response.user?.updatedAt}');
+    } on AuthException catch (e) {
+      console.error('updateUser error: $e');
+    } catch (e, s) {
+      CrashlyticsService.to.record(e, s);
+      console.error('updateUser exception: $e');
+    }
+  }
+
+  Future<void> deleteAccount() async {
+    AnalyticsService.to.logEvent('delete-account');
+    auth.signOut();
+  }
+
+  Future<void> signInUri(Uri uri, Map<String, dynamic>? attributes) async {
+    console.wtf('signInUri: $uri');
+
+    try {
+      busy.value = true;
+      final response = await auth.getSessionFromUrl(uri);
+      console.info('signInUri session user id: ${response.session.user.id}');
+    } on AuthException catch (e) {
+      busy.value = false;
+      return console.error('signInUri error: $e');
+    } catch (e, s) {
+      busy.value = false;
+      CrashlyticsService.to.record(e, s);
+      return console.error('signInUri exception: $e');
+    }
+
+    busy.value = false;
+    updateUserAttribute(attributes);
+
+    NotificationsManager.notify(
+      title: '${'welcome_to'.tr} ${appConfig.name}',
+      body: 'welcome_notif_body'.tr,
+    );
+  }
+
+  // GOOGLE SIGN IN
+  Future<AuthResponse> signInWithGoogle() async {
+    final googleSignIn = GoogleSignIn(
+      clientId: CoreConfig().appleGoogleClientId,
+      serverClientId: CoreConfig().webGoogleClientId,
+    );
+
+    final googleUser = await googleSignIn.signIn();
+    final googleAuth = await googleUser!.authentication;
+    final accessToken = googleAuth.accessToken;
+    final idToken = googleAuth.idToken;
+
+    if (accessToken == null) throw 'No Access Token found.';
+    if (idToken == null) throw 'No ID Token found.';
+
+    return auth.signInWithIdToken(
+      provider: OAuthProvider.google,
+      idToken: idToken,
+      accessToken: accessToken,
+    );
+  }
+
+  // APPLE SIGN IN
+  Future<AuthResponse> signInWithApple() async {
+    final rawNonce = auth.generateRawNonce();
+    final hashedNonce = sha256.convert(utf8.encode(rawNonce)).toString();
+
+    final credential = await SignInWithApple.getAppleIDCredential(
+      scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ],
+      nonce: hashedNonce,
+    );
+
+    final idToken = credential.identityToken;
+    if (idToken == null) {
+      throw const AuthException(
+        'Could not find ID Token from generated credential.',
+      );
+    }
+
+    return auth.signInWithIdToken(
+      provider: OAuthProvider.apple,
+      idToken: idToken,
+      nonce: rawNonce,
+    );
+  }
+
+  // SIGN IN
   Future<Either<String, bool>> magicLink(String email) async {
     try {
       busy.value = true;
@@ -202,97 +296,5 @@ class AuthService extends GetxService with ConsoleMixin {
 
     busy.value = false;
     console.wtf('authentication successful');
-  }
-
-  Future<void> signInUri(Uri uri, Map<String, dynamic>? attributes) async {
-    console.wtf('signInUri: $uri');
-
-    try {
-      busy.value = true;
-      final response = await auth.getSessionFromUrl(uri);
-      console.info('signInUri session user id: ${response.session.user.id}');
-    } on AuthException catch (e) {
-      busy.value = false;
-      return console.error('signInUri error: $e');
-    } catch (e, s) {
-      busy.value = false;
-      CrashlyticsService.to.record(e, s);
-      return console.error('signInUri exception: $e');
-    }
-
-    busy.value = false;
-    updateUserAttribute(attributes);
-
-    NotificationsManager.notify(
-      title: '${'welcome_to'.tr} ${appConfig.name}',
-      body: 'welcome_notif_body'.tr,
-    );
-  }
-
-  void updateUserAttribute(Map<String, dynamic>? data) async {
-    if (data == null) return;
-
-    try {
-      final response = await auth.updateUser(UserAttributes(data: data));
-      console.wtf('updateUser success! ${response.user?.updatedAt}');
-    } on AuthException catch (e) {
-      console.error('updateUser error: $e');
-    } catch (e, s) {
-      CrashlyticsService.to.record(e, s);
-      console.error('updateUser exception: $e');
-    }
-  }
-
-  Future<void> deleteAccount() async {
-    AnalyticsService.to.logEvent('delete-account');
-    auth.signOut();
-  }
-
-  // GOOGLE SIGN IN
-  Future<AuthResponse> signInWithGoogle() async {
-    final googleSignIn = GoogleSignIn(
-      clientId: CoreConfig().appleGoogleClientId,
-      serverClientId: CoreConfig().webGoogleClientId,
-    );
-
-    final googleUser = await googleSignIn.signIn();
-    final googleAuth = await googleUser!.authentication;
-    final accessToken = googleAuth.accessToken;
-    final idToken = googleAuth.idToken;
-
-    if (accessToken == null) throw 'No Access Token found.';
-    if (idToken == null) throw 'No ID Token found.';
-
-    return auth.signInWithIdToken(
-      provider: OAuthProvider.google,
-      idToken: idToken,
-      accessToken: accessToken,
-    );
-  }
-
-  // APPLE SIGN IN
-  Future<AuthResponse> signInWithApple() async {
-    final rawNonce = auth.generateRawNonce();
-    final hashedNonce = sha256.convert(utf8.encode(rawNonce)).toString();
-
-    final credential = await SignInWithApple.getAppleIDCredential(
-      scopes: [
-        AppleIDAuthorizationScopes.email,
-        AppleIDAuthorizationScopes.fullName,
-      ],
-      nonce: hashedNonce,
-    );
-
-    final idToken = credential.identityToken;
-    if (idToken == null) {
-      throw const AuthException(
-          'Could not find ID Token from generated credential.');
-    }
-
-    return auth.signInWithIdToken(
-      provider: OAuthProvider.apple,
-      idToken: idToken,
-      nonce: rawNonce,
-    );
   }
 }
