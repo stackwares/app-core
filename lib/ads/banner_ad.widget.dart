@@ -7,8 +7,8 @@ import 'package:stack_appodeal_flutter/stack_appodeal_flutter.dart';
 
 import '../config/app.model.dart';
 import '../globals.dart';
-import '../license/license.service.dart';
 import '../pages/routes.dart';
+import '../purchases/purchases.services.dart';
 import '../utils/utils.dart';
 import '../widgets/logo.widget.dart';
 import '../widgets/pro.widget.dart';
@@ -75,7 +75,7 @@ class NexBannerAd extends StatelessWidget with ConsoleMixin {
     if (isAdSupportedPlatform) {
       return Obx(
         () => Visibility(
-          visible: !LicenseService.to.isPremium,
+          visible: !PurchasesService.to.isPremium,
           child: AppodealBanner(
             adSize: small
                 ? AppodealBannerSize.BANNER
@@ -86,50 +86,50 @@ class NexBannerAd extends StatelessWidget with ConsoleMixin {
       );
     }
 
-    if (CoreConfig().purchasesEnabled) {
-      return Obx(
-        () => Visibility(
-          visible: !LicenseService.to.isPremium,
-          child: Tooltip(
-            // TODO: localize
-            message: 'Redeem your free ${appConfig.name} Premium',
-            child: InkWell(
-              onTap: () => Utils.adaptiveRouteOpen(name: Routes.upgrade),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Wrap(
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    children: [
-                      const LogoWidget(size: 20),
-                      const SizedBox(width: 10),
-                      Text(
-                        '${'try'.tr} ',
-                        style: TextStyle(
-                          color: Get.theme.primaryColor,
-                          // fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      ProText(
-                        // size: 16,
-                        premiumSize: 12,
-                        text: 'premium'.tr.toUpperCase(),
-                      ),
-                    ],
-                  ),
-                ],
-              )
-                  .animate(onPlay: (c) => c.repeat())
-                  .shimmer(duration: 2000.ms)
-                  .shakeX(duration: 1000.ms, hz: 2, amount: 1)
-                  .then(delay: 3000.ms),
-            ),
-          ),
-        ),
-      );
+    if (!CoreConfig().purchasesEnabled) {
+      return SizedBox.shrink();
     }
 
-    return SizedBox.shrink();
+    return Obx(
+      () => Visibility(
+        visible: !PurchasesService.to.isPremium,
+        child: Tooltip(
+          // TODO: localize
+          message: 'Redeem your free ${appConfig.name} Premium',
+          child: InkWell(
+            onTap: () => Utils.adaptiveRouteOpen(name: Routes.upgrade),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    const LogoWidget(size: 20),
+                    const SizedBox(width: 10),
+                    Text(
+                      '${'try'.tr} ',
+                      style: TextStyle(
+                        color: Get.theme.primaryColor,
+                        // fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    ProText(
+                      // size: 16,
+                      premiumSize: 12,
+                      text: 'premium'.tr.toUpperCase(),
+                    ),
+                  ],
+                ),
+              ],
+            )
+                .animate(onPlay: (c) => c.repeat())
+                .shimmer(duration: 2000.ms)
+                .shakeX(duration: 1000.ms, hz: 2, amount: 1)
+                .then(delay: 3000.ms),
+          ),
+        ),
+      ),
+    );
   }
 }
