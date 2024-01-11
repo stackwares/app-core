@@ -57,6 +57,7 @@ dependencies:
   easy_debounce: ^2.0.3
   sentry_flutter: ^7.13.2 # error reporting for windows and linux
   crypto: ^3.0.3
+  dart_jsonwebtoken: ^2.12.2 # securing the api
   # SECURITY
   local_auth: ^2.1.7
   # FIREBASE

@@ -1,8 +1,8 @@
 import 'dart:ui' as ui;
-import 'package:app_core/config.dart';
-import 'package:app_core/firebase/analytics.service.dart';
-import 'package:app_core/config/app.model.dart';
 
+import 'package:app_core/config.dart';
+import 'package:app_core/config/app.model.dart';
+import 'package:app_core/firebase/analytics.service.dart';
 import 'package:app_core/supabase/supabase_auth.service.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:console_mixin/console_mixin.dart';
@@ -12,16 +12,15 @@ import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-import '../purchases/purchases.services.dart';
 import '../globals.dart';
 import '../license/license.service.dart';
 import '../pages/feedback/feedback_screen.controller.dart';
 import '../pages/routes.dart';
+import '../purchases/purchases.services.dart';
 import 'blocked_domains.dart';
 
 class Utils {
