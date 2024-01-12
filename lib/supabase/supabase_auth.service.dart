@@ -51,12 +51,18 @@ class AuthService extends GetxService with ConsoleMixin {
     await Supabase.initialize(
       url: s.url,
       anonKey: s.key,
-      // authCallbackUrlHostname: s.redirect.host,
       debug: kDebugMode,
     );
 
     initAuthState();
     super.onInit();
+  }
+
+  void onSignedOut() {
+    AnalyticsService.to.logSignOut();
+    PurchasesService.to.logout();
+    CoreConfig().onSignedOut?.call();
+    authenticatedRx.value = false;
   }
 
   void onSignedIn(User user_) async {
@@ -89,11 +95,13 @@ class AuthService extends GetxService with ConsoleMixin {
         EasyDebounce.debounce('auth-token-refreshed', 2.seconds, () async {
           onSignedIn(data.session!.user);
         });
+      } else if (data.event == AuthChangeEvent.initialSession) {
+        if (data.session == null) return;
+        EasyDebounce.debounce('auth-token-initial', 2.seconds, () async {
+          onSignedIn(data.session!.user);
+        });
       } else if (data.event == AuthChangeEvent.signedOut) {
-        authenticatedRx.value = false;
-        AnalyticsService.to.logSignOut();
-        PurchasesService.to.logout();
-        CoreConfig().onSignedOut?.call();
+        onSignedOut();
       } else if (data.event == AuthChangeEvent.userUpdated) {
         //
       }

@@ -72,6 +72,7 @@ class FunctionsService extends GetxService with ConsoleMixin {
     console.wtf('synced: ${jsonEncode(serverResponse.toJson())}');
     final syncUserResponse = SyncUserResponse.fromJson(serverResponse.data);
     sessionId = syncUserResponse.sessionId;
+    console.info('session id: ${sessionId}');
   }
 
   Future<Either<String, GumroadProduct>> gumroadProductDetail() async {
