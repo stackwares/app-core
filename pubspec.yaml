@@ -18,11 +18,11 @@ dependencies:
   line_icons: ^2.0.3 # icons
   lucide_icons: ^0.257.0
   # ADS
-  stack_appodeal_flutter: ^3.2.0
+  stack_appodeal_flutter: ^3.2.0+1
   # ANIMATIONS
   simple_animations: ^5.0.2
   sa4_migration_kit: ^1.0.0
-  flutter_animate: ^4.3.0
+  flutter_animate: ^4.4.0
   # DESKTOP
   system_tray: ^2.0.3
   launch_at_startup: ^0.2.2
@@ -35,41 +35,45 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   google_fonts: ^6.1.0
   locale_emoji_flutter: ^0.2.1
-  quick_actions: ^1.0.6
+  quick_actions: ^1.0.7
   # IO
   hive: ^2.2.3 # database
   hive_flutter: ^1.1.0
+  # TODO: NEED UPDATE
   path: ^1.8.3
-  path_provider: ^2.1.1
+  # TODO: NEED UPDATE
+  path_provider: ^2.1.2
   flutter_secure_storage: ^9.0.0
   # UTILS
   console_mixin: ^0.0.1
-  url_launcher: ^6.2.2
+  url_launcher: ^6.2.3
   supercharged: ^2.1.1 # useful utils
   flutter_local_notifications: ^16.3.0
   either_dart: ^1.0.0 # functional programming + error handling
   in_app_review: ^2.0.8
   app_settings: ^5.1.1
-  intl: ^0.18.1 # date formatting
-  uuid: ^3.0.7
+  # TODO: NEED UPDATE
+  intl: ^0.18.1 # date formatting # NEED UPDATE
+  # TODO: NEED UPDATE
+  uuid: ^3.0.7 
   timeago: ^3.6.0
   permission_handler: ^11.1.0
   easy_debounce: ^2.0.3
-  sentry_flutter: ^7.13.2 # error reporting for windows and linux
+  sentry_flutter: ^7.14.0 # error reporting for windows and linux
   crypto: ^3.0.3
   dart_jsonwebtoken: ^2.12.2 # securing the api
   # SECURITY
-  local_auth: ^2.1.7
+  local_auth: ^2.1.8
   # FIREBASE
   firebase_core: ^2.24.2
-  firebase_analytics: ^10.7.4
-  firebase_crashlytics: ^3.4.8
+  firebase_analytics: ^10.8.0
+  firebase_crashlytics: ^3.4.9
   firebase_performance: ^0.9.3+8
-  firebase_messaging: ^14.7.9
+  firebase_messaging: ^14.7.10
   # API / NETWORKS
-  purchases_flutter: ^6.5.1
+  purchases_flutter: ^6.15.0
   connectivity_plus: ^5.0.2
-  supabase_flutter: ^2.0.2
+  supabase_flutter: ^2.2.0
   google_sign_in: ^6.2.1
   sign_in_with_apple: ^5.0.0
   # INFO
@@ -79,9 +83,6 @@ dependencies:
     git:
       url: https://github.com/oliverbytes/platform_device_id.git
       path: platform_device_id
-
-dependency_overrides:
-  app_links: ^3.5.0 # temporarily fix supabase macos google sign in
 
 flutter:
   #
