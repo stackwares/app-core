@@ -19,7 +19,6 @@ import 'package:window_manager/window_manager.dart';
 import '../config/app.model.dart';
 import '../pages/routes.dart';
 import '../purchases/purchases.services.dart';
-import '../rate/rate.widget.dart';
 
 class MainService extends GetxService with ConsoleMixin, WindowListener {
   static MainService get to => Get.find();
@@ -90,22 +89,6 @@ class MainService extends GetxService with ConsoleMixin, WindowListener {
         // icon: 'icon_help',
       ),
     ]);
-  }
-
-  void requestReview() {
-    if (!AuthService.to.authenticated ||
-        persistence.rateDialogShown.val ||
-        !isRateReviewSupported) {
-      return;
-    }
-
-    persistence.rateDialogShown.val = true;
-
-    const dialog = AlertDialog(
-      content: SizedBox(width: 400, child: RateWidget()),
-    );
-
-    Get.dialog(dialog);
   }
 
   // FUNCTIONS

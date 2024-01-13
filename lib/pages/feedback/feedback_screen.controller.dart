@@ -18,8 +18,7 @@ class FeedbackScreenController extends GetxController
     with StateMixin, ConsoleMixin {
   // VARIABLES
   final formKey = GlobalKey<FormState>();
-  final textController = TextEditingController();
-
+  final textController = TextEditingController(text: Get.arguments);
   var feedbackType = FeedbackType.feedback;
   final rating = 0.0.obs;
 
@@ -33,7 +32,7 @@ class FeedbackScreenController extends GetxController
 
   // FUNCTIONS
 
-  void requestReview() {
+  void rate() {
     Utils.copyToClipboard(textController.text);
     UIUtils.requestReview();
   }
@@ -48,9 +47,11 @@ class FeedbackScreenController extends GetxController
       );
     }
 
+    final subject =
+        '${appConfig.name} ${feedbackType.toString().replaceAll('FeedbackType.', '').capitalizeFirst}';
+
     Utils.contactEmail(
-      subject:
-          '${appConfig.name} ${feedbackType.toString().replaceAll('FeedbackType.', '').capitalizeFirst}',
+      subject: subject,
       preBody: textController.text,
       rating: rating.value,
       previousRoute: Get.previousRoute,

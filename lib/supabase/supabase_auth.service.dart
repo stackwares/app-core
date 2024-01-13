@@ -63,6 +63,7 @@ class AuthService extends GetxService with ConsoleMixin {
     PurchasesService.to.logout();
     CoreConfig().onSignedOut?.call();
     authenticatedRx.value = false;
+    FunctionsService.to.sessionId = 0;
   }
 
   void onSignedIn(User user_) async {

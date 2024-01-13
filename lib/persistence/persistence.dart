@@ -19,6 +19,7 @@ class Persistence extends GetxController with ConsoleMixin {
   final lastBuildNumber = 0.val('last-build-number');
   final notificationId = 0.val('notification-id');
   final sessionCount = 1.val('session-count');
+  final reviewCount = 0.val('review-count');
   final rateDialogShown = false.val('rate-dialog-shown');
   final onboarded = false.val('onboarded');
   final consented = false.val('consented');

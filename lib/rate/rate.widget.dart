@@ -4,13 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import 'package:line_icons/line_icons.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 import '../config.dart';
 import '../config/app.model.dart';
-import '../utils/utils.dart';
 import 'rate_widget.controller.dart';
 
 class RateWidget extends StatelessWidget {
@@ -41,11 +38,6 @@ class RateWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                // TextButton.icon(
-                //   onPressed: controller.skip,
-                //   icon: const Icon(Iconsax.close_circle),
-                //   label: Text('close'.tr),
-                // ),
               ],
             ),
             const SizedBox(height: 15),
@@ -126,23 +118,6 @@ class RateWidget extends StatelessWidget {
                 ),
               ),
             ),
-            if (isRateReviewSupported) ...[
-              const Divider(),
-              TextButton.icon(
-                onPressed: () {
-                  if (GetPlatform.isAndroid) {
-                    Utils.openUrl(appConfig.links.store.google);
-                  } else if (GetPlatform.isIOS || GetPlatform.isMacOS) {
-                    Utils.openUrl(appConfig.links.store.apple);
-                  }
-                },
-                icon: Icon(GetPlatform.isAndroid
-                    ? LineIcons.googlePlay
-                    : LineIcons.appStore),
-                label: Text(
-                    '${appConfig.name} on ${isApple ? 'the App Store' : 'Google Play'}'),
-              ),
-            ],
           ],
         ),
       ),

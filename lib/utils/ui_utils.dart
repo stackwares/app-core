@@ -1,22 +1,22 @@
 import 'package:app_core/config.dart';
-
 import 'package:app_core/notifications/notifications.manager.dart';
-import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:in_app_review/in_app_review.dart';
 
-import '../firebase/analytics.service.dart';
 import '../config/app.model.dart';
+import '../firebase/analytics.service.dart';
 import '../globals.dart';
 import '../persistence/persistence.dart';
+import '../rate/rate.widget.dart';
 import '../supabase/supabase_database.service.dart';
 import '../supabase/supabase_functions.service.dart';
 import '../widgets/consent.widget.dart';
 
 class UIUtils {
   static final console = Console(name: 'UIUtils');
+  static bool hasRequestedReview = false;
 
   static Future<void> showConsent() async {
     if (isApple && !Persistence.to.consented.val) {
@@ -161,25 +161,29 @@ class UIUtils {
   }
 
   static void requestReview() async {
-    final store = appConfig.links.store;
-    final inAppReview = InAppReview.instance;
-    final available = await inAppReview.isAvailable();
-    console.info('review available: $available');
+    // if review is not supported or has already requested for this session
+    if (!isRateReviewSupported || hasRequestedReview) return;
+    // stop asking for a review after 5 requests
+    if (Persistence.to.reviewCount.val >= 5) return;
 
-    if (GetPlatform.isAndroid) {
-      if (available) {
-        await inAppReview.requestReview();
-      } else {
-        Utils.openUrl(store.google);
-      }
-    } else if (isApple) {
-      if (available) {
-        await inAppReview.requestReview();
-      } else {
-        Utils.openUrl(store.apple);
-      }
+    void showCustomReviewDialog() {
+      Get.dialog(AlertDialog(
+        content: SizedBox(width: 400, child: RateWidget()),
+      ));
     }
 
+    final inAppReview = InAppReview.instance;
+    final available = await inAppReview.isAvailable();
+    console.info('rate review availability: $available');
+
+    if (available) {
+      await inAppReview.requestReview();
+    } else {
+      showCustomReviewDialog();
+    }
+
+    Persistence.to.reviewCount.val++;
+    hasRequestedReview = true;
     AnalyticsService.to.logEvent('rate_review');
   }
 
