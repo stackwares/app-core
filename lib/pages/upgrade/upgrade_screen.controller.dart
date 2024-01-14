@@ -54,13 +54,18 @@ class UpgradeScreenController extends GetxController
   }
 
   String get buttonSubText {
+    // return isIAPSupported
+    //     ? product.buttonSubTitle
+    //     : gumroadProduct.value.buttonSubTitle;
     return isIAPSupported
         ? product.buttonSubTitle
-        : gumroadProduct.value.buttonSubTitle;
+        : 'Upgrade to get the best experience';
   }
 
   String get footerText {
-    return isIAPSupported ? product.discount : gumroadProduct.value.discount;
+    // return isIAPSupported ? product.discount : gumroadProduct.value.discount;
+    final gumroadText = 'Limited Time Sale Offer'.obs;
+    return isIAPSupported ? product.discount : gumroadText.value;
   }
 
   // INIT

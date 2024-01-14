@@ -1,5 +1,6 @@
 import 'package:app_core/config.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 import '../../firebase/analytics.service.dart';
@@ -22,6 +23,7 @@ class UpdateScreen extends StatelessWidget {
         children: [
           const LogoWidget(size: 150),
           const SizedBox(height: 40),
+          // TODO: localize
           const Text(
             'Update Required',
             textAlign: TextAlign.center,
@@ -31,6 +33,7 @@ class UpdateScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
+          // TODO: localize
           const Text(
             "Please update to the latest version to enjoy the latest features, bug fixes, and security patches.",
             textAlign: TextAlign.center,
@@ -44,7 +47,14 @@ class UpdateScreen extends StatelessWidget {
               icon: const Icon(LucideIcons.download),
               onPressed: () {
                 AnalyticsService.to.logEvent('download_required_update');
-                Utils.openUrl(appConfig.links.website);
+
+                if (isApple) {
+                  Utils.openUrl(appConfig.links.store.apple);
+                } else if (GetPlatform.isAndroid) {
+                  Utils.openUrl(appConfig.links.store.google);
+                } else {
+                  Utils.openUrl(appConfig.links.website);
+                }
               },
             ),
           ),
