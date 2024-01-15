@@ -47,13 +47,7 @@ class AuthService extends GetxService with ConsoleMixin {
   @override
   void onInit() async {
     final s = secretConfig.supabase;
-
-    await Supabase.initialize(
-      url: s.url,
-      anonKey: s.key,
-      debug: kDebugMode,
-    );
-
+    await Supabase.initialize(url: s.url, anonKey: s.key, debug: false);
     initAuthState();
     super.onInit();
   }

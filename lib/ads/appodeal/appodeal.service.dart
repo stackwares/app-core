@@ -66,12 +66,12 @@ class AppodealService extends GetxService with ConsoleMixin {
 
     Appodeal.setTesting(kDebugMode);
     Appodeal.setLogLevel(Appodeal.LogLevelNone);
-    console.info('init');
+    // console.info('init');
   }
 
   void initAds(String placement_) {
     placement = placement_;
-    console.info("initAds: $placement");
+    // console.info("initAds: $placement");
   }
 
   Future<AdResult> _show(AppodealAdType adType) async {
@@ -111,7 +111,7 @@ class AppodealService extends GetxService with ConsoleMixin {
         AdResult(AdResult.failed, description: 'onCancelled'),
       );
 
-      console.info('onCancelled');
+      // console.info('onCancelled');
     }
 
     void onSuccess() {
@@ -120,7 +120,7 @@ class AppodealService extends GetxService with ConsoleMixin {
         AdResult(AdResult.success, description: 'onSuccess'),
       );
 
-      console.info('onSuccess');
+      // console.info('onSuccess');
     }
 
     // LISTENERS
@@ -148,7 +148,7 @@ class AppodealService extends GetxService with ConsoleMixin {
 
     busy = true;
     Appodeal.show(adType, placement).then((value) {
-      console.info('then show() => $value');
+      // console.info('then show() => $value');
     });
 
     return completer.future;
@@ -263,10 +263,10 @@ class AppodealService extends GetxService with ConsoleMixin {
     void show() {
       Appodeal.showConsentForm(
         onOpened: () {
-          console.info('onOpened consent form');
+          // console.info('onOpened consent form');
         },
         onClosed: () {
-          console.info('onClosed consent form');
+          // console.info('onClosed consent form');
         },
         onShowFailed: (errors) {
           console.wtf('onShowFailed consent form: ${errors.length}');
@@ -281,7 +281,7 @@ class AppodealService extends GetxService with ConsoleMixin {
     Appodeal.loadConsentForm(
       appKey: CoreConfig().appodealKey,
       onLoaded: () {
-        console.info('onLoaded consent form');
+        // console.info('onLoaded consent form');
         show();
       },
       onLoadFailed: (errors) {

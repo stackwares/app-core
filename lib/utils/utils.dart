@@ -8,7 +8,6 @@ import 'package:app_core/utils/ui_utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -48,26 +47,6 @@ class Utils {
     final locale =
         (Get.locale?.languageCode ?? 'en_US') + (short ? "_short" : "");
     return timeago.format(dateTime, locale: locale).replaceFirst("~", "");
-  }
-
-  // support higher refresh rate
-  static void setDisplayMode() async {
-    if (!GetPlatform.isAndroid) return;
-
-    try {
-      final mode = await FlutterDisplayMode.active;
-      console.warning('active mode: $mode');
-      final modes = await FlutterDisplayMode.supported;
-
-      for (DisplayMode e in modes) {
-        console.info('display modes: $e');
-      }
-
-      await FlutterDisplayMode.setPreferredMode(modes.last);
-      console.info('set mode: ${modes.last}');
-    } on PlatformException catch (e) {
-      console.error('display mode error: $e');
-    }
   }
 
   static Future<dynamic>? adaptiveRouteOpen({

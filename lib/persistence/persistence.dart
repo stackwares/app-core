@@ -54,7 +54,7 @@ class Persistence extends GetxController with ConsoleMixin {
   @override
   void onReady() {
     sessionCount.val++;
-    console.wtf('session count: ${sessionCount.val}');
+    // console.wtf('session count: ${sessionCount.val}');
     super.onReady();
   }
 

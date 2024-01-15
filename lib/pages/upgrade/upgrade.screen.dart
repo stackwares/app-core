@@ -32,7 +32,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
           padding: const EdgeInsets.only(left: 15),
           child: Text(
             '${'unlock_all_access'.tr} ⤵',
-            style: const TextStyle(fontSize: 12),
+            style: const TextStyle(fontSize: 15),
           ),
         ),
         Divider(color: Colors.grey.withOpacity(0.1)),
@@ -46,7 +46,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                       'money_back_guarantee',
                       'cancel_anytime',
                       'join_over_users',
-                      'premium_pro_limit',
+                      // 'premium_pro_limit',
                     ].contains(e),
                   ),
                 )
@@ -95,58 +95,68 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
       ),
     );
 
-    final upgradeButton = Stack(
-      alignment: Alignment.topRight,
-      children: [
-        Obx(
-          () => ElevatedButton(
-            onPressed: controller.busy.value ? null : controller.purchase,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Get.theme.primaryColor,
-              foregroundColor: Get.theme.colorScheme.onPrimary,
-              visualDensity: VisualDensity.standard,
-              padding: const EdgeInsets.symmetric(
-                vertical: 10,
-                horizontal: 15,
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  controller.buttonText,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-                const SizedBox(height: 3),
-                Text(
-                  controller.buttonSubText,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.normal,
-                    fontSize: 12,
-                  ),
-                ),
-              ],
-            ),
+    final upgradeButton = Obx(
+      () => ElevatedButton(
+        onPressed: controller.busy.value ? null : controller.purchase,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Get.theme.primaryColor,
+          foregroundColor: Get.theme.colorScheme.onPrimary,
+          padding: EdgeInsets.symmetric(vertical: isSmallScreen ? 15 : 25),
+        ),
+        child: Text(
+          controller.buttonText,
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
           ),
-        )
-            .animate(onPlay: (c) => c.repeat())
-            .shimmer(duration: 2000.ms)
-            .then(delay: 2000.ms),
-        // const Positioned(
-        //   top: 7,
-        //   right: 6,
-        //   child: RemoteImage(
-        //     url: 'https://cdn-icons-png.flaticon.com/512/4840/4840351.png',
-        //     width: 32,
-        //     height: 32,
-        //   ),
-        // ),
-      ],
+        ),
+      ),
+    )
+        .animate(onPlay: (c) => c.repeat())
+        .shimmer(duration: 2000.ms)
+        .then(delay: 2000.ms);
+
+    final discountCard = Align(
+      alignment: Alignment.center,
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              RemoteImage(
+                url: 'https://cdn-icons-png.flaticon.com/512/4840/4840351.png',
+                width: 32,
+                height: 32,
+              ),
+              const SizedBox(width: 10),
+              Obx(
+                () => GradientWidget(
+                  gradient: LinearGradient(
+                    colors: CoreConfig().gradientColors,
+                  ),
+                  child: Text(
+                    controller.footerText,
+                    textAlign: TextAlign.center,
+                    maxLines: 3,
+                    overflow: TextOverflow.fade,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 15,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 5),
+              Icon(
+                Icons.check_rounded,
+                color: Get.theme.primaryColor,
+              ),
+            ],
+          ),
+        ),
+      ),
     );
 
     final actionCardContent = Padding(
@@ -154,48 +164,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Align(
-            alignment: Alignment.center,
-            child: Card(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    RemoteImage(
-                      url:
-                          'https://cdn-icons-png.flaticon.com/512/4840/4840351.png',
-                      width: 32,
-                      height: 32,
-                    ),
-                    const SizedBox(width: 10),
-                    Obx(
-                      () => GradientWidget(
-                        gradient: LinearGradient(
-                          colors: CoreConfig().gradientColors,
-                        ),
-                        child: Text(
-                          controller.footerText,
-                          textAlign: TextAlign.center,
-                          maxLines: 3,
-                          overflow: TextOverflow.fade,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 15,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 5),
-                    Icon(
-                      Icons.check_rounded,
-                      color: Get.theme.primaryColor,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
+          discountCard,
           const SizedBox(height: 5),
           Column(
             mainAxisSize: MainAxisSize.min,
@@ -295,43 +264,45 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
       ),
     );
 
+    final exitButton = Obx(
+      () => IconButton(
+        icon: controller.timerSeconds.value == 0
+            ? const Icon(Icons.close)
+            : Stack(
+                alignment: Alignment.center,
+                children: [
+                  const SizedBox(
+                    width: 30,
+                    height: 30,
+                    child: CircularProgressIndicator(),
+                  ),
+                  Text(
+                    controller.timerSeconds.value.toString(),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+        onPressed: controller.timerSeconds.value == 0
+            ? () {
+                Get.back();
+                CoreConfig().onCancelledUpgradeScreen?.call();
+              }
+            : null,
+      ),
+    );
+
     final appBar = AppBar(
       backgroundColor: Get.isDarkMode ? Colors.transparent : null,
       elevation: 0.0,
       automaticallyImplyLeading: false,
       centerTitle: false,
       title: ProText(
-        size: 20,
-        premiumSize: 15,
+        size: 30,
+        premiumSize: 20,
         text: 'premium'.tr.toUpperCase(),
       ),
       actions: [
-        Obx(
-          () => IconButton(
-            icon: controller.timerSeconds.value == 0
-                ? const Icon(Icons.close)
-                : Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      const SizedBox(
-                        width: 30,
-                        height: 30,
-                        child: CircularProgressIndicator(),
-                      ),
-                      Text(
-                        controller.timerSeconds.value.toString(),
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-            onPressed: controller.timerSeconds.value == 0
-                ? () {
-                    Get.back();
-                    CoreConfig().onCancelledUpgradeScreen?.call();
-                  }
-                : null,
-          ),
-        ),
+        exitButton,
         TextButton(
           onPressed: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
           child: Text('help_question'.tr),
@@ -343,8 +314,9 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
     return WillPopScope(
       onWillPop: () async => controller.timerSeconds.value == 0,
       child: Scaffold(
-        backgroundColor:
-            Get.isDarkMode ? const Color.fromARGB(255, 29, 29, 29) : null,
+        backgroundColor: (Get.isDarkMode && !isSmallScreen)
+            ? Color.fromARGB(255, 18, 18, 18)
+            : null,
         appBar: appBar,
         body: content,
       ),

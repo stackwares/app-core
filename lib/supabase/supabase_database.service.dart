@@ -34,7 +34,7 @@ class DatabaseService extends GetxService with ConsoleMixin {
         },
       ).select();
 
-      console.info('response! $response');
+      // console.info('response! $response');
 
       if (response.isEmpty) {
         return const Left('Error: empty data response');

@@ -31,8 +31,7 @@ class NotificationsManager {
     );
 
     initialized = true;
-
-    console.info("init");
+    // console.info("init");
   }
 
   static void notify({
@@ -66,7 +65,7 @@ class NotificationsManager {
 
     final id = Persistence.to.notificationId.val++;
     await plugin.show(id, title, body, details, payload: payload);
-    console.info('notify: $title');
+    // console.info('notify: $title');
   }
 
   static void onBackgroundPayload(NotificationResponse? response) async {

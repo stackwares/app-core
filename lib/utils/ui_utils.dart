@@ -174,7 +174,7 @@ class UIUtils {
 
     final inAppReview = InAppReview.instance;
     final available = await inAppReview.isAvailable();
-    console.info('rate review availability: $available');
+    // console.info('rate review availability: $available');
 
     if (available) {
       await inAppReview.requestReview();

@@ -11,7 +11,6 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:launch_at_startup/launch_at_startup.dart';
 import 'package:quick_actions/quick_actions.dart';
 import 'package:window_manager/window_manager.dart';
@@ -93,7 +92,7 @@ class MainService extends GetxService with ConsoleMixin, WindowListener {
 
   // FUNCTIONS
   Future<void> reset() async {
-    console.info('resetting...');
+    // console.info('resetting...');
     // reset persistence
     await Persistence.reset();
     // invalidate purchases
@@ -143,30 +142,30 @@ class MainService extends GetxService with ConsoleMixin, WindowListener {
       launchAtStartup.disable();
     }
 
-    console.info('initLaunchAtStartup');
+    // console.info('initLaunchAtStartup');
   }
 
   void _initAppLifeCycleEvents() {
     // auto-lock after app is inactive
     SystemChannels.lifecycle.setMessageHandler((msg) async {
-      console.warning(msg!);
+      // console.warning(msg!);
 
       if (!timeLockEnabled) {
-        console.warning('lifecycle: timeLock is disabled');
+        // console.warning('lifecycle: timeLock is disabled');
         return Future.value(msg);
       }
 
-      final timeLockDuration = persistence.timeLockDuration.val.seconds;
+      // final timeLockDuration = persistence.timeLockDuration.val.seconds;
 
       // RESUMED
       if (msg == AppLifecycleState.resumed.toString()) {
         if (lastInactiveTime == null) return Future.value(msg);
 
-        final expirationTime = lastInactiveTime!.add(timeLockDuration);
+        // final expirationTime = lastInactiveTime!.add(timeLockDuration);
 
-        console.wtf(
-          'lifecycle: expires in ${DateFormat.yMMMMd().add_jms().format(expirationTime)}',
-        );
+        // console.wtf(
+        //   'lifecycle: expires in ${DateFormat.yMMMMd().add_jms().format(expirationTime)}',
+        // );
 
         // TODO: time lock
         // // expired
@@ -179,9 +178,9 @@ class MainService extends GetxService with ConsoleMixin, WindowListener {
       else if (msg == AppLifecycleState.inactive.toString()) {
         lastInactiveTime = DateTime.now();
 
-        console.wtf(
-          'lifecycle: locking in ${timeLockDuration.inSeconds} seconds of inactivity',
-        );
+        // console.wtf(
+        //   'lifecycle: locking in ${timeLockDuration.inSeconds} seconds of inactivity',
+        // );
       }
 
       return Future.value(msg);
@@ -195,11 +194,11 @@ class MainService extends GetxService with ConsoleMixin, WindowListener {
 
   @override
   void onWindowClose() async {
-    bool preventClosing = await window.isPreventClose();
+    // bool preventClosing = await window.isPreventClose();
 
-    console.info(
-      'minimize: ${persistence.minimizeToTray.val}, preventClosing: $preventClosing',
-    );
+    // console.info(
+    //   'minimize: ${persistence.minimizeToTray.val}, preventClosing: $preventClosing',
+    // );
 
     if (persistence.minimizeToTray.val) {
       window.minimize();

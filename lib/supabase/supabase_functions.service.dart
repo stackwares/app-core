@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:app_core/config.dart';
 import 'package:app_core/globals.dart';
 import 'package:console_mixin/console_mixin.dart';
@@ -27,7 +25,7 @@ class FunctionsService extends GetxService with ConsoleMixin {
   // FUNCTIONS
 
   Future<void> sync(User user, {Map<String, dynamic> data = const {}}) async {
-    console.info('sync...');
+    // console.info('sync...');
 
     // enforce auth to be logged in
     if (isIAPSupported &&
@@ -69,15 +67,14 @@ class FunctionsService extends GetxService with ConsoleMixin {
       return console.error('server error: ${serverResponse.errors}');
     }
 
-    console.wtf('synced: ${jsonEncode(serverResponse.toJson())}');
+    // console.wtf('synced: ${jsonEncode(serverResponse.toJson())}');
     final syncUserResponse = SyncUserResponse.fromJson(serverResponse.data);
     sessionId = syncUserResponse.sessionId;
     console.info('session id: ${sessionId}');
   }
 
   Future<Either<String, GumroadProduct>> gumroadProductDetail() async {
-    console.info('gumroadProductDetail...');
-
+    // console.info('gumroadProductDetail...');
     FunctionResponse? response;
 
     try {
@@ -124,7 +121,7 @@ class FunctionsService extends GetxService with ConsoleMixin {
       return const Left('Please sign in to continue');
     }
 
-    console.info('verifyGumroad...');
+    // console.info('verifyGumroad...');
     FunctionResponse? response;
 
     try {
@@ -158,7 +155,7 @@ class FunctionsService extends GetxService with ConsoleMixin {
     }
 
     final entitlement = EntitlementResponse.fromJson(serverResponse.data);
-    console.info('entitlement: ${jsonEncode(entitlement.toJson())}');
+    // console.info('entitlement: ${jsonEncode(entitlement.toJson())}');
 
     if (updateEntitlement) {
       if (entitlement.entitled) console.wtf('PRO ENTITLED');

@@ -8,7 +8,6 @@ import 'package:app_core/supabase/supabase_auth.service.dart';
 import 'package:app_core/supabase/supabase_database.service.dart';
 import 'package:app_core/supabase/supabase_functions.service.dart';
 import 'package:app_core/supabase/supabase_realtime.service.dart';
-import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -147,7 +146,7 @@ class CoreConfig with ConsoleMixin {
   Future<void> postInit() async {
     CrashlyticsService.to.init();
     if (!isMobile) NotificationsManager.init();
-    Utils.setDisplayMode(); // refresh rate
+    // Utils.setDisplayMode(); // refresh rate
     await Persistence.open();
     MainService.to.postInit();
   }

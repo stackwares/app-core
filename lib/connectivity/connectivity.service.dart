@@ -23,13 +23,13 @@ class ConnectivityService extends GetxService with ConsoleMixin {
     // get current status
     connected.value =
         await connectivity.checkConnectivity() != ConnectivityResult.none;
-    console.info('connected: ${connected.value}');
+    // console.info('connected: ${connected.value}');
 
     // stream subscription
     connectivitySubscription =
         connectivity.onConnectivityChanged.listen((result) {
       connected.value = result != ConnectivityResult.none;
-      console.info('connected: ${connected()}');
+      // console.info('connected: ${connected()}');
     });
 
     super.onInit();
