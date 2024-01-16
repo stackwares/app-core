@@ -107,8 +107,9 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
           controller.buttonText,
           textAlign: TextAlign.center,
           style: const TextStyle(
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w700,
             fontSize: 18,
+            fontFamily: '',
           ),
         ),
       ),

@@ -56,8 +56,9 @@ class PremiumCard extends StatelessWidget {
           text,
           style: TextStyle(
             fontSize: size ?? 14 * 0.8,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w900,
             color: Colors.white,
+            fontFamily: '',
           ),
         ),
       ),
