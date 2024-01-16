@@ -74,8 +74,8 @@ class UpdateScreen extends StatelessWidget {
       ),
     );
 
-    return WillPopScope(
-      onWillPop: () => Future.value(false),
+    return PopScope(
+      canPop: false,
       child: Scaffold(
         bottomNavigationBar: const VersionText(),
         body: Padding(

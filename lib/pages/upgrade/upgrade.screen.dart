@@ -1,6 +1,5 @@
 import 'package:app_core/animations/animations.dart';
 import 'package:app_core/config.dart';
-
 import 'package:app_core/globals.dart';
 import 'package:app_core/pages/upgrade/item.tile.dart';
 import 'package:app_core/utils/utils.dart';
@@ -312,8 +311,8 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
       ],
     );
 
-    return WillPopScope(
-      onWillPop: () async => controller.timerSeconds.value == 0,
+    return PopScope(
+      canPop: controller.timerSeconds.value == 0,
       child: Scaffold(
         backgroundColor: (Get.isDarkMode && !isSmallScreen)
             ? Color.fromARGB(255, 18, 18, 18)
