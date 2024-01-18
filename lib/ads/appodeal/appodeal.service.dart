@@ -153,8 +153,11 @@ class AppodealService extends GetxService with ConsoleMixin {
     return completer.future;
   }
 
-  Future<AdResult> showFullscreen(
-      {FullscreenAdType? adType, int delay = 0}) async {
+  Future<AdResult> showFullscreen({
+    FullscreenAdType? adType,
+    int delay = 0,
+    bool proScreen = false,
+  }) async {
     if (!CoreConfig().adsEnabled) {
       console.warning('disabled ads');
       return AdResult(AdResult.failed, description: 'disabled ads');
@@ -201,7 +204,7 @@ class AppodealService extends GetxService with ConsoleMixin {
       await Get.dialog(dialog, barrierDismissible: false);
 
       if (abort) {
-        return AdResult(AdResult.failed, description: 'show alternative');
+        return AdResult(AdResult.failed, description: 'agreed');
       }
     }
 
@@ -209,7 +212,7 @@ class AppodealService extends GetxService with ConsoleMixin {
       await Future.delayed(delay.seconds);
     }
 
-    if (!isAdSupportedPlatform) {
+    if (!isAdSupportedPlatform || proScreen) {
       Utils.adaptiveRouteOpen(
         name: Routes.upgrade,
         parameters: {'cooldown': CoreConfig().premiumScreenCooldown.toString()},

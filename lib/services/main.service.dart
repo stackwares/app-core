@@ -164,12 +164,14 @@ class MainService extends GetxService with ConsoleMixin, WindowListener {
         // TODO: show something full screen
         // AppodealService.to.showFullscreen();
 
-        Utils.adaptiveRouteOpen(
-          name: Routes.upgrade,
-          parameters: {
-            'cooldown': CoreConfig().premiumScreenCooldown.toString()
-          },
-        );
+        if (!PurchasesService.to.isPremium) {
+          Utils.adaptiveRouteOpen(
+            name: Routes.upgrade,
+            parameters: {
+              'cooldown': CoreConfig().premiumScreenCooldown.toString()
+            },
+          );
+        }
 
         // final expirationTime = lastInactiveTime!.add(timeLockDuration);
 
