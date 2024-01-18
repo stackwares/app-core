@@ -161,6 +161,16 @@ class MainService extends GetxService with ConsoleMixin, WindowListener {
       if (msg == AppLifecycleState.resumed.toString()) {
         if (lastInactiveTime == null) return Future.value(msg);
 
+        // TODO: show something full screen
+        // AppodealService.to.showFullscreen();
+
+        Utils.adaptiveRouteOpen(
+          name: Routes.upgrade,
+          parameters: {
+            'cooldown': CoreConfig().premiumScreenCooldown.toString()
+          },
+        );
+
         // final expirationTime = lastInactiveTime!.add(timeLockDuration);
 
         // console.wtf(

@@ -1,6 +1,7 @@
 import 'package:app_core/pages/upgrade/extensions.dart';
 import 'package:app_core/pages/upgrade/upgrade_screen.controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
@@ -79,8 +80,10 @@ class IAPProductTile extends StatelessWidget {
               // const SizedBox(width: 5),
               Text(
                 product.itemTitle,
-                style:
-                    const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w900,
+                ),
               ),
               // SUB PERIOD
               const SizedBox(width: 10),
@@ -155,7 +158,10 @@ class IAPProductTile extends StatelessWidget {
                 url: 'https://cdn-icons-png.flaticon.com/128/477/477406.png',
                 width: 27,
                 height: 27,
-              ),
+              )
+                  .animate(onPlay: (c) => c.repeat())
+                  .shakeX(duration: 1000.ms, hz: 2, amount: 1)
+                  .then(delay: 3000.ms),
             ),
           ),
         ],

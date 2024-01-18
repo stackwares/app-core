@@ -49,7 +49,9 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                     ].contains(e),
                   ),
                 )
-                .toList(),
+                .toList()
+                .animate(interval: 400.ms)
+                .fade(duration: 300.ms),
           ),
         ),
         // if (controller.pricing.upcomingFeatures.isNotEmpty) ...[
@@ -107,7 +109,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
           textAlign: TextAlign.center,
           style: const TextStyle(
             fontWeight: FontWeight.w700,
-            fontSize: 18,
+            fontSize: 17,
             fontFamily: '',
           ),
         ),
@@ -148,15 +150,19 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                   ),
                 ),
               ),
-              const SizedBox(width: 5),
-              Icon(
-                Icons.check_rounded,
-                color: Get.theme.primaryColor,
-              ),
             ],
           ),
         ),
-      ),
+      )
+          .animate()
+          .shimmer(duration: 2000.ms)
+          .scaleXY(
+            duration: 1000.ms,
+            curve: Curves.fastOutSlowIn,
+            begin: 0.7,
+            end: 1,
+          )
+          .then(delay: 3000.ms),
     );
 
     final actionCardContent = Padding(
@@ -297,8 +303,8 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
       automaticallyImplyLeading: false,
       centerTitle: false,
       title: ProText(
-        size: 30,
-        premiumSize: 20,
+        size: 25,
+        premiumSize: 18,
         text: 'premium'.tr.toUpperCase(),
       ),
       actions: [

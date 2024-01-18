@@ -12,7 +12,7 @@ class FeatureTile extends StatelessWidget {
     Key? key,
     required this.title,
     this.highlighted = false,
-    this.fontSize = 20,
+    this.fontSize = 18,
   }) : super(key: key);
 
   @override

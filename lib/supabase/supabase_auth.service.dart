@@ -18,6 +18,7 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../ads/appodeal/appodeal.service.dart';
 import '../config/app.model.dart';
 import '../config/secrets.model.dart';
 
@@ -61,6 +62,7 @@ class AuthService extends GetxService with ConsoleMixin {
   }
 
   void onSignedIn(User user_) async {
+    AppodealService.to.showConsent();
     busy.value = false;
     authenticatedRx.value = true;
     CoreConfig().onSignedIn?.call();

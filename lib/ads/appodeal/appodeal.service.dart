@@ -5,7 +5,6 @@ import 'package:app_core/config/app.model.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/purchases/purchases.services.dart';
-import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/foundation.dart';
@@ -25,7 +24,7 @@ class AppodealService extends GetxService with ConsoleMixin {
   var lastShowTime = DateTime.now().subtract(1.days);
 
   // GETTERS
-  bool get timeToShow => Persistence.to.sessionCount.val >= 5;
+  bool get timeToShow => Persistence.to.sessionCount.val >= 6;
 
   // INIT
   @override
@@ -256,8 +255,6 @@ class AppodealService extends GetxService with ConsoleMixin {
 
   // this is called only once after onboarding
   void showConsent() {
-    UIUtils.requestReview();
-
     if (!isAdSupportedPlatform || !isApple) return;
 
     void show() {

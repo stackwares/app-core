@@ -30,6 +30,10 @@ class Utils {
 
   // FUNCTIONS
 
+  static void closeKeyboard() {
+    FocusManager.instance.primaryFocus?.unfocus();
+  }
+
   static void copyToClipboard(text) async {
     await Clipboard.setData(ClipboardData(text: text));
 
