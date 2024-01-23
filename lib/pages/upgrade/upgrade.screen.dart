@@ -176,40 +176,6 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              if (isIAPSupported && CoreConfig().upgradeConfig.grouped) ...[
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            'pay_yearly'.tr,
-                            style: const TextStyle(fontWeight: FontWeight.w500),
-                          ),
-                          Text(
-                            '${'pay_yearly_sub'.tr} ⤴',
-                            style: TextStyle(
-                              color: Get.theme.colorScheme.tertiary,
-                              fontSize: 10,
-                            ),
-                          )
-                        ],
-                      ),
-                      const SizedBox(width: 10),
-                      Obx(
-                        () => Switch(
-                          value: controller.showYearlyPlans.value,
-                          onChanged: (value) =>
-                              controller.showYearlyPlans.value = value,
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              ],
               if (isIAPSupported) ...[
                 Obx(
                   () => Visibility(

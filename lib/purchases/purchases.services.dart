@@ -64,6 +64,7 @@ class PurchasesService extends GetxService with ConsoleMixin {
     });
 
     setAttributes();
+    load();
     sync();
   }
 

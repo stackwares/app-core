@@ -29,7 +29,6 @@ class UpgradeScreenController extends GetxController
   // PROPERTIES
   final busy = false.obs;
   final showMoreFeatures = false.obs;
-  final showYearlyPlans = false.obs;
   final tabIndex = 0.obs;
   final data = <Package>[].obs;
   final package = Rx<Package>(Package.fromJson(kPackageInitial));
@@ -77,7 +76,6 @@ class UpgradeScreenController extends GetxController
 
   @override
   void onInit() async {
-    showYearlyPlans.listen((yearly) => _select());
     load();
     change(null, status: RxStatus.success());
     super.onInit();
@@ -128,29 +126,8 @@ class UpgradeScreenController extends GetxController
   // FUNCTIONS
   Future<void> load() async {
     if (!isIAPSupported) return _loadGumroad();
-    await PurchasesService.to.load();
-
-    if (PurchasesService.to.packages.isNotEmpty) {
-      showYearlyPlans.value =
-          PurchasesService.to.packages.first.storeProduct.isAnnually;
-    }
-
-    _select();
-  }
-
-  void _select() {
-    if (CoreConfig().upgradeConfig.grouped) {
-      data.value = PurchasesService.to.packages.where((e) {
-        if (showYearlyPlans.value) {
-          return !e.storeProduct.isMonthly && !e.storeProduct.isWeekly;
-        } else {
-          return e.storeProduct.isMonthly || e.storeProduct.isWeekly;
-        }
-      }).toList();
-    } else {
-      data.value = PurchasesService.to.packages;
-    }
-
+    // await PurchasesService.to.load();
+    data.value = PurchasesService.to.packages;
     if (data.isNotEmpty) package.value = data.first;
   }
 
