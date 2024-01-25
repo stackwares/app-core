@@ -11,6 +11,7 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:launch_at_startup/launch_at_startup.dart';
 import 'package:quick_actions/quick_actions.dart';
 import 'package:window_manager/window_manager.dart';
@@ -155,36 +156,28 @@ class MainService extends GetxService with ConsoleMixin, WindowListener {
         return Future.value(msg);
       }
 
-      // final timeLockDuration = persistence.timeLockDuration.val.seconds;
-
       // RESUMED
       if (msg == AppLifecycleState.resumed.toString()) {
         if (lastInactiveTime == null) return Future.value(msg);
+        final expirationTime = lastInactiveTime!.add(60.seconds);
 
-        // TODO: show something full screen
-        // AppodealService.to.showFullscreen();
+        console.wtf(
+          'lifecycle: expires in ${DateFormat.yMMMMd().add_jms().format(expirationTime)}',
+        );
 
-        if (!PurchasesService.to.isPremium) {
-          Utils.adaptiveRouteOpen(
-            name: Routes.upgrade,
-            parameters: {
-              'cooldown': CoreConfig().premiumScreenCooldown.toString()
-            },
-          );
+        // expired
+        if (expirationTime.isBefore(DateTime.now())) {
+          console.wtf('lifecycle: expired time lock');
+
+          if (!PurchasesService.to.isPremium) {
+            Utils.adaptiveRouteOpen(
+              name: Routes.upgrade,
+              parameters: {
+                'cooldown': CoreConfig().premiumScreenCooldown.toString()
+              },
+            );
+          }
         }
-
-        // final expirationTime = lastInactiveTime!.add(timeLockDuration);
-
-        // console.wtf(
-        //   'lifecycle: expires in ${DateFormat.yMMMMd().add_jms().format(expirationTime)}',
-        // );
-
-        // TODO: time lock
-        // // expired
-        // if (expirationTime.isBefore(DateTime.now())) {
-        //   console.wtf('lifecycle: expired time lock');
-        //   Get.toNamed(Routes.unlock, parameters: {'mode': 'regular'});
-        // }
       }
       // INACTIVE
       else if (msg == AppLifecycleState.inactive.toString()) {

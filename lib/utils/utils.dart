@@ -61,10 +61,17 @@ class Utils {
     dynamic arguments,
     bool ignoreUpgradeGuard = true,
   }) {
+    console.wtf('Route: ${name}');
+
     if (name == Routes.upgrade) {
       if (!CoreConfig().purchasesEnabled ||
           PurchasesService.to.isPremium && ignoreUpgradeGuard) {
-        console.info('ignored upgrade screen');
+        console.warning('ignored upgrade screen');
+        return Future.value(false);
+      }
+
+      if (Get.previousRoute == Routes.upgrade) {
+        console.warning('duplicate upgrade route');
         return Future.value(false);
       }
     }

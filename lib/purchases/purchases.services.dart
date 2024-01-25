@@ -16,6 +16,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../config/secrets.model.dart';
 import '../pages/routes.dart';
+import '../persistence/persistence.dart';
 
 class PurchasesService extends GetxService with ConsoleMixin {
   static PurchasesService get to => Get.find();
@@ -64,8 +65,29 @@ class PurchasesService extends GetxService with ConsoleMixin {
     });
 
     setAttributes();
-    load();
     sync();
+    _loadAndShow();
+  }
+
+  // TODO: use cached to speed up
+  void _loadAndShow() async {
+    console.warning(
+      'isPremium: ${PurchasesService.to.isPremium}, onBoarded: ${Persistence.to.onboarded.val}',
+    );
+
+    if (PurchasesService.to.isPremium) return;
+    if (Persistence.to.sessionCount.val > 3) return;
+
+    await load();
+    if (packages.isEmpty) return;
+
+    // only show when user has onboarded already
+    if (Persistence.to.onboarded.val) {
+      Utils.adaptiveRouteOpen(
+        name: Routes.upgrade,
+        parameters: {'cooldown': CoreConfig().premiumScreenCooldown.toString()},
+      );
+    }
   }
 
   Future<void> invalidate() async {

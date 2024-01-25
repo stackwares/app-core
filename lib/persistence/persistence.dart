@@ -26,6 +26,7 @@ class Persistence extends GetxController with ConsoleMixin {
   final crashReporting = (isApple ? false : true).val('crash-reporting');
   final analytics = (isApple ? false : true).val('analytics');
   final fullscreenAdsAgreed = false.val('fullscreen-ads-agreed');
+  final rcPackagesCache = ''.val('rc-packages-cache');
   // WINDOW SIZE
   final windowWidth = CoreConfig().initialWindowSize.width.val('window-width');
 
@@ -54,7 +55,7 @@ class Persistence extends GetxController with ConsoleMixin {
   @override
   void onReady() {
     sessionCount.val++;
-    // console.wtf('session count: ${sessionCount.val}');
+    console.wtf('session count: ${sessionCount.val}');
     super.onReady();
   }
 

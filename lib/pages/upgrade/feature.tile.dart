@@ -1,4 +1,3 @@
-import 'package:app_core/animations/animations.dart';
 import 'package:app_core/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,31 +16,29 @@ class FeatureTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListItemAnimation(
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: 10,
-          vertical: isSmallScreen ? 5 : 10,
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.check, color: Get.theme.primaryColor),
-            const SizedBox(width: 15),
-            Expanded(
-              child: Text(
-                title,
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: fontSize,
-                  // fontWeight: FontWeight.w500,
-                  color: highlighted ? Get.theme.colorScheme.tertiary : null,
-                ),
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: 10,
+        vertical: isSmallScreen ? 3 : 6,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.check, color: Get.theme.primaryColor),
+          const SizedBox(width: 15),
+          Expanded(
+            child: Text(
+              title,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: fontSize,
+                // fontWeight: FontWeight.w500,
+                color: highlighted ? Get.theme.colorScheme.tertiary : null,
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -126,7 +126,11 @@ class UpgradeScreenController extends GetxController
   // FUNCTIONS
   Future<void> load() async {
     if (!isIAPSupported) return _loadGumroad();
-    // await PurchasesService.to.load();
+    // just incase it hasn't been loaded on app start
+    if (PurchasesService.to.packages.isEmpty) {
+      await PurchasesService.to.load();
+    }
+
     data.value = PurchasesService.to.packages;
     if (data.isNotEmpty) package.value = data.first;
   }

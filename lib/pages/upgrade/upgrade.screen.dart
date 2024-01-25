@@ -1,4 +1,3 @@
-import 'package:app_core/animations/animations.dart';
 import 'package:app_core/config.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/pages/upgrade/item.tile.dart';
@@ -41,6 +40,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                 .map(
                   (e) => FeatureTile(
                     title: e.tr,
+                    fontSize: isSmallScreen ? 16 : 20,
                     highlighted: [
                       'money_back_guarantee',
                       'cancel_anytime',
@@ -87,11 +87,9 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
           padding: EdgeInsets.zero,
           // scrollDirection: Axis.horizontal,
           itemCount: controller.data.length,
-          itemBuilder: (context, index) => ListItemAnimation(
-            axis: Axis.horizontal,
-            offset: const Offset(0, -50),
-            child: IAPProductTile(package: controller.data[index]),
-          ),
+          itemBuilder: (context, index) => IAPProductTile(
+            package: controller.data[index],
+          ).animate().slideY(duration: 600.ms).fade(duration: 600.ms),
         ),
       ),
     );
@@ -131,7 +129,15 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                 url: 'https://cdn-icons-png.flaticon.com/512/4840/4840351.png',
                 width: 32,
                 height: 32,
-              ),
+              )
+                  .animate(onPlay: (c) => c.repeat())
+                  .scale(
+                    duration: 2000.ms,
+                    begin: Offset(1, 1),
+                    end: Offset(1.3, 1.3),
+                  )
+                  .shakeX(duration: 1000.ms, hz: 2, amount: 1)
+                  .then(delay: 3000.ms),
               const SizedBox(width: 10),
               Obx(
                 () => GradientWidget(
