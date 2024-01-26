@@ -18,11 +18,12 @@ class Persistence extends GetxController with ConsoleMixin {
   final localeCode = 'en'.val('locale-code');
   final lastBuildNumber = 0.val('last-build-number');
   final notificationId = 0.val('notification-id');
-  final sessionCount = 1.val('session-count');
+  final sessionCount = 0.val('session-count');
   final reviewCount = 0.val('review-count');
   final rateDialogShown = false.val('rate-dialog-shown');
   final onboarded = false.val('onboarded');
   final consented = false.val('consented');
+  final newsletter = true.val('newsletter');
   final crashReporting = (isApple ? false : true).val('crash-reporting');
   final analytics = (isApple ? false : true).val('analytics');
   final fullscreenAdsAgreed = false.val('fullscreen-ads-agreed');
@@ -51,15 +52,8 @@ class Persistence extends GetxController with ConsoleMixin {
 
   // GETTERS
 
-  // INIT
-  @override
-  void onReady() {
-    sessionCount.val++;
-    console.wtf('session count: ${sessionCount.val}');
-    super.onReady();
-  }
-
   // FUNCTIONS
+
   static Future<void> open() async {
     await Hive.initFlutter();
     final cipher = HiveAesCipher(base64Decode(secretConfig.persistence.key));

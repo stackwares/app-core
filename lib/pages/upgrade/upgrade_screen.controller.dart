@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:app_core/config.dart';
 import 'package:app_core/globals.dart';
-import 'package:app_core/notifications/notifications.manager.dart';
 import 'package:app_core/pages/upgrade/extensions.dart';
 import 'package:app_core/pages/upgrade/pricing.model.dart';
 import 'package:app_core/utils/ui_utils.dart';
@@ -14,6 +13,7 @@ import 'package:get/get.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 import '../../config/app.model.dart';
+import '../../services/notifications.service.dart';
 import '../../purchases/purchases.services.dart';
 import '../../supabase/model/gumroad_product.model.dart';
 import '../../supabase/supabase_functions.service.dart';
@@ -179,7 +179,7 @@ class UpgradeScreenController extends GetxController
     change(null, status: RxStatus.success());
 
     if (PurchasesService.to.isPremium) {
-      NotificationsManager.notify(
+      NotificationsService.to.notify(
         title: '${appConfig.name} ${'pro_activated'.tr}',
         body: 'pro_thanks'.tr,
       );
@@ -203,7 +203,7 @@ class UpgradeScreenController extends GetxController
     change(null, status: RxStatus.success());
 
     if (PurchasesService.to.isPremium) {
-      NotificationsManager.notify(
+      NotificationsService.to.notify(
         title: '${appConfig.name} ${'pro_restored'.tr}',
         body: 'Thanks for being a ${appConfig.name} rockstar!',
       );

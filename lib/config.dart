@@ -1,9 +1,9 @@
-import 'package:app_core/firebase/fcm.service.dart';
 import 'package:app_core/license/license.service.dart';
 import 'package:app_core/pages/upgrade/upgrade_config.dart';
 import 'package:app_core/persistence/persistence.dart';
 import 'package:app_core/services/local_auth.service.dart';
 import 'package:app_core/services/main.service.dart';
+import 'package:app_core/services/notifications.service.dart';
 import 'package:app_core/supabase/supabase_auth.service.dart';
 import 'package:app_core/supabase/supabase_database.service.dart';
 import 'package:app_core/supabase/supabase_functions.service.dart';
@@ -16,7 +16,6 @@ import 'connectivity/connectivity.service.dart';
 import 'firebase/analytics.service.dart';
 import 'firebase/crashlytics.service.dart';
 import 'globals.dart';
-import 'notifications/notifications.manager.dart';
 import 'purchases/purchases.services.dart';
 
 class CoreConfig with ConsoleMixin {
@@ -138,15 +137,13 @@ class CoreConfig with ConsoleMixin {
     Get.put(FunctionsService());
     Get.put(RealtimeService());
     Get.put(AnalyticsService());
-    Get.put(FCMService());
+    Get.put(NotificationsService());
     Get.put(LicenseService());
     Get.put(PurchasesService());
   }
 
   Future<void> postInit() async {
     CrashlyticsService.to.init();
-    if (!isMobile) NotificationsManager.init();
-    // Utils.setDisplayMode(); // refresh rate
     await Persistence.open();
     MainService.to.postInit();
   }

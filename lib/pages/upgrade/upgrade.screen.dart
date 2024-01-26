@@ -307,28 +307,35 @@ class EmptyPackages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Icon(
-            Icons.warning,
-            size: 70,
-            color: Colors.red,
-          ),
-          const SizedBox(height: 5),
-          const Text(
-            'An error occured',
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 5),
-          OutlinedButton.icon(
-            onPressed: UpgradeScreenController.to.load,
-            label: Text('refresh'.tr),
-            icon: const Icon(Icons.refresh),
-          ),
-          const SizedBox(height: 15),
-        ],
+    // return Center(
+    //   child: Column(
+    //     mainAxisSize: MainAxisSize.min,
+    //     children: [
+    //       const Icon(
+    //         Icons.warning,
+    //         size: 70,
+    //         color: Colors.red,
+    //       ),
+    //       const SizedBox(height: 5),
+    //       const Text(
+    //         'An error occured',
+    //         textAlign: TextAlign.center,
+    //       ),
+    //       const SizedBox(height: 5),
+    //       OutlinedButton.icon(
+    //         onPressed: UpgradeScreenController.to.load,
+    //         label: Text('refresh'.tr),
+    //         icon: const Icon(Icons.refresh),
+    //       ),
+    //       const SizedBox(height: 15),
+    //     ],
+    //   ),
+    // );
+
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: Center(
+        child: CircularProgressIndicator(),
       ),
     );
   }

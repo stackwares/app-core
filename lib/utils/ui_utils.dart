@@ -1,5 +1,4 @@
 import 'package:app_core/config.dart';
-import 'package:app_core/notifications/notifications.manager.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,6 +7,7 @@ import 'package:in_app_review/in_app_review.dart';
 import '../config/app.model.dart';
 import '../firebase/analytics.service.dart';
 import '../globals.dart';
+import '../services/notifications.service.dart';
 import '../persistence/persistence.dart';
 import '../rate/rate.widget.dart';
 import '../supabase/supabase_database.service.dart';
@@ -229,7 +229,7 @@ class UIUtils {
               // PurchasesService.to.licenseKey.value = right.gumroadLicenseKey;
               // PurchasesService.to.verifiedPro.value = true;
 
-              NotificationsManager.notify(
+              NotificationsService.to.notify(
                 title: 'License Key Updated',
                 body: 'Thanks for subscribing to ${appConfig.name} Pro 🎉',
               );

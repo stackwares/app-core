@@ -4,7 +4,6 @@ import 'package:app_core/config.dart';
 import 'package:app_core/firebase/analytics.service.dart';
 import 'package:app_core/firebase/crashlytics.service.dart';
 import 'package:app_core/globals.dart';
-import 'package:app_core/notifications/notifications.manager.dart';
 import 'package:app_core/purchases/purchases.services.dart';
 import 'package:app_core/supabase/supabase_functions.service.dart';
 import 'package:console_mixin/console_mixin.dart';
@@ -18,9 +17,9 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../ads/appodeal/appodeal.service.dart';
 import '../config/app.model.dart';
 import '../config/secrets.model.dart';
+import '../services/notifications.service.dart';
 
 class AuthService extends GetxService with ConsoleMixin {
   static AuthService get to => Get.find();
@@ -62,7 +61,6 @@ class AuthService extends GetxService with ConsoleMixin {
   }
 
   void onSignedIn(User user_) async {
-    AppodealService.to.showConsent();
     busy.value = false;
     authenticatedRx.value = true;
     CoreConfig().onSignedIn?.call();
@@ -94,11 +92,13 @@ class AuthService extends GetxService with ConsoleMixin {
         });
       } else if (data.event == AuthChangeEvent.initialSession) {
         if (data.session == null) return;
-        EasyDebounce.debounce('auth-token-initial', 2.seconds, () async {
+        EasyDebounce.debounce('auth-initial-session', 2.seconds, () async {
           onSignedIn(data.session!.user);
         });
       } else if (data.event == AuthChangeEvent.signedOut) {
-        onSignedOut();
+        EasyDebounce.debounce('auth-signed-out', 2.seconds, () async {
+          onSignedOut();
+        });
       } else if (data.event == AuthChangeEvent.userUpdated) {
         //
       }
@@ -181,7 +181,7 @@ class AuthService extends GetxService with ConsoleMixin {
     busy.value = false;
     updateUserAttribute(attributes);
 
-    NotificationsManager.notify(
+    NotificationsService.to.notify(
       title: '${'welcome_to'.tr} ${appConfig.name}',
       body: 'welcome_notif_body'.tr,
     );

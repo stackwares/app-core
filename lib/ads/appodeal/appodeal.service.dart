@@ -24,9 +24,8 @@ class AppodealService extends GetxService with ConsoleMixin {
   var lastShowTime = DateTime.now().subtract(1.days);
 
   // GETTERS
-  bool get timeToShow => Persistence.to.sessionCount.val >= 6;
+  bool get timeToShow => Persistence.to.sessionCount.val >= 4;
 
-  // INIT
   @override
   void onInit() {
     init();
@@ -38,6 +37,16 @@ class AppodealService extends GetxService with ConsoleMixin {
 
   void init() async {
     if (!isAdSupportedPlatform) return;
+    Appodeal.setTesting(kDebugMode);
+    Appodeal.setLogLevel(Appodeal.LogLevelNone);
+
+    Appodeal.setAdRevenueCallbacks(
+      onAdRevenueReceive: (adRevenue) {
+        console.wtf('Revenue: ${adRevenue.currency}${adRevenue.revenue}');
+        // TODO: convert to free word limits
+        // disable ads for a few minutes
+      },
+    );
 
     Appodeal.initialize(
       appKey: CoreConfig().appodealKey,
@@ -55,16 +64,7 @@ class AppodealService extends GetxService with ConsoleMixin {
       ),
     );
 
-    Appodeal.setAdRevenueCallbacks(
-      onAdRevenueReceive: (adRevenue) {
-        console.wtf('Revenue: ${adRevenue.currency}${adRevenue.revenue}');
-        // TODO: convert to free word limits
-        // disable ads for a few minutes
-      },
-    );
-
-    Appodeal.setTesting(kDebugMode);
-    Appodeal.setLogLevel(Appodeal.LogLevelNone);
+    _showConsent();
     // console.info('init');
   }
 
@@ -256,11 +256,11 @@ class AppodealService extends GetxService with ConsoleMixin {
     return _show(Appodeal.REWARDED_VIDEO);
   }
 
-  // this is called only once after onboarding
-  void showConsent() {
+  // app tracking transparency
+  void _showConsent() {
     if (!isAdSupportedPlatform || !isApple) return;
 
-    void show() {
+    void _onLoaded() {
       Appodeal.showConsentForm(
         onOpened: () {
           // console.info('onOpened consent form');
@@ -278,26 +278,26 @@ class AppodealService extends GetxService with ConsoleMixin {
       );
     }
 
+    void _onLoadFailed(List<ApdConsentError> errors) {
+      console.wtf('onLoadFailed consent form: ${errors.length}');
+
+      for (var e in errors) {
+        console.error(e.desctiption);
+      }
+
+      // retry when it fails
+      if (failedConsentCount <= 5) {
+        Future.delayed(5.seconds).then((value) => _showConsent());
+      }
+
+      failedConsentCount++;
+    }
+
+    // load consent form
     Appodeal.loadConsentForm(
       appKey: CoreConfig().appodealKey,
-      onLoaded: () {
-        // console.info('onLoaded consent form');
-        show();
-      },
-      onLoadFailed: (errors) {
-        console.wtf('onLoadFailed consent form: ${errors.length}');
-
-        for (var e in errors) {
-          console.error(e.desctiption);
-        }
-
-        // retry when it fails
-        if (failedConsentCount <= 5) {
-          Future.delayed(5.seconds).then((value) => showConsent());
-        }
-
-        failedConsentCount++;
-      },
+      onLoaded: _onLoaded,
+      onLoadFailed: _onLoadFailed,
     );
   }
 }

@@ -43,8 +43,12 @@ bool get isDesktop =>
 bool get isMobile =>
     !GetPlatform.isWeb && (GetPlatform.isIOS || GetPlatform.isAndroid);
 
+bool isPurchaseAllowed = true;
+
 bool get isIAPSupported =>
-    !GetPlatform.isWeb && (GetPlatform.isMacOS || GetPlatform.isMobile);
+    !GetPlatform.isWeb &&
+    (GetPlatform.isMacOS || GetPlatform.isMobile) &&
+    isPurchaseAllowed;
 
 bool get isAdSupportedPlatform =>
     (GetPlatform.isIOS || GetPlatform.isAndroid) && CoreConfig().adsEnabled;

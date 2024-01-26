@@ -4,8 +4,8 @@ import 'dart:convert';
 import 'package:app_core/config.dart';
 import 'package:app_core/firebase/analytics.service.dart';
 import 'package:app_core/firebase/crashlytics.service.dart';
-import 'package:app_core/firebase/fcm.service.dart';
 import 'package:app_core/globals.dart';
+import 'package:app_core/services/notifications.service.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
@@ -71,15 +71,12 @@ class PurchasesService extends GetxService with ConsoleMixin {
 
   // TODO: use cached to speed up
   void _loadAndShow() async {
-    console.warning(
-      'isPremium: ${PurchasesService.to.isPremium}, onBoarded: ${Persistence.to.onboarded.val}',
-    );
-
     if (PurchasesService.to.isPremium) return;
-    if (Persistence.to.sessionCount.val > 3) return;
-
-    await load();
-    if (packages.isEmpty) return;
+    // if purchase is allowed or has google play services
+    if (isPurchaseAllowed) {
+      await load();
+      if (packages.isEmpty) return;
+    }
 
     // only show when user has onboarded already
     if (Persistence.to.onboarded.val) {
@@ -160,8 +157,8 @@ class PurchasesService extends GetxService with ConsoleMixin {
       'device-id': metadataDevice.id,
     });
 
-    if (FCMService.to.token != null) {
-      Purchases.setPushToken(FCMService.to.token!);
+    if (NotificationsService.to.fcmToken != null) {
+      Purchases.setPushToken(NotificationsService.to.fcmToken!);
     }
 
     AnalyticsService.to.setUserProperty(
@@ -252,6 +249,7 @@ class PurchasesService extends GetxService with ConsoleMixin {
         errorMessage = '';
         break;
       case PurchasesErrorCode.purchaseNotAllowedError:
+        isPurchaseAllowed = false;
         errorMessage =
             'For some reason you or the device is not allowed to do purchases';
         break;

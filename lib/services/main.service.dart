@@ -19,6 +19,7 @@ import 'package:window_manager/window_manager.dart';
 import '../config/app.model.dart';
 import '../pages/routes.dart';
 import '../purchases/purchases.services.dart';
+import 'notifications.service.dart';
 
 class MainService extends GetxService with ConsoleMixin, WindowListener {
   static MainService get to => Get.find();
@@ -68,6 +69,10 @@ class MainService extends GetxService with ConsoleMixin, WindowListener {
     _initLaunchAtStartup();
     _postInitWindow();
     _initQuickActions();
+  }
+
+  void onboarded() {
+    NotificationsService.to.init();
   }
 
   void _initQuickActions() async {
@@ -195,6 +200,8 @@ class MainService extends GetxService with ConsoleMixin, WindowListener {
   void _updateBuildNumber() async {
     if (isWindowsLinux) return;
     persistence.lastBuildNumber.val = int.parse(metadataApp.buildNumber);
+    persistence.sessionCount.val++;
+    console.wtf('session count: ${persistence.sessionCount.val}');
   }
 
   @override
