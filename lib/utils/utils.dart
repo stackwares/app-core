@@ -65,7 +65,7 @@ class Utils {
 
     if (name == Routes.upgrade) {
       if (!CoreConfig().purchasesEnabled ||
-          PurchasesService.to.isPremium && ignoreUpgradeGuard) {
+          (PurchasesService.to.isPremium && ignoreUpgradeGuard)) {
         console.warning('ignored upgrade screen');
         return Future.value(false);
       }

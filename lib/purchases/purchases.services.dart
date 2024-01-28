@@ -54,6 +54,7 @@ class PurchasesService extends GetxService with ConsoleMixin {
   // FUNCTIONS
   Future<void> init() async {
     if (!isIAPSupported) return;
+    if (!CoreConfig().purchasesEnabled) return;
     // await Purchases.setLogLevel(LogLevel.debug);
 
     await Purchases.configure(
