@@ -10,6 +10,7 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:stack_appodeal_flutter/stack_appodeal_flutter.dart';
 
 import '../../persistence/persistence.dart';
@@ -27,7 +28,9 @@ class AppodealService extends GetxService with ConsoleMixin {
   bool get timeToShow => Persistence.to.sessionCount.val >= 4;
 
   @override
-  void onInit() {
+  void onInit() async {
+    final r = await Permission.appTrackingTransparency.request();
+    console.wtf('att: ${r.isGranted}');
     init();
     super.onInit();
   }
@@ -59,7 +62,7 @@ class AppodealService extends GetxService with ConsoleMixin {
       onInitializationFinished: (errors) => errors?.forEach(
         (e) {
           console.error('onInitializationFinished Error');
-          console.error(e.desctiption);
+          console.error(e.description);
         },
       ),
     );
@@ -168,7 +171,7 @@ class AppodealService extends GetxService with ConsoleMixin {
       return AdResult(AdResult.failed, description: 'premium user');
     }
 
-    if (!timeToShow) {
+    if (!timeToShow && !proScreen) {
       console.warning("it's not time");
       return AdResult(AdResult.failed, description: "it's not time");
     }
@@ -256,48 +259,28 @@ class AppodealService extends GetxService with ConsoleMixin {
     return _show(Appodeal.REWARDED_VIDEO);
   }
 
-  // app tracking transparency
   void _showConsent() {
     if (!isAdSupportedPlatform || !isApple) return;
 
-    void _onLoaded() {
-      Appodeal.showConsentForm(
-        onOpened: () {
-          // console.info('onOpened consent form');
-        },
-        onClosed: () {
-          // console.info('onClosed consent form');
-        },
-        onShowFailed: (errors) {
-          console.wtf('onShowFailed consent form: ${errors.length}');
+    void onConsentFormLoadSuccess(ConsentStatus status) {
+      console.wtf('onConsentFormLoadSuccess: ${status.name}');
 
-          for (var e in errors) {
-            console.error(e.desctiption);
-          }
+      Appodeal.ConsentForm.show(
+        onConsentFormDismissed: (error) {
+          console.wtf('onConsentFormDismissed: ${error?.description}');
         },
       );
     }
 
-    void _onLoadFailed(List<ApdConsentError> errors) {
-      console.wtf('onLoadFailed consent form: ${errors.length}');
-
-      for (var e in errors) {
-        console.error(e.desctiption);
-      }
-
-      // retry when it fails
-      if (failedConsentCount <= 5) {
-        Future.delayed(5.seconds).then((value) => _showConsent());
-      }
-
-      failedConsentCount++;
+    void onConsentFormLoadFailure(ConsentError error) {
+      console.wtf('onConsentFormLoadFailure: ${error.description}');
     }
 
     // load consent form
-    Appodeal.loadConsentForm(
+    Appodeal.ConsentForm.load(
       appKey: CoreConfig().appodealKey,
-      onLoaded: _onLoaded,
-      onLoadFailed: _onLoadFailed,
+      onConsentFormLoadSuccess: onConsentFormLoadSuccess,
+      onConsentFormLoadFailure: onConsentFormLoadFailure,
     );
   }
 }

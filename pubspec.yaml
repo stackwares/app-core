@@ -18,11 +18,9 @@ dependencies:
   line_icons: ^2.0.3 # icons
   lucide_icons: ^0.257.0
   # ADS
-  stack_appodeal_flutter: ^3.2.0+1
+  stack_appodeal_flutter: ^3.2.1
   # ANIMATIONS
-  simple_animations: ^5.0.2
-  sa4_migration_kit: ^1.0.0
-  flutter_animate: ^4.4.0
+  flutter_animate: ^4.4.1
   # DESKTOP
   system_tray: ^2.0.3
   launch_at_startup: ^0.2.2
@@ -46,9 +44,9 @@ dependencies:
   flutter_secure_storage: ^9.0.0
   # UTILS
   console_mixin: ^0.0.1
-  url_launcher: ^6.2.3
+  url_launcher: ^6.2.4
   supercharged: ^2.1.1 # useful utils
-  flutter_local_notifications: ^16.3.0
+  flutter_local_notifications: ^16.3.2
   either_dart: ^1.0.0 # functional programming + error handling
   in_app_review: ^2.0.8
   app_settings: ^5.1.1
@@ -57,9 +55,9 @@ dependencies:
   # TODO: NEED UPDATE
   uuid: ^3.0.7 
   timeago: ^3.6.0
-  permission_handler: ^11.1.0
+  permission_handler: ^11.2.0
   easy_debounce: ^2.0.3
-  sentry_flutter: ^7.14.0 # error reporting for windows and linux
+  sentry_flutter: ^7.15.0 # error reporting for windows and linux
   crypto: ^3.0.3
   dart_jsonwebtoken: ^2.12.2 # securing the api
   # SECURITY
@@ -71,9 +69,9 @@ dependencies:
   firebase_performance: ^0.9.3+8
   firebase_messaging: ^14.7.10
   # API / NETWORKS
-  purchases_flutter: ^6.15.0
+  purchases_flutter: ^6.18.0
   connectivity_plus: ^5.0.2
-  supabase_flutter: ^2.2.0
+  supabase_flutter: ^2.3.1
   google_sign_in: ^6.2.1
   sign_in_with_apple: ^5.0.0
   # INFO
