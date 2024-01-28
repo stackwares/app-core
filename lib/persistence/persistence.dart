@@ -73,11 +73,9 @@ class Persistence extends GetxController with ConsoleMixin {
   }
 
   static void _initLocale() {
-    final deviceLanguage = Get.deviceLocale?.languageCode;
-
-    final isSystemLocaleSupported =
-        CoreConfig().translationKeys[deviceLanguage ?? 'en'] != null;
-    final defaultLocaleCode = isSystemLocaleSupported ? deviceLanguage : 'en';
+    final lang = Get.deviceLocale?.languageCode;
+    final supported = CoreConfig().translationKeys[lang ?? 'en'] != null;
+    final defaultLocaleCode = supported ? lang : 'en';
     final localeCode = box?.get('locale-code');
 
     if (defaultLocaleCode != null && localeCode == null) {
