@@ -15,9 +15,9 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../config/secrets.model.dart';
-import '../license/model/license.model.dart';
 import '../pages/routes.dart';
 import '../persistence/persistence.dart';
+import 'license.model.dart';
 
 class PurchasesService extends GetxService with ConsoleMixin {
   static PurchasesService get to => Get.find();

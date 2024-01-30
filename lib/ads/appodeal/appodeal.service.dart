@@ -177,7 +177,7 @@ class AppodealService extends GetxService with ConsoleMixin {
       return AdResult(AdResult.failed, description: "it's not time");
     }
 
-    if (!Persistence.to.fullscreenAdsAgreed.val) {
+    if (!Persistence.to.fullscreenAdsAgreed.val && !proScreen) {
       bool abort = false;
 
       final dialog = AlertDialog(

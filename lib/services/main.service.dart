@@ -11,7 +11,6 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:launch_at_startup/launch_at_startup.dart';
 import 'package:quick_actions/quick_actions.dart';
 import 'package:window_manager/window_manager.dart';
@@ -166,13 +165,13 @@ class MainService extends GetxService with ConsoleMixin, WindowListener {
         if (lastInactiveTime == null) return Future.value(msg);
         final expirationTime = lastInactiveTime!.add(60.seconds);
 
-        console.wtf(
-          'lifecycle: expires in ${DateFormat.yMMMMd().add_jms().format(expirationTime)}',
-        );
+        // console.wtf(
+        //   'lifecycle: expires in ${DateFormat.yMMMMd().add_jms().format(expirationTime)}',
+        // );
 
         // expired
         if (expirationTime.isBefore(DateTime.now())) {
-          console.wtf('lifecycle: expired time lock');
+          // console.wtf('lifecycle: expired time lock');
 
           if (!PurchasesService.to.isPremium) {
             Utils.adaptiveRouteOpen(
