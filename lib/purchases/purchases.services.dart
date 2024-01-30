@@ -15,6 +15,7 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../config/secrets.model.dart';
+import '../license/model/license.model.dart';
 import '../pages/routes.dart';
 import '../persistence/persistence.dart';
 
@@ -27,15 +28,22 @@ class PurchasesService extends GetxService with ConsoleMixin {
   final info = Rx<CustomerInfo>(CustomerInfo.fromJson(kPurchaserInfoInitial));
   final offerings = Rx<Offerings>(Offerings.fromJson(kOfferingsInitial));
   final packages = <Package>[].obs;
+  final license = const License().obs; // license from user table
 
   // GETTERS
+  bool get isPremium => planId != 'free' || isPremiumLicense;
+  bool get supported => isIAPSupported && CoreConfig().purchasesEnabled;
+
   String get planId {
-    final entitlements = info.value.entitlements;
-    if (entitlements.active.isEmpty) return 'free';
-    return entitlements.active.entries.first.key;
+    final e = info.value.entitlements;
+    if (e.active.isEmpty) return 'free';
+    return e.active.entries.first.key;
   }
 
-  bool get isPremium => planId != 'free';
+  bool get isPremiumLicense {
+    final id = license.value.entitlementId;
+    return id.isNotEmpty && id != 'free';
+  }
 
   // INIT
   @override
@@ -46,15 +54,14 @@ class PurchasesService extends GetxService with ConsoleMixin {
 
   @override
   void onClose() {
-    if (!isIAPSupported) return;
+    if (!supported) return;
     Purchases.removeCustomerInfoUpdateListener((info_) => info.value = info_);
     super.onClose();
   }
 
   // FUNCTIONS
   Future<void> init() async {
-    if (!isIAPSupported) return;
-    if (!CoreConfig().purchasesEnabled) return;
+    if (!supported) return;
     // await Purchases.setLogLevel(LogLevel.debug);
 
     await Purchases.configure(
@@ -72,7 +79,7 @@ class PurchasesService extends GetxService with ConsoleMixin {
 
   // TODO: use cached to speed up
   void _loadAndShow() async {
-    if (PurchasesService.to.isPremium) return;
+    if (!supported || isPremium) return;
     // if purchase is allowed or has google play services
     if (isPurchaseAllowed) {
       await load();
@@ -89,13 +96,12 @@ class PurchasesService extends GetxService with ConsoleMixin {
   }
 
   Future<void> invalidate() async {
-    console.wtf('invalidate');
-    if (!isIAPSupported) return;
+    if (!supported) return;
     await Purchases.invalidateCustomerInfoCache();
   }
 
   Future<void> login(User user) async {
-    if (!isIAPSupported) return;
+    if (!supported) return;
     // await init();
     setAttributes();
     await Purchases.logIn(user.id);
@@ -103,8 +109,7 @@ class PurchasesService extends GetxService with ConsoleMixin {
   }
 
   Future<void> logout() async {
-    console.wtf('logout');
-    if (!isIAPSupported) return;
+    if (!supported) return;
 
     // prevent exception if logging out with an anonymous user
     if (await Purchases.isAnonymous) {
@@ -121,7 +126,7 @@ class PurchasesService extends GetxService with ConsoleMixin {
   }
 
   Future<void> load() async {
-    if (!isIAPSupported) return;
+    if (!supported) return;
 
     try {
       offerings.value = await Purchases.getOfferings();
@@ -142,7 +147,7 @@ class PurchasesService extends GetxService with ConsoleMixin {
   }
 
   Future<void> sync() async {
-    if (!isIAPSupported) return;
+    if (!supported) return;
 
     try {
       info.value = await Purchases.getCustomerInfo();
@@ -152,6 +157,8 @@ class PurchasesService extends GetxService with ConsoleMixin {
   }
 
   void setAttributes() {
+    if (!supported) return;
+
     Purchases.setAttributes({
       'version': metadataApp.formattedVersion,
       'platform': Utils.platform,
@@ -205,7 +212,7 @@ class PurchasesService extends GetxService with ConsoleMixin {
   }
 
   Future<void> purchase(Package package) async {
-    if (!isIAPSupported) return;
+    if (!supported) return;
     timeLockEnabled = false; // temporarily disable
     CustomerInfo? info_;
 
@@ -224,7 +231,7 @@ class PurchasesService extends GetxService with ConsoleMixin {
   }
 
   Future<void> restore() async {
-    if (!isIAPSupported) return;
+    if (!supported) return;
     CustomerInfo? info_;
 
     try {

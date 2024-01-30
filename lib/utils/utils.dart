@@ -16,7 +16,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../globals.dart';
-import '../license/license.service.dart';
 import '../pages/feedback/feedback_screen.controller.dart';
 import '../pages/routes.dart';
 import '../purchases/purchases.services.dart';
@@ -185,7 +184,7 @@ class Utils {
       body += 'User ID: ${AuthService.to.user!.id}$ln';
     }
 
-    body += 'Plan: ${LicenseService.to.id}$ln';
+    body += 'Plan: ${PurchasesService.to.planId}$ln';
 
     final rc = PurchasesService.to.info.value;
     final sinceDate = DateTime.tryParse(rc.firstSeen);

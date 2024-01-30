@@ -58,6 +58,8 @@ class FeedbackScreenController extends GetxController
       feedbackType: feedbackType,
     );
 
-    Purchases.setAttributes({'star-rating': rating.value.toString()});
+    if (await Purchases.isConfigured) {
+      Purchases.setAttributes({'star-rating': rating.value.toString()});
+    }
   }
 }

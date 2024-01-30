@@ -1,4 +1,3 @@
-import 'package:app_core/license/license.service.dart';
 import 'package:app_core/pages/upgrade/upgrade_config.dart';
 import 'package:app_core/persistence/persistence.dart';
 import 'package:app_core/services/local_auth.service.dart';
@@ -138,7 +137,6 @@ class CoreConfig with ConsoleMixin {
     Get.put(RealtimeService());
     Get.put(AnalyticsService());
     Get.put(NotificationsService());
-    Get.put(LicenseService());
     Get.put(PurchasesService());
   }
 

@@ -28,6 +28,7 @@ class Persistence extends GetxController with ConsoleMixin {
   final analytics = (isApple ? false : true).val('analytics');
   final fullscreenAdsAgreed = false.val('fullscreen-ads-agreed');
   final rcPackagesCache = ''.val('rc-packages-cache');
+  final licenseCache = ''.val('license-cache');
   // WINDOW SIZE
   final windowWidth = CoreConfig().initialWindowSize.width.val('window-width');
 

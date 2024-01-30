@@ -29,8 +29,6 @@ class AppodealService extends GetxService with ConsoleMixin {
 
   @override
   void onInit() async {
-    final r = await Permission.appTrackingTransparency.request();
-    console.wtf('att: ${r.isGranted}');
     init();
     super.onInit();
   }
@@ -40,6 +38,9 @@ class AppodealService extends GetxService with ConsoleMixin {
 
   void init() async {
     if (!isAdSupportedPlatform) return;
+    final r = await Permission.appTrackingTransparency.request();
+    console.wtf('att: ${r.isGranted}');
+
     Appodeal.setTesting(kDebugMode);
     Appodeal.setLogLevel(Appodeal.LogLevelNone);
 
