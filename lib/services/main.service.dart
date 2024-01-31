@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:launch_at_startup/launch_at_startup.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:quick_actions/quick_actions.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -53,6 +54,12 @@ class MainService extends GetxService with ConsoleMixin, WindowListener {
       window.setBrightness(
         Get.isDarkMode ? Brightness.dark : Brightness.light,
       );
+    }
+
+    if (GetPlatform.isIOS) {
+      // App Tracking Transparency Request
+      final r = await Permission.appTrackingTransparency.request();
+      console.wtf('ATT Granted: ${r.isGranted}');
     }
 
     super.onReady();

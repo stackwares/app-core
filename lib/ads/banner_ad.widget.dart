@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:stack_appodeal_flutter/stack_appodeal_flutter.dart';
 
 import '../globals.dart';
+import '../persistence/persistence.dart';
 import '../purchases/purchases.services.dart';
 import '../widgets/upgrade_button.widget.dart';
 
@@ -74,7 +75,7 @@ class NexBannerAd extends StatelessWidget with ConsoleMixin {
     //   );
     // }
 
-    if (isAdSupportedPlatform) {
+    if (isAdSupportedPlatform && Persistence.to.fullscreenAdsAgreed.val) {
       return Obx(
         () => Visibility(
           visible: !PurchasesService.to.isPremium,
@@ -88,6 +89,7 @@ class NexBannerAd extends StatelessWidget with ConsoleMixin {
       );
     }
 
+    // premium button fallback
     if (!CoreConfig().purchasesEnabled || !fallbackPremium) {
       return SizedBox.shrink();
     }

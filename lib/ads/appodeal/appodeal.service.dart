@@ -10,7 +10,6 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:stack_appodeal_flutter/stack_appodeal_flutter.dart';
 
 import '../../persistence/persistence.dart';
@@ -25,7 +24,7 @@ class AppodealService extends GetxService with ConsoleMixin {
   var lastShowTime = DateTime.now().subtract(1.days);
 
   // GETTERS
-  bool get timeToShow => Persistence.to.sessionCount.val >= 4;
+  bool get timeToShow => Persistence.to.sessionCount.val >= 1;
 
   @override
   void onInit() async {
@@ -38,9 +37,6 @@ class AppodealService extends GetxService with ConsoleMixin {
 
   void init() async {
     if (!isAdSupportedPlatform) return;
-    final r = await Permission.appTrackingTransparency.request();
-    console.wtf('att: ${r.isGranted}');
-
     Appodeal.setTesting(kDebugMode);
     Appodeal.setLogLevel(Appodeal.LogLevelNone);
 
@@ -177,7 +173,7 @@ class AppodealService extends GetxService with ConsoleMixin {
       return AdResult(AdResult.failed, description: "it's not time");
     }
 
-    if (!Persistence.to.fullscreenAdsAgreed.val && !proScreen) {
+    if (!Persistence.to.fullscreenAdsAgreed.val) {
       bool abort = false;
 
       final dialog = AlertDialog(
