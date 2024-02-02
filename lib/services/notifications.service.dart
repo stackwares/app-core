@@ -47,9 +47,13 @@ class NotificationsService extends GetxService with ConsoleMixin {
     required final String title,
     required final String body,
     String payload = '',
+    bool inApp = false,
   }) async {
     // show snackbar if unsupported or denied
-    if (GetPlatform.isWindows || GetPlatform.isLinux || GetPlatform.isWeb) {
+    if (inApp ||
+        GetPlatform.isWindows ||
+        GetPlatform.isLinux ||
+        GetPlatform.isWeb) {
       return UIUtils.showSnackBar(title: title, message: body, seconds: 5);
     }
 
