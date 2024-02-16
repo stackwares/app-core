@@ -2,7 +2,7 @@ import 'package:app_core/utils/utils.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:get/get_utils/src/platform/platform.dart';
 import 'package:hive/hive.dart';
-import 'package:platform_device_id/platform_device_id.dart';
+// import 'package:platform_device_id/platform_device_id.dart';
 
 part 'device.hive.g.dart';
 
@@ -55,7 +55,8 @@ class HiveMetadataDevice extends HiveObject {
   static Future<HiveMetadataDevice> get() async {
     final device = HiveMetadataDevice(platform: Utils.platform);
     final deviceInfo = DeviceInfoPlugin();
-    device.id = (await PlatformDeviceId.getDeviceId)!;
+    // TODO: fix device id
+    // device.id = (await PlatformDeviceId.getDeviceId)!;
 
     if (GetPlatform.isWeb) {
       // TODO: obtain userAgent
