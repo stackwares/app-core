@@ -63,7 +63,7 @@ dependencies:
   crypto: ^3.0.3
   dart_jsonwebtoken: ^2.12.2 # securing the api
   # SECURITY
-  local_auth: ^2.1.8
+  local_auth: ^2.2.0
   # FIREBASE
   firebase_core: ^2.24.2
   firebase_analytics: ^10.8.0

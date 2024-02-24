@@ -7,12 +7,10 @@ import 'package:local_auth/local_auth.dart';
 // ignore: depend_on_referenced_packages
 import 'package:local_auth_android/local_auth_android.dart';
 // ignore: depend_on_referenced_packages
-import 'package:local_auth_ios/local_auth_ios.dart';
+import 'package:local_auth_darwin/local_auth_darwin.dart';
 
 import '../config/app.model.dart';
 import '../utils/ui_utils.dart';
-
-// import 'package:local_auth_windows/local_auth_windows.dart';
 
 class LocalAuthService extends GetxService with ConsoleMixin {
   static LocalAuthService get to => Get.find<LocalAuthService>();
@@ -25,7 +23,6 @@ class LocalAuthService extends GetxService with ConsoleMixin {
   // INIT
 
   // FUNCTIONS
-
   Future<bool> authenticate({
     String? title,
     String? subTitle,
