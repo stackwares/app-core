@@ -1,6 +1,6 @@
 class Routes {
   // SCREENS
-  static const main = '/';
+  static const main = '/main';
   static const authCallback = '/auth-callback';
   static const embedded = '/embedded';
   static const welcome = '/welcome';

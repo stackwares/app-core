@@ -29,9 +29,9 @@ class FunctionsService extends GetxService with ConsoleMixin {
 
     // enforce auth to be logged in
     if (isIAPSupported &&
-        await Purchases.isConfigured &&
         await Purchases.isAnonymous &&
-        !CoreConfig().allowAnonymousRcUserSync) {
+        !CoreConfig().allowAnonymousRcUserSync &&
+        await Purchases.isConfigured) {
       return console.info('ignored anonymous user sync');
     }
 
@@ -41,7 +41,7 @@ class FunctionsService extends GetxService with ConsoleMixin {
       response = await functions.invoke(
         'sync-user',
         body: {
-          if (await Purchases.isConfigured) ...{
+          if (isIAPSupported && await Purchases.isConfigured) ...{
             "rcUserId": await Purchases.appUserID,
           },
           "email": user.email,

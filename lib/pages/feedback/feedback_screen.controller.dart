@@ -58,7 +58,7 @@ class FeedbackScreenController extends GetxController
       feedbackType: feedbackType,
     );
 
-    if (await Purchases.isConfigured) {
+    if (isIAPSupported && await Purchases.isConfigured) {
       Purchases.setAttributes({'star-rating': rating.value.toString()});
     }
   }

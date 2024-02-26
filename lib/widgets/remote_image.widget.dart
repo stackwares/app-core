@@ -19,12 +19,17 @@ class RemoteImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final w = width ?? height ?? 10;
+    final h = height ?? width ?? 10;
+
     return ExtendedImage.network(
       url,
       cache: true,
       fit: BoxFit.cover,
-      width: width ?? height,
-      height: height ?? width,
+      width: w,
+      cacheWidth: w.toInt(),
+      height: h,
+      cacheHeight: h.toInt(),
       alignment: alignment,
       enableLoadState: true,
       loadStateChanged: (state) {
