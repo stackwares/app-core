@@ -29,9 +29,9 @@ class FunctionsService extends GetxService with ConsoleMixin {
 
     // enforce auth to be logged in
     if (isIAPSupported &&
-        await Purchases.isAnonymous &&
         !CoreConfig().allowAnonymousRcUserSync &&
-        await Purchases.isConfigured) {
+        await Purchases.isConfigured &&
+        await Purchases.isAnonymous) {
       return console.info('ignored anonymous user sync');
     }
 
