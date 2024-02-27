@@ -27,9 +27,7 @@ class RemoteImage extends StatelessWidget {
       cache: true,
       fit: BoxFit.cover,
       width: w,
-      cacheWidth: w.toInt(),
       height: h,
-      cacheHeight: h.toInt(),
       alignment: alignment,
       enableLoadState: true,
       loadStateChanged: (state) {
