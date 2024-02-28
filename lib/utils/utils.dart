@@ -36,9 +36,10 @@ class Utils {
   static void copyToClipboard(text) async {
     await Clipboard.setData(ClipboardData(text: text));
 
+    // TODO: localize
     UIUtils.showSnackBar(
-      title: 'Copied',
-      message: 'Successfully copied to clipboard',
+      title: 'Copied to Clipboard',
+      message: "You're now ready to paste it",
       icon: const Icon(LucideIcons.copy),
       seconds: 2,
     );

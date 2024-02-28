@@ -54,6 +54,8 @@ dependencies:
   app_settings: ^5.1.1
   # TODO: NEED UPDATE
   intl: ^0.18.1 # date formatting # NEED UPDATE
+  # TODO: NEED UPDATE
+  uuid: ^3.0.7 
   timeago: ^3.6.0
   permission_handler: ^11.2.0
   easy_debounce: ^2.0.3
