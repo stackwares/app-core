@@ -7,6 +7,7 @@ import 'package:app_core/supabase/supabase_auth.service.dart';
 import 'package:app_core/supabase/supabase_database.service.dart';
 import 'package:app_core/supabase/supabase_functions.service.dart';
 import 'package:app_core/supabase/supabase_realtime.service.dart';
+import 'package:app_core/supabase/supabase_storage.service.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -133,6 +134,7 @@ class CoreConfig with ConsoleMixin {
     // controllers
     Get.put(AuthService());
     Get.put(DatabaseService());
+    Get.put(StorageService());
     Get.put(FunctionsService());
     Get.put(RealtimeService());
     Get.put(AnalyticsService());
