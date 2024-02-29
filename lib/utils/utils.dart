@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:app_core/config.dart';
@@ -275,5 +276,17 @@ class Utils {
     String fileName = filePath.split('/').last; // Get the file name
     List<String> fileNameParts = fileName.split('.'); // Split file name by '.'
     return fileNameParts.last; // Get the last part as extension
+  }
+
+  static String generateRandomString({int length = 10}) {
+    const chars =
+        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    final random = Random();
+    return String.fromCharCodes(
+      Iterable.generate(
+        length,
+        (_) => chars.codeUnitAt(random.nextInt(chars.length)),
+      ),
+    );
   }
 }

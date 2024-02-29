@@ -42,6 +42,40 @@ class StorageService extends GetxService with ConsoleMixin {
     }
   }
 
+  // Future<Either<dynamic, bool>> clean(
+  //   String path, {
+  //   required String bucket,
+  // }) async {
+  //   if (user == null) {
+  //     console.warning('not authenticated');
+  //     return const Left('not authenticated');
+  //   }
+
+  //   bool success = false;
+  //   final listResult = await list(path, bucket: bucket);
+
+  //   await listResult.fold(
+  //     (left) async => console.error('error: $left'),
+  //     (right) async {
+  //       console.info('removing: ${right.length} files');
+
+  //       await Future.forEach(
+  //         right,
+  //         (e) async {
+  //           final r = await remove(e.name, bucket: bucket);
+
+  //           r.fold(
+  //             (left) => console.error('error removing: $left'),
+  //             (right) => console.info('success removing: $right'),
+  //           );
+  //         },
+  //       );
+  //     },
+  //   );
+
+  //   return Right(success);
+  // }
+
   Future<Either<dynamic, List<FileObject>>> list(
     String path, {
     required String bucket,
