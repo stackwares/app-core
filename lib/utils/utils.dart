@@ -270,4 +270,10 @@ class Utils {
     console.info('email domain: $domain');
     return kBlockedEmailDomains.contains(domain);
   }
+
+  static String extractFileExtension(String filePath) {
+    String fileName = filePath.split('/').last; // Get the file name
+    List<String> fileNameParts = fileName.split('.'); // Split file name by '.'
+    return fileNameParts.last; // Get the last part as extension
+  }
 }

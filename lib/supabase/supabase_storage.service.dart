@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:console_mixin/console_mixin.dart';
 import 'package:either_dart/either.dart';
@@ -13,11 +13,12 @@ class StorageService extends GetxService with ConsoleMixin {
   // GETTERS
   User? get user => client.auth.currentUser;
   SupabaseClient get client => Supabase.instance.client;
+  SupabaseStorageClient get storage => client.storage;
 
   // FUNCTIONS
 
   Future<Either<dynamic, String>> upload(
-    File file, {
+    Uint8List bytes, {
     required String bucket,
     required String path,
   }) async {
@@ -26,30 +27,49 @@ class StorageService extends GetxService with ConsoleMixin {
       return const Left('not authenticated');
     }
 
-    // UPDATE PROFILE
+    final api = storage.from(bucket);
+
     try {
-      final response = await client.storage.from(bucket).upload(path, file);
-      console.info('response! ${response}');
-      return Right(response);
+      final resourcePath = await api.uploadBinary(
+        path,
+        bytes,
+        fileOptions: FileOptions(upsert: true),
+      );
+
+      return Right(resourcePath);
     } catch (e) {
       return Left('Exception: $e');
     }
   }
 
   Future<Either<dynamic, List<FileObject>>> list(
-    File file, {
+    String path, {
     required String bucket,
-    required String path,
   }) async {
     if (user == null) {
       console.warning('not authenticated');
       return const Left('not authenticated');
     }
 
-    // UPDATE PROFILE
     try {
-      final response = await client.storage.from(bucket).list(path: path);
-      console.info('files on ${path}: ${response.length}');
+      final response = await storage.from(bucket).list(path: path);
+      return Right(response);
+    } catch (e) {
+      return Left('Exception: $e');
+    }
+  }
+
+  Future<Either<dynamic, List<FileObject>>> remove(
+    String path, {
+    required String bucket,
+  }) async {
+    if (user == null) {
+      console.warning('not authenticated');
+      return const Left('not authenticated');
+    }
+
+    try {
+      final response = await storage.from(bucket).remove([path]);
       return Right(response);
     } catch (e) {
       return Left('Exception: $e');
