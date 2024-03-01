@@ -42,39 +42,36 @@ class StorageService extends GetxService with ConsoleMixin {
     }
   }
 
-  // Future<Either<dynamic, bool>> clean(
-  //   String path, {
-  //   required String bucket,
-  // }) async {
-  //   if (user == null) {
-  //     console.warning('not authenticated');
-  //     return const Left('not authenticated');
-  //   }
+  Future<Either<dynamic, bool>> clean(
+    String path, {
+    required String bucket,
+  }) async {
+    if (user == null) {
+      console.warning('not authenticated');
+      return const Left('not authenticated');
+    }
 
-  //   bool success = false;
-  //   final listResult = await list(path, bucket: bucket);
+    bool success = false;
+    final listResult = await list(path, bucket: bucket);
 
-  //   await listResult.fold(
-  //     (left) async => console.error('error: $left'),
-  //     (right) async {
-  //       console.info('removing: ${right.length} files');
+    await listResult.fold(
+      (left) async => console.error('error: $left'),
+      (right) async {
+        console.info('removing: ${right.length} files');
+        if (right.isEmpty) return;
 
-  //       await Future.forEach(
-  //         right,
-  //         (e) async {
-  //           final r = await remove(e.name, bucket: bucket);
+        final filePaths = right.map((e) => '$path${e.name}').toList();
+        final r = await remove(filePaths, bucket: bucket);
 
-  //           r.fold(
-  //             (left) => console.error('error removing: $left'),
-  //             (right) => console.info('success removing: $right'),
-  //           );
-  //         },
-  //       );
-  //     },
-  //   );
+        r.fold(
+          (left) => console.error('error removing: $left'),
+          (right) => console.info('success removing: ${filePaths}'),
+        );
+      },
+    );
 
-  //   return Right(success);
-  // }
+    return Right(success);
+  }
 
   Future<Either<dynamic, List<FileObject>>> list(
     String path, {
@@ -94,7 +91,7 @@ class StorageService extends GetxService with ConsoleMixin {
   }
 
   Future<Either<dynamic, List<FileObject>>> remove(
-    String path, {
+    List<String> filePaths, {
     required String bucket,
   }) async {
     if (user == null) {
@@ -103,7 +100,8 @@ class StorageService extends GetxService with ConsoleMixin {
     }
 
     try {
-      final response = await storage.from(bucket).remove([path]);
+      final response = await storage.from(bucket).remove(filePaths);
+      console.info('removed: ${response.map((e) => e.name)}');
       return Right(response);
     } catch (e) {
       return Left('Exception: $e');

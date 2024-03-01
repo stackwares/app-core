@@ -290,4 +290,44 @@ class UIUtils {
       ),
     );
   }
+
+  static Future<bool> showConfirmDialog(
+    String title,
+    String body, {
+    String? cancelText,
+    String? confirmText,
+  }) async {
+    bool confirmed = false;
+    final content = SingleChildScrollView(child: Text(body));
+
+    final actions = [
+      TextButton(
+        onPressed: Get.back,
+        child: Text(cancelText ?? 'cancel'.tr),
+      ),
+      TextButton(
+        onPressed: () {
+          confirmed = true;
+          Get.back();
+        },
+        child: Text(confirmText ?? 'confirm'.tr),
+      ),
+    ];
+
+    await Get.dialog(
+      AlertDialog(
+        title: Text(title),
+        actions: actions,
+        content: isSmallScreen
+            ? content
+            : Container(
+                constraints: const BoxConstraints(maxHeight: 600),
+                width: 400,
+                child: content,
+              ),
+      ),
+    );
+
+    return confirmed;
+  }
 }
