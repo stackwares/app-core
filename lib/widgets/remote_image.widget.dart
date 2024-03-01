@@ -7,6 +7,7 @@ class RemoteImage extends StatelessWidget {
   final double? width, height;
   final Alignment alignment;
   final Widget? failWidget;
+  final Widget? loadingWidget;
   final String? cacheKey;
 
   const RemoteImage({
@@ -15,6 +16,7 @@ class RemoteImage extends StatelessWidget {
     this.width,
     this.height,
     this.alignment = Alignment.center,
+    this.loadingWidget,
     this.failWidget,
     this.cacheKey,
   }) : super(key: key);
@@ -35,7 +37,7 @@ class RemoteImage extends StatelessWidget {
       cacheKey: cacheKey,
       loadStateChanged: (state) {
         if (state.extendedImageLoadState == LoadState.loading) {
-          // return null;
+          if (loadingWidget != null) return loadingWidget;
         } else if (state.extendedImageLoadState == LoadState.completed) {
           return state.completedWidget.animate().fade();
         } else if (state.extendedImageLoadState == LoadState.failed) {
