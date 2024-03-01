@@ -77,6 +77,8 @@ class AuthService extends GetxService with ConsoleMixin {
   }
 
   void initAuthState() {
+    if (routerMode) return;
+
     auth.onAuthStateChange.listen((data) async {
       console.wtf(
         'onAuthStateChange! ${data.event} => ${data.session?.user.id}',

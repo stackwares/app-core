@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'config.dart';
 
 // VARIABLES
+bool routerMode = false;
 bool timeLockEnabled = true;
 late ScrollBehavior scollBehavior;
 
