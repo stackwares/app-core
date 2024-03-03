@@ -100,7 +100,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
         style: ElevatedButton.styleFrom(
           backgroundColor: Get.theme.primaryColor,
           foregroundColor: Get.theme.colorScheme.onPrimary,
-          padding: EdgeInsets.symmetric(vertical: isSmallScreen ? 15 : 25),
+          padding: EdgeInsets.symmetric(vertical: 15),
         ),
         child: Text(
           controller.buttonText,
