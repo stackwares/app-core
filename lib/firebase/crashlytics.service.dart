@@ -41,7 +41,7 @@ class CrashlyticsService extends GetxService with ConsoleMixin {
   }
 
   void record(Object e, StackTrace? s, {bool fatal = false}) {
-    return CrashlyticsService.recordStatic(FlutterErrorDetails(
+    return recordStatic(FlutterErrorDetails(
       exception: e,
       stack: s,
     ));
