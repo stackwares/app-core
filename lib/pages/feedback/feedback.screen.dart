@@ -7,6 +7,7 @@ import 'package:lucide_icons/lucide_icons.dart';
 import '../../config/app.model.dart';
 import '../../utils/utils.dart';
 import '../../widgets/appbar_leading.widget.dart';
+import '../../widgets/premium_card.widget.dart';
 import 'feedback_screen.controller.dart';
 
 class FeedbackScreen extends StatelessWidget with ConsoleMixin {
@@ -118,6 +119,8 @@ class FeedbackScreen extends StatelessWidget with ConsoleMixin {
               icon: const Icon(Icons.help_outline),
               label: Text('faqs'.tr),
             ),
+            const SizedBox(height: 10),
+            const PremiumCard(),
           ],
         ),
       ),

@@ -104,15 +104,17 @@ class IAPProductTile extends StatelessWidget {
             ],
           ),
           // const Divider(height: 10),
-          // // PRIMARY FEATURE
-          // Text(
-          //   product.primaryFeature.tr,
-          //   style: TextStyle(
-          //     color: Get.theme.primaryColor,
-          //     fontSize: 14,
-          //     fontWeight: FontWeight.w500,
-          //   ),
-          // ),
+          // PRIMARY FEATURE
+          if (product.primaryFeature.isNotEmpty) ...[
+            Text(
+              product.primaryFeature.tr,
+              style: TextStyle(
+                color: Get.theme.primaryColor,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
           // TRIAL DURATION
           Visibility(
             visible: product.hasFreeTrial,

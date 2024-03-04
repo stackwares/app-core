@@ -24,17 +24,17 @@ class ProText extends StatelessWidget {
           style: TextStyle(fontSize: size, fontWeight: FontWeight.bold),
         ),
         const SizedBox(width: 4),
-        PremiumCard(text: text, size: premiumSize ?? size),
+        ProCard(text: text, size: premiumSize ?? size),
       ],
     );
   }
 }
 
-class PremiumCard extends StatelessWidget {
+class ProCard extends StatelessWidget {
   final String text;
   final double? size;
 
-  const PremiumCard({
+  const ProCard({
     Key? key,
     this.size,
     required this.text,
