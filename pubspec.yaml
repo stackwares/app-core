@@ -27,7 +27,7 @@ dependencies:
   system_tray: ^2.0.3
   launch_at_startup: ^0.2.2
   window_manager: ^0.3.7
-  hotkey_manager: ^0.1.8
+  hotkey_manager: ^0.2.0
   # UI
   extended_image: ^8.2.0
   # image_network:
@@ -71,18 +71,18 @@ dependencies:
   # SECURITY
   local_auth: ^2.2.0
   # FIREBASE
-  firebase_core: ^2.24.2
-  firebase_analytics: ^10.8.0
-  firebase_crashlytics: ^3.4.9
-  firebase_performance: ^0.9.3+8
-  firebase_messaging: ^14.7.10
+  firebase_core: ^2.25.5
+  firebase_analytics: ^10.8.7
+  firebase_crashlytics: ^3.4.16
+  firebase_performance: ^0.9.3+15
+  firebase_messaging: ^14.7.17
   # API / NETWORKS
   purchases_flutter: ^6.22.0
   purchases_ui_flutter: ^6.22.0
   connectivity_plus: ^5.0.2
   supabase_flutter: ^2.3.1
   google_sign_in: ^6.2.1
-  sign_in_with_apple: ^5.0.0
+  sign_in_with_apple: ^6.0.0
   # INFO
   device_info_plus: ^9.1.1
   package_info_plus: ^5.0.1
