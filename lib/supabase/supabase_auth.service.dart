@@ -80,9 +80,7 @@ class AuthService extends GetxService with ConsoleMixin {
     if (routerMode) return;
 
     auth.onAuthStateChange.listen((data) async {
-      console.wtf(
-        'onAuthStateChange! ${data.event} => ${data.session?.user.id}',
-      );
+      console.wtf('${data.event}: ${data.session?.user.id}');
 
       if (data.event == AuthChangeEvent.signedIn) {
         EasyDebounce.debounce('auth-sign-in', 2.seconds, () async {

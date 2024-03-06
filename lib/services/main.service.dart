@@ -8,6 +8,7 @@ import 'package:app_core/persistence/persistence.dart';
 import 'package:app_core/supabase/supabase_auth.service.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -180,7 +181,7 @@ class MainService extends GetxService with ConsoleMixin, WindowListener {
         if (expirationTime.isBefore(DateTime.now())) {
           // console.wtf('lifecycle: expired time lock');
 
-          if (!PurchasesService.to.isPremium) {
+          if (!PurchasesService.to.isPremium && kReleaseMode) {
             Utils.adaptiveRouteOpen(
               name: Routes.upgrade,
               parameters: {
