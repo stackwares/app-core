@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:icons_plus/icons_plus.dart';
 
 import '../globals.dart';
 
@@ -14,7 +14,7 @@ class AppBarLeadingButton extends StatelessWidget {
     return IconButton(
       onPressed: action ?? Get.back,
       icon: Icon(
-        isSmallScreen ? LucideIcons.arrowLeft : Icons.close,
+        isSmallScreen ? LineAwesome.arrow_left_solid : Icons.close,
       ),
     );
   }

@@ -14,44 +14,52 @@ class PremiumCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (PurchasesService.to.isPremium && CoreConfig().purchasesEnabled)
+    if (PurchasesService.to.isPremium || !CoreConfig().purchasesEnabled) {
       return const SizedBox.shrink();
+    }
 
     return Tooltip(
       message: 'Redeem your free ${appConfig.name} Premium',
-      child: Card(
-        child: InkWell(
-          onTap: () => Utils.adaptiveRouteOpen(name: Routes.upgrade),
-          child: Padding(
-            padding: const EdgeInsets.all(15),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ProText(
-                        size: 17,
-                        premiumSize: 13,
-                        text: 'premium'.tr.toUpperCase(),
-                      ),
-                      Text(
-                        'unlock_all_access'.tr,
-                        style: const TextStyle(fontSize: 12),
-                      ),
-                    ],
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(15),
+        child: Card(
+          child: InkWell(
+            onTap: () => Utils.adaptiveRouteOpen(name: Routes.upgrade),
+            child: Padding(
+              padding: const EdgeInsets.all(15),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ProText(
+                          size: 17,
+                          premiumSize: 13,
+                          text: 'premium'.tr.toUpperCase(),
+                        ),
+                        Text(
+                          'unlock_all_access'.tr,
+                          style: const TextStyle(fontSize: 12),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                const Icon(Icons.rocket, size: 50),
-              ],
+                  const Icon(Icons.rocket, size: 50),
+                ],
+              ),
             ),
           ),
-        ),
-      )
-          .animate(onPlay: (c) => c.repeat())
-          .shimmer(duration: 2000.ms)
-          .shakeX(duration: 1000.ms, hz: 2, amount: 1)
-          .then(delay: 3000.ms),
+        )
+            .animate(onPlay: (c) => c.repeat())
+            .shimmer(
+              duration: 2000.ms,
+              color: Colors.purple,
+              blendMode: BlendMode.hue,
+            )
+            .shakeX(duration: 1000.ms, hz: 2, amount: 1)
+            .then(delay: 3000.ms),
+      ),
     );
   }
 }

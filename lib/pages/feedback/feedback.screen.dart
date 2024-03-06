@@ -2,7 +2,7 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:icons_plus/icons_plus.dart';
 
 import '../../config/app.model.dart';
 import '../../utils/utils.dart';
@@ -132,7 +132,7 @@ class FeedbackScreen extends StatelessWidget with ConsoleMixin {
       actions: [
         TextButton.icon(
           label: Text('send'.tr),
-          icon: const Icon(LucideIcons.send),
+          icon: const Icon(Iconsax.send_1_outline),
           onPressed: controller.send,
         ),
         const SizedBox(width: 10),

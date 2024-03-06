@@ -1,14 +1,13 @@
 import 'package:app_core/config/app.model.dart';
 import 'package:app_core/globals.dart';
-import 'package:app_core/utils/utils.dart';
-
 import 'package:app_core/persistence/persistence.dart';
 import 'package:app_core/persistence/persistence_builder.widget.dart';
+import 'package:app_core/utils/utils.dart';
 import 'package:app_core/widgets/gradient.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:icons_plus/icons_plus.dart';
 
 import '../config.dart';
 
@@ -43,7 +42,7 @@ class ConsentWidget extends StatelessWidget {
               ),
               TextButton.icon(
                 onPressed: submit,
-                icon: const Icon(LucideIcons.arrowRight),
+                icon: const Icon(Iconsax.arrow_right_1_outline),
                 label: Text('continue'.tr),
               ),
             ],
@@ -56,7 +55,7 @@ class ConsentWidget extends StatelessWidget {
           const SizedBox(height: 15),
           SwitchListTile(
             title: Text('errors_crashes'.tr),
-            secondary: const Icon(LucideIcons.serverCrash),
+            secondary: const Icon(Iconsax.warning_2_outline),
             value: p.crashReporting.val,
             subtitle: isSmallScreen ? null : Text("send_reports".tr),
             onChanged: (value) => p.crashReporting.val = value,
@@ -64,7 +63,7 @@ class ConsentWidget extends StatelessWidget {
           const SizedBox(height: 15),
           SwitchListTile(
             title: Text('usage_stats'.tr),
-            secondary: const Icon(LucideIcons.barChart),
+            secondary: const Icon(Iconsax.chart_1_outline),
             value: p.analytics.val,
             subtitle: isSmallScreen ? null : Text('send_stats'.tr),
             onChanged: (value) => p.analytics.val = value,

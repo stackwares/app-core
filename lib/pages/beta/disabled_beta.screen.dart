@@ -1,7 +1,6 @@
 import 'package:app_core/config.dart';
 import 'package:flutter/material.dart';
-import 'package:line_icons/line_icons.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:icons_plus/icons_plus.dart';
 
 import '../../config/app.model.dart';
 import '../../utils/utils.dart';
@@ -22,7 +21,7 @@ class DisabledBetaScreen extends StatelessWidget {
           //   height: 150,
           //   placeholder: ,
           // ),
-          const Icon(LineIcons.rocket, size: 100),
+          const Icon(Iconsax.warning_2_outline, size: 100),
           const SizedBox(height: 20),
           const Text(
             'Expired Beta',
@@ -40,7 +39,7 @@ class DisabledBetaScreen extends StatelessWidget {
             width: 200,
             child: ElevatedButton.icon(
               label: const Text('Check'),
-              icon: const Icon(LucideIcons.download),
+              icon: const Icon(Iconsax.arrow_down_1_outline),
               onPressed: () => Utils.openUrl(
                 appConfig.links.website,
               ),

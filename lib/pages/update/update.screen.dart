@@ -1,11 +1,10 @@
 import 'package:app_core/config.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lucide_icons/lucide_icons.dart';
-
-import '../../firebase/analytics.service.dart';
+import 'package:icons_plus/icons_plus.dart';
 
 import '../../config/app.model.dart';
+import '../../firebase/analytics.service.dart';
 import '../../globals.dart';
 import '../../utils/utils.dart';
 import '../../widgets/logo.widget.dart';
@@ -44,7 +43,7 @@ class UpdateScreen extends StatelessWidget {
             width: 200,
             child: ElevatedButton.icon(
               label: const Text('Download'),
-              icon: const Icon(LucideIcons.download),
+              icon: const Icon(Iconsax.arrow_down_1_outline),
               onPressed: () {
                 AnalyticsService.to.logEvent('download_required_update');
 

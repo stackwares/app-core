@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:icons_plus/icons_plus.dart';
 
 import '../config.dart';
 import '../config/app.model.dart';
@@ -93,7 +93,7 @@ class RateWidget extends StatelessWidget {
                     if (controller.rating.value >= 4.0) ...[
                       ElevatedButton.icon(
                         onPressed: controller.submit,
-                        icon: const Icon(LucideIcons.send),
+                        icon: const Icon(Iconsax.send_1_outline),
                         label: Text('rate_review'.tr),
                       ),
                       const SizedBox(height: 10),
@@ -105,7 +105,7 @@ class RateWidget extends StatelessWidget {
                     ] else ...[
                       ElevatedButton.icon(
                         onPressed: controller.submit,
-                        icon: const Icon(LucideIcons.mailQuestion),
+                        icon: const Icon(Iconsax.message_question_outline),
                         label: Text('send_feedback'.tr),
                       ),
                       const SizedBox(height: 10),

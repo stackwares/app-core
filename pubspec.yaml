@@ -16,9 +16,10 @@ dependencies:
   # STATE MANAGEMENT
   get: ^4.6.6
   # ICONS
-  iconsax: ^0.0.8
-  line_icons: ^2.0.3 # icons
-  lucide_icons: ^0.257.0
+  # iconsax: ^0.0.8
+  # line_icons: ^2.0.3 # icons
+  # lucide_icons: ^0.257.0
+  icons_plus: ^5.0.0
   # ADS
   stack_appodeal_flutter: ^3.2.1
   # ANIMATIONS
