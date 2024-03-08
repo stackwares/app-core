@@ -38,7 +38,7 @@ class Persistence extends GetxController with ConsoleMixin {
   final minimizeToTray = false.val('minimize-to-tray');
   final launchAtStartup = (isApple ? false : true).val('launch-at-startup');
   // THEME
-  final theme = 'dark'.val('theme');
+  final theme = 'system'.val('theme');
   // SECURITY
   final maxUnlockAttempts = 10.val('max-unlock-attempts');
   final timeLockDuration = 120.val('time-lock-duration'); // in seconds
