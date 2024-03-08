@@ -105,8 +105,6 @@ class MainService extends GetxService with ConsoleMixin, WindowListener {
 
   // FUNCTIONS
   Future<void> reset() async {
-    // console.info('resetting...');
-    // reset persistence
     await Persistence.reset();
     // invalidate purchases
     await PurchasesService.to.invalidate();
