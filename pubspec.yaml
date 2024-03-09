@@ -55,7 +55,7 @@ dependencies:
   console_mixin: ^0.0.1
   url_launcher: ^6.2.4
   supercharged: ^2.1.1 # useful utils
-  flutter_local_notifications: ^16.3.2
+  flutter_local_notifications: ^16.3.3
   either_dart: ^1.0.0 # functional programming + error handling
   in_app_review: ^2.0.8
   app_settings: ^5.1.1
@@ -66,20 +66,20 @@ dependencies:
   timeago: ^3.6.0
   permission_handler: ^11.2.0
   easy_debounce: ^2.0.3
-  sentry_flutter: ^7.15.0 # error reporting for windows and linux
+  sentry_flutter: ^7.17.0 # error reporting for windows and linux
   crypto: ^3.0.3
   dart_jsonwebtoken: ^2.12.2 # securing the api
   # SECURITY
   local_auth: ^2.2.0
   # FIREBASE
-  firebase_core: ^2.25.5
-  firebase_analytics: ^10.8.7
-  firebase_crashlytics: ^3.4.16
-  firebase_performance: ^0.9.3+15
-  firebase_messaging: ^14.7.17
+  firebase_core: ^2.27.0
+  firebase_analytics: ^10.8.9
+  firebase_crashlytics: ^3.4.18
+  firebase_performance: ^0.9.3+17
+  firebase_messaging: ^14.7.19
   # API / NETWORKS
-  purchases_flutter: ^6.22.0
-  purchases_ui_flutter: ^6.22.0
+  purchases_flutter: ^6.23.0
+  # purchases_ui_flutter: ^6.22.0
   connectivity_plus: ^5.0.2
   supabase_flutter: ^2.3.1
   google_sign_in: ^6.2.1
