@@ -90,7 +90,7 @@ class RealtimeService extends GetxService with ConsoleMixin {
     // final Map<String, dynamic> data = {
     //   'id': AuthService.to.user?.id,
     //   'email': AuthService.to.user?.email,
-    //   'plan': LicenseService.to.id,
+    //   'plan': PurchasesService.to.id,
     //   'locale': Platform.localeName,
     //   'country': Get.locale?.countryCode ?? 'none',
     //   'theme': Get.isDarkMode ? 'Dark' : 'Light',

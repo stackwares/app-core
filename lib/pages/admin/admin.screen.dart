@@ -33,21 +33,21 @@ class AdminScreen extends StatelessWidget with ConsoleMixin {
           // final platform_ = item.platform.toLowerCase();
 
           // if (platform_.contains('android')) {
-          //   platformIcon = LineIcons.android;
+          //   platformIcon = LineAwesome.android;
           //   platformColor = Colors.lightGreen;
           // } else if (platform_.contains('ios')) {
           //   platformIcon = Icons.phone_iphone;
           // } else if (platform_.contains('macos')) {
-          //   platformIcon = LineIcons.apple;
+          //   platformIcon = LineAwesome.apple;
           //   platformColor = Colors.grey;
           // } else if (platform_.contains('web')) {
-          //   platformIcon = LineIcons.chrome;
+          //   platformIcon = LineAwesome.chrome;
           //   platformColor = Colors.yellow;
           // } else if (platform_.contains('windows')) {
-          //   platformIcon = LineIcons.windows;
+          //   platformIcon = LineAwesome.windows;
           //   platformColor = Colors.blue;
           // } else if (platform_.contains('linux')) {
-          //   platformIcon = LineIcons.linux;
+          //   platformIcon = LineAwesome.linux;
           //   platformColor = Colors.brown;
           // }
 

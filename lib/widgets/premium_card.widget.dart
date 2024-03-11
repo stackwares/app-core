@@ -10,7 +10,14 @@ import '../utils/utils.dart';
 import 'pro.widget.dart';
 
 class PremiumCard extends StatelessWidget {
-  const PremiumCard({super.key});
+  final EdgeInsets padding;
+  final double maxWidth;
+
+  const PremiumCard({
+    super.key,
+    this.padding = EdgeInsets.zero,
+    this.maxWidth = 400,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,47 +25,55 @@ class PremiumCard extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    return Tooltip(
-      message: 'Redeem your free ${appConfig.name} Premium',
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(15),
-        child: Card(
-          child: InkWell(
-            onTap: () => Utils.adaptiveRouteOpen(name: Routes.upgrade),
-            child: Padding(
-              padding: const EdgeInsets.all(15),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ProText(
-                          size: 17,
-                          premiumSize: 13,
-                          text: 'premium'.tr.toUpperCase(),
-                        ),
-                        Text(
-                          'unlock_all_access'.tr,
-                          style: const TextStyle(fontSize: 12),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Icon(Icons.rocket, size: 50),
-                ],
-              ),
+    final content = Padding(
+      padding: const EdgeInsets.all(15),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ProText(
+                  size: 17,
+                  premiumSize: 13,
+                  text: 'premium'.tr.toUpperCase(),
+                ),
+                Text(
+                  'unlock_all_access'.tr,
+                  style: const TextStyle(fontSize: 12),
+                ),
+              ],
             ),
           ),
-        )
-            .animate(onPlay: (c) => c.repeat())
-            .shimmer(
-              duration: 2000.ms,
-              color: Colors.purple,
-              blendMode: BlendMode.hue,
+          const Icon(Icons.rocket, size: 50),
+        ],
+      ),
+    );
+
+    return Tooltip(
+      message: 'Redeem your free ${appConfig.name} Premium',
+      child: Padding(
+        padding: padding,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: maxWidth),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(15),
+            child: Card(
+              child: InkWell(
+                onTap: () => Utils.adaptiveRouteOpen(name: Routes.upgrade),
+                child: content,
+              ),
             )
-            .shakeX(duration: 1000.ms, hz: 2, amount: 1)
-            .then(delay: 3000.ms),
+                .animate(onPlay: (c) => c.repeat())
+                .shimmer(
+                  duration: 2000.ms,
+                  color: Colors.purple,
+                  blendMode: BlendMode.hue,
+                )
+                .shakeX(duration: 1000.ms, hz: 2, amount: 1)
+                .then(delay: 3000.ms),
+          ),
+        ),
       ),
     );
   }
