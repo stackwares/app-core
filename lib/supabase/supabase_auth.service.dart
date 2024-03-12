@@ -156,7 +156,7 @@ class AuthService extends GetxService with ConsoleMixin {
   }
 
   Future<void> deleteAccount() async {
-    AnalyticsService.to.logEvent('delete-account');
+    AnalyticsService.to.logEvent('delete_account');
     auth.signOut();
   }
 

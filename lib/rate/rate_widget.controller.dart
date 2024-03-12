@@ -22,7 +22,7 @@ class RateWidgetController extends GetxController with ConsoleMixin {
 
   void skip() async {
     Get.back();
-    AnalyticsService.to.logEvent('skipped-rate');
+    AnalyticsService.to.logEvent('skipped_rate');
   }
 
   Future<void> submit() async {

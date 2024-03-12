@@ -108,6 +108,7 @@ class UpgradeScreenController extends GetxController
         timerSeconds.value = cooldown - timer.tick;
 
         if (timerSeconds.value <= 0) {
+          timerSeconds.value = 0; // just to make sure
           cooldownTimer?.cancel();
           // console.info('cancelled cooldown timer');
         }
