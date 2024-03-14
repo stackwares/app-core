@@ -13,10 +13,9 @@ import 'package:get/get.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 import '../../config/app.model.dart';
-import '../../services/notifications.service.dart';
 import '../../purchases/purchases.services.dart';
+import '../../services/notifications.service.dart';
 import '../../supabase/model/gumroad_product.model.dart';
-import '../../supabase/supabase_functions.service.dart';
 import '../routes.dart';
 
 class UpgradeScreenController extends GetxController
@@ -137,20 +136,20 @@ class UpgradeScreenController extends GetxController
   }
 
   Future<void> _loadGumroad() async {
-    change(null, status: RxStatus.loading());
-    final result = await FunctionsService.to.gumroadProductDetail();
-    change(null, status: RxStatus.success());
+    // change(null, status: RxStatus.loading());
+    // final result = await FunctionsService.to.gumroadProductDetail();
+    // change(null, status: RxStatus.success());
 
-    result.fold(
-      (left) => UIUtils.showSimpleDialog(
-        'Gumroad Product Error',
-        left,
-      ),
-      (right) {
-        gumroadProduct.value = right.product;
-        console.wtf('gumroad product: ${gumroadProduct.value.formattedPrice}');
-      },
-    );
+    // result.fold(
+    //   (left) => UIUtils.showSimpleDialog(
+    //     'Gumroad Product Error',
+    //     left,
+    //   ),
+    //   (right) {
+    //     gumroadProduct.value = right.product;
+    //     console.wtf('gumroad product: ${gumroadProduct.value.formattedPrice}');
+    //   },
+    // );
   }
 
   void purchase() async {
