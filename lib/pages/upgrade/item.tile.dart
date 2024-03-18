@@ -79,10 +79,7 @@ class IAPProductTile extends StatelessWidget {
               // const SizedBox(width: 5),
               Text(
                 product.itemTitle,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w900,
-                ),
+                style: const TextStyle(fontSize: 18),
               ),
               // SUB PERIOD
               const SizedBox(width: 10),
