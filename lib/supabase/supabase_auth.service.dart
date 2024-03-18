@@ -298,6 +298,5 @@ class AuthService extends GetxService with ConsoleMixin {
     }
 
     busy.value = false;
-    console.wtf('authentication successful');
   }
 }

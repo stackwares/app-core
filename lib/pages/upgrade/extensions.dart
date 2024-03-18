@@ -69,15 +69,17 @@ extension StoreProductExtension on StoreProduct {
   }
 
   String get itemSubTitle {
-    if (periodUnitName == 'year') {
+    if (isAnnually) {
       final monthlyPrice = price / 12;
       return '$currencySymbol${currencyFormatter.format(monthlyPrice)} / ${'month'.tr.capitalize!}';
-    } else if (periodUnitName == 'month') {
+    } else if (isMonthly) {
       final monthlyPrice = price / 4;
       return '$currencySymbol${currencyFormatter.format(monthlyPrice)} / ${'week'.tr.capitalize!}';
-    } else if (periodUnitName == 'week') {
+    } else if (isWeekly) {
       final monthlyPrice = price / 7;
       return '$currencySymbol${currencyFormatter.format(monthlyPrice)} / ${'day'.tr.capitalize!}';
+    } else if (isLifetime) {
+      return 'lifetime'.tr;
     }
 
     return description;

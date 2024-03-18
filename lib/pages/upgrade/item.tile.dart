@@ -96,11 +96,19 @@ class IAPProductTile extends StatelessWidget {
               // SAVED
               Visibility(
                 visible: savedText.isNotEmpty,
-                child: Padding(
-                  padding: EdgeInsets.only(left: 10),
-                  child: Text(
-                    savedText,
-                    style: const TextStyle(fontSize: 12, color: Colors.amber),
+                child: Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10),
+                    child: Text(
+                      savedText,
+                      overflow: TextOverflow.fade,
+                      maxLines: 2,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Colors.amber,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
               ),

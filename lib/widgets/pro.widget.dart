@@ -54,6 +54,7 @@ class ProCard extends StatelessWidget {
         ),
         child: Text(
           text,
+          overflow: TextOverflow.fade,
           style: TextStyle(
             fontSize: size ?? 14 * 0.8,
             fontWeight: FontWeight.w900,
