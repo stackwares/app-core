@@ -30,13 +30,15 @@ class UpgradeScreenController extends GetxController
   final showMoreFeatures = false.obs;
   final tabIndex = 0.obs;
   final data = <Package>[].obs;
-  final package = Rx<Package>(Package.fromJson(kPackageInitial));
+  // final package = Rx<Package>(Package.fromJson(kPackageInitial));
+  final package = Rxn<Package>();
   final gumroadProduct = const Product().obs;
   final timerSeconds = 0.obs;
 
   // GETTERS
-  String get packageId => package.value.identifier;
-  StoreProduct get product => package.value.storeProduct;
+  String get packageId => package.value?.identifier ?? '';
+  StoreProduct get product =>
+      package.value?.storeProduct ?? StoreProduct('', '', '', 0, '', '');
 
   Pricing get pricing {
     return CoreConfig().upgradeConfig.pricing[product.identifier] ??

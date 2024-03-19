@@ -385,25 +385,25 @@ const kOfferingsInitial = {
   }
 };
 
-const kPackageInitial = {
-  "identifier": "",
-  "packageType": "",
-  "product": {
-    "identifier": "",
-    "description": "",
-    "title": "",
-    "price": 0.0,
-    "priceString": "",
-    "currencyCode": "",
-    "introPrice": {
-      "price": 0.0,
-      "priceString": "",
-      "period": "",
-      "cycles": 0,
-      "periodUnit": "",
-      "periodNumberOfUnits": 0
-    },
-    "discounts": []
-  },
-  "offeringIdentifier": "annual",
-};
+// const kPackageInitial = {
+//   "identifier": "",
+//   "packageType": "",
+//   "product": {
+//     "identifier": "",
+//     "description": "",
+//     "title": "",
+//     "price": 0.0,
+//     "priceString": "",
+//     "currencyCode": "",
+//     "introPrice": {
+//       "price": 0.0,
+//       "priceString": "",
+//       "period": "",
+//       "cycles": 0,
+//       "periodUnit": "",
+//       "periodNumberOfUnits": 0
+//     },
+//     "discounts": []
+//   },
+//   "offeringIdentifier": "annual",
+// };
