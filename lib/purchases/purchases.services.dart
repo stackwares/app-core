@@ -87,7 +87,7 @@ class PurchasesService extends GetxService with ConsoleMixin {
     }
 
     // only show when user has onboarded already
-    if (Persistence.to.onboarded.val) {
+    if (Persistence.to.onboarded.val && CoreConfig().showUpgradeAppOpen) {
       Utils.adaptiveRouteOpen(
         name: Routes.upgrade,
         parameters: {'cooldown': CoreConfig().premiumScreenCooldown.toString()},

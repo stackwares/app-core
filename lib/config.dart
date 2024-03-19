@@ -37,6 +37,7 @@ class CoreConfig with ConsoleMixin {
   late bool purchasesEnabled;
   late bool fcmEnabled;
   late bool adsEnabled;
+  late bool showUpgradeAppOpen;
   late String offeringId;
   late String appodealKey;
   late String fcmVapidKey;
@@ -79,6 +80,7 @@ class CoreConfig with ConsoleMixin {
     bool purchasesEnabled = true,
     bool fcmEnabled = true,
     bool adsEnabled = true,
+    bool showUpgradeAppOpen = true,
     String offeringId = '',
     String appodealKey = '',
     String fcmVapidKey = '',
@@ -108,6 +110,7 @@ class CoreConfig with ConsoleMixin {
     this.purchasesEnabled = purchasesEnabled;
     this.fcmEnabled = fcmEnabled;
     this.adsEnabled = adsEnabled;
+    this.showUpgradeAppOpen = showUpgradeAppOpen;
     this.offeringId = offeringId;
     this.appodealKey = appodealKey;
     this.fcmVapidKey = fcmVapidKey;

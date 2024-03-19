@@ -10,10 +10,9 @@ class OnboardingMiddleware extends GetMiddleware with ConsoleMixin {
   RouteSettings? redirect(String? route) {
     if (!Persistence.to.onboarded.val) {
       return const RouteSettings(name: Routes.welcome);
-    } else {
-      MainService.to.onboarded();
     }
 
+    MainService.to.onboarded();
     return super.redirect(route);
   }
 }
