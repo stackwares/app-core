@@ -289,14 +289,16 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
       ],
     );
 
-    return PopScope(
-      canPop: controller.timerSeconds.value == 0,
-      child: Scaffold(
-        backgroundColor: (Get.isDarkMode && !isSmallScreen)
-            ? Color.fromARGB(255, 18, 18, 18)
-            : null,
-        appBar: appBar,
-        body: content,
+    return Obx(
+      () => PopScope(
+        canPop: controller.timerSeconds.value == 0,
+        child: Scaffold(
+          backgroundColor: (Get.isDarkMode && !isSmallScreen)
+              ? Color.fromARGB(255, 18, 18, 18)
+              : null,
+          appBar: appBar,
+          body: content,
+        ),
       ),
     );
   }
