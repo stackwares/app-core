@@ -2,6 +2,7 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../config.dart';
 import '../persistence/persistence.dart';
@@ -49,11 +50,11 @@ class NotificationsService extends GetxService with ConsoleMixin {
     String payload = '',
     bool inApp = false,
   }) async {
+    final granted = await Permission.notification.request().isGranted;
+    final unsupportedPlatform =
+        GetPlatform.isWindows || GetPlatform.isLinux || GetPlatform.isWeb;
     // show snackbar if unsupported or denied
-    if (inApp ||
-        GetPlatform.isWindows ||
-        GetPlatform.isLinux ||
-        GetPlatform.isWeb) {
+    if (!granted || inApp || unsupportedPlatform) {
       return UIUtils.showSnackBar(title: title, message: body, seconds: 5);
     }
 
@@ -65,6 +66,7 @@ class NotificationsService extends GetxService with ConsoleMixin {
       "General",
       channelDescription: "General Notifications",
       priority: Priority.high,
+      importance: Importance.high,
     );
 
     const details = NotificationDetails(
