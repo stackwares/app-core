@@ -3,7 +3,7 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
+// import 'package:sentry_flutter/sentry_flutter.dart';
 
 class CrashlyticsService extends GetxService with ConsoleMixin {
   static CrashlyticsService get to => Get.find();
@@ -71,10 +71,10 @@ class CrashlyticsService extends GetxService with ConsoleMixin {
 
     // send to sentry
     if (!isCrashlyticsSupported) {
-      await Sentry.captureException(
-        details.exception,
-        stackTrace: details.stack,
-      );
+      // await Sentry.captureException(
+      //   details.exception,
+      //   stackTrace: details.stack,
+      // );
 
       return;
     }

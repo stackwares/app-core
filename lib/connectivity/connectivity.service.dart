@@ -8,7 +8,7 @@ class ConnectivityService extends GetxService with ConsoleMixin {
   static ConnectivityService get to => Get.find();
 
   // VARIABLES
-  StreamSubscription<ConnectivityResult>? connectivitySubscription;
+  StreamSubscription<List<ConnectivityResult>>? connectivitySubscription;
 
   // PROPERTIES
   final connected = true.obs;
