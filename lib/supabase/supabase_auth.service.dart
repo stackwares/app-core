@@ -11,7 +11,9 @@ import 'package:crypto/crypto.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:either_dart/either.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -20,6 +22,8 @@ import 'package:url_launcher/url_launcher.dart';
 import '../config/app.model.dart';
 import '../config/secrets.model.dart';
 import '../services/notifications.service.dart';
+import '../utils/utils.dart';
+import '../widgets/gradient.widget.dart';
 
 class AuthService extends GetxService with ConsoleMixin {
   static AuthService get to => Get.find();
@@ -298,5 +302,125 @@ class AuthService extends GetxService with ConsoleMixin {
     }
 
     busy.value = false;
+  }
+
+  // UI
+  void showAuthDialog() {
+    const appleImage = 'assets/images/providers/apple.png';
+    const googleImage = 'assets/images/providers/google.png';
+
+    final appleButton = Padding(
+      padding: EdgeInsets.only(top: 15),
+      child: OutlinedButton.icon(
+        label: Text('signin_apple'.tr),
+        icon: Image.asset(
+          appleImage,
+          width: 20,
+          color: Get.isDarkMode ? Colors.white : Colors.black,
+        ),
+        style: ElevatedButton.styleFrom(
+          minimumSize: const Size(300, 45),
+          visualDensity: VisualDensity.comfortable,
+        ),
+        onPressed: () {
+          AuthService.to.providerAuth(OAuthProvider.apple);
+          Get.back();
+        },
+      ),
+    );
+
+    final googleButton = Padding(
+      padding: EdgeInsets.only(top: 15),
+      child: OutlinedButton.icon(
+        label: Text('signin_google'.tr),
+        icon: Image.asset(googleImage, width: 20),
+        style: ElevatedButton.styleFrom(
+          minimumSize: const Size(300, 45),
+          visualDensity: VisualDensity.comfortable,
+        ),
+        onPressed: () {
+          AuthService.to.providerAuth(OAuthProvider.google);
+          Get.back();
+        },
+      ),
+    );
+
+    final footer = Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        TextButton(
+          style: TextButton.styleFrom(padding: EdgeInsets.zero),
+          onPressed: () => Utils.openUrl(appConfig.links.terms),
+          child: Text(
+            'terms_of_use'.tr,
+            style: const TextStyle(fontSize: 11),
+          ),
+        ),
+        const SizedBox(width: 3),
+        Text(
+          'and'.tr,
+          style: const TextStyle(color: Colors.grey, fontSize: 11),
+        ),
+        const SizedBox(width: 3),
+        TextButton(
+          style: TextButton.styleFrom(padding: EdgeInsets.zero),
+          onPressed: () => Utils.openUrl(appConfig.links.privacy),
+          child: Text(
+            'privacy_policy'.tr,
+            style: const TextStyle(fontSize: 11),
+          ),
+        ),
+      ],
+    );
+
+    final title = GradientWidget(
+      gradient: LinearGradient(colors: CoreConfig().gradientColors),
+      child: Text(
+        'authenticate'.tr,
+        textAlign: TextAlign.center,
+        style: GoogleFonts.raleway(
+          fontSize: isSmallScreen ? 20 : 32,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+
+    final buttons = [appleButton, googleButton];
+
+    final content = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const SizedBox(height: 15),
+        title,
+        if (isMac) ...[
+          appleButton,
+        ] else ...[
+          if (isApple) ...buttons else ...buttons.reversed,
+        ],
+        const SizedBox(height: 15),
+        Text(
+          'proceed_agreement'.tr,
+          style: const TextStyle(color: Colors.grey, fontSize: 11),
+        ),
+        footer,
+      ],
+    );
+
+    if (isSmallScreen) {
+      Get.bottomSheet(
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: content,
+          ),
+        ),
+      );
+    } else {
+      Get.dialog(
+        AlertDialog(
+          content: SizedBox(width: 400, child: content),
+        ),
+      );
+    }
   }
 }
