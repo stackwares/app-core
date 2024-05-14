@@ -18,7 +18,7 @@ dependencies:
   # ICONS
   icons_plus: ^5.0.0
   # ADS
-  stack_appodeal_flutter: ^3.2.1
+  stack_appodeal_flutter: ^3.3.0
   # ANIMATIONS
   flutter_animate: ^4.5.0
   # DESKTOP
@@ -59,11 +59,11 @@ dependencies:
   # SECURITY
   local_auth: ^2.2.0
   # FIREBASE
-  firebase_core: ^2.28.0
-  firebase_analytics: ^10.10.0
-  firebase_crashlytics: ^3.5.0
-  firebase_performance: ^0.9.4
-  firebase_messaging: ^14.8.0
+  firebase_core: ^2.31.0
+  firebase_analytics: ^10.10.5
+  firebase_crashlytics: ^3.5.5
+  firebase_performance: ^0.9.4+5
+  firebase_messaging: ^14.9.2
   # API / NETWORKS
   purchases_flutter: ^6.29.0
   # purchases_ui_flutter: ^6.22.0
