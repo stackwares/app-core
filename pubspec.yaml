@@ -34,6 +34,10 @@ dependencies:
   extended_image: ^8.2.0
   image_network:
     path: ../../Others/image_network
+  skeletons: 
+    git:
+      url: https://github.com/Flutterry/skeletons.git
+      ref: 5144e14ee4ec983c5f58390276ac55d1c98a04e0
   # IO
   hive: ^2.2.3 # database
   hive_flutter: ^1.1.0
@@ -47,8 +51,7 @@ dependencies:
   either_dart: ^1.0.0 # functional programming + error handling
   in_app_review: ^2.0.9
   app_settings: ^5.1.1
-  # TODO: NEED UPDATE
-  intl: ^0.18.1 # date formatting # NEED UPDATE
+  intl: ^0.19.0 # date formatting # NEED UPDATE
   uuid: ^4.4.0
   timeago: ^3.6.1
   permission_handler: ^11.3.1
