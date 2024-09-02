@@ -23,6 +23,7 @@ class Persistence extends GetxController with ConsoleMixin {
   final rateDialogShown = false.val('rate-dialog-shown');
   final onboarded = false.val('onboarded');
   final consented = false.val('consented');
+  final consentedAppodeal = false.val('appodeal-consented');
   final newsletter = true.val('newsletter');
   final crashReporting = (isApple ? false : true).val('crash-reporting');
   final analytics = (isApple ? false : true).val('analytics');

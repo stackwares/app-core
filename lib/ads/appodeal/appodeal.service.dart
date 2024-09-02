@@ -261,10 +261,12 @@ class AppodealService extends GetxService with ConsoleMixin {
 
     void onConsentFormLoadSuccess(ConsentStatus status) {
       console.wtf('onConsentFormLoadSuccess: ${status.name}');
+      if (Persistence.to.consentedAppodeal.val) return;
 
       Appodeal.ConsentForm.show(
         onConsentFormDismissed: (error) {
           console.wtf('onConsentFormDismissed: ${error?.description}');
+          Persistence.to.consentedAppodeal.val = true;
         },
       );
     }
