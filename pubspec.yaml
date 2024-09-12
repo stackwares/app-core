@@ -71,7 +71,7 @@ dependencies:
   firebase_performance: ^0.10.0+5
   firebase_messaging: ^15.1.0
   # API / NETWORKS
-  purchases_flutter: ^8.1.0
+  purchases_flutter: ^8.1.1
   # purchases_ui_flutter: ^6.22.0
   connectivity_plus: ^6.0.5
   supabase_flutter: ^2.6.0
