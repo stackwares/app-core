@@ -1,0 +1,51 @@
+// ------ RUN ------- //
+
+flutter run -d macos --debug
+
+flutter run -d ios --debug
+
+flutter build web;
+
+spider build; flutter pub run icons_launcher:create; flutter pub run flutter_native_splash:create;
+
+// ------ BUILD ------- //
+
+-- ALL
+flutter build appbundle; flutter build macos; flutter build ios;
+
+-- WEB
+flutter build web; firebase deploy;
+flutter build web --web-renderer canvaskit; firebase deploy;
+
+
+// ------ ANALIZE SIZE ------- //
+flutter build apk --analyze-size
+flutter build appbundle --analyze-size
+flutter build ios --analyze-size
+flutter build linux --analyze-size
+flutter build macos --analyze-size
+flutter build windows --analyze-size
+
+
+
+
+flutter pub upgrade
+flutter pub cache repair
+pod repo update; pod install;
+pod deintegrate;
+
+rm -rf "${HOME}/Library/Caches/CocoaPods"
+rm -rf "`pwd`/Pods/"
+pod cache clean --all; pod deintegrate; pod setup; pod install;
+
+rm -rf ~/Library/Developer/Xcode/DerivedData; 
+rm -rf pubspec.lock; rm -rf macos/Podfile.lock; rm -rf ios/Podfile.lock; 
+flutter clean; flutter pub get; cd macos; pod repo update; pod install; cd ..; cd ios; pod repo update; pod install; cd ..;
+
+cd ios; rm -rf Podfile.lock; pod repo update; pod install; cd ..;
+
+
+// ------- REMVOE BITCODE -------- //
+Here: https://stackoverflow.com/questions/79018593/asset-validation-failed-invalid-executable-the-executable-myapp-app-frameworks
+
+xcrun bitcode_strip -r Pods/OMSDK_Appodeal/OMSDK_Appodeal.xcframework/ios-arm64/OMSDK_Appodeal.framework/OMSDK_Appodeal -o Pods/OMSDK_Appodeal/OMSDK_Appodeal.xcframework/ios-arm64/OMSDK_Appodeal.framework/OMSDK_Appodeal
