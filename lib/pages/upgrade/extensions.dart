@@ -4,10 +4,15 @@ import 'package:get/get.dart';
 import 'package:purchases_flutter/object_wrappers.dart';
 
 import '../../globals.dart';
+import '../../purchases/purchases.services.dart';
 import 'pricing.model.dart';
 
 extension StoreProductExtension on StoreProduct {
-  bool get hasFreeTrial => introductoryPrice?.price == 0;
+  // bool get hasFreeTrial => introductoryPrice?.price == 0;
+  bool get hasFreeTrial =>
+      introductoryPrice?.price == 0 &&
+      PurchasesService.to.productIdsWithTrial.contains(identifier);
+
   bool get isSubscription => identifier.contains('.sub.');
   bool get isNonConsumable => identifier.contains('.iap.');
   bool get isLifetime => isNonConsumable;
@@ -106,8 +111,8 @@ extension StoreProductExtension on StoreProduct {
   }
 
   String get trialDurationText {
-    if (introductoryPrice == null) return '';
-    return '${introductoryPrice!.periodNumberOfUnits}-${introductoryPrice!.periodUnit.name.tr.capitalizeFirst} ${'free_trial'.tr}';
+    if (!hasFreeTrial) return '';
+    return '${introductoryPrice?.periodNumberOfUnits}-${introductoryPrice?.periodUnit.name.tr.capitalizeFirst} ${'free_trial'.tr}';
   }
 
   String get discount {

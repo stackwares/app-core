@@ -28,7 +28,9 @@ class PurchasesService extends GetxService with ConsoleMixin {
   final info = Rx<CustomerInfo>(CustomerInfo.fromJson(kPurchaserInfoInitial));
   final offerings = Rx<Offerings>(Offerings.fromJson(kOfferingsInitial));
   final packages = <Package>[].obs;
+  final productIdsWithTrial = <String>[].obs;
   final license = const License().obs; // license from user table
+  final debugText = 'Debug Text'.obs;
 
   // GETTERS
   bool get isPremium => planId != 'free' || isPremiumLicense;
@@ -132,12 +134,45 @@ class PurchasesService extends GetxService with ConsoleMixin {
       offerings.value = await Purchases.getOfferings();
       packages.value = offerings.value.current?.availablePackages ?? [];
 
+      // bind by offering that was preset incase
       if (CoreConfig().offeringId.isNotEmpty) {
         packages.value = offerings.value
                 .getOffering(CoreConfig().offeringId)
                 ?.availablePackages ??
             [];
       }
+
+      // check trial eligibility
+      final packageIds = packages.map((e) => e.identifier).toList();
+      console.warning('### package ids ${packageIds.length}: $packageIds');
+
+      final packageStatuses =
+          await Purchases.checkTrialOrIntroductoryPriceEligibility(
+        packageIds,
+      );
+
+      for (var e in packageStatuses.entries) {
+        console.warning('### Package: ${e.key} = ${e.value.status}');
+
+        final eligible = e.value.status ==
+                IntroEligibilityStatus.introEligibilityStatusEligible ||
+            e.value.status ==
+                IntroEligibilityStatus.introEligibilityStatusUnknown;
+
+        if (!eligible) continue;
+
+        final pId = packages
+            .where((p) => e.key == p.identifier)
+            .first
+            .storeProduct
+            .identifier;
+
+        productIdsWithTrial.add(pId);
+      }
+
+      console.warning('### products with intro trial: $productIdsWithTrial');
+      debugText.value =
+          'Trials: $productIdsWithTrial\nPackage Ids: $packageIds';
     } on PlatformException catch (e, s) {
       console.error('load error: $e');
       return _showError(e, s);
@@ -384,26 +419,3 @@ const kOfferingsInitial = {
     "monthly": null,
   }
 };
-
-// const kPackageInitial = {
-//   "identifier": "",
-//   "packageType": "",
-//   "product": {
-//     "identifier": "",
-//     "description": "",
-//     "title": "",
-//     "price": 0.0,
-//     "priceString": "",
-//     "currencyCode": "",
-//     "introPrice": {
-//       "price": 0.0,
-//       "priceString": "",
-//       "period": "",
-//       "cycles": 0,
-//       "periodUnit": "",
-//       "periodNumberOfUnits": 0
-//     },
-//     "discounts": []
-//   },
-//   "offeringIdentifier": "annual",
-// };

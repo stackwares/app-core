@@ -21,6 +21,7 @@ class IAPProductTile extends StatelessWidget {
     final product = package.storeProduct;
     final currencySymbol = product.priceString.substring(0, 1);
     final prefixId = product.identifier.split('.sub.')[0];
+    // ignore: unused_local_variable
     String savedText = '';
 
     if (product.isAnnually) {
@@ -90,25 +91,25 @@ class IAPProductTile extends StatelessWidget {
                   color: Get.theme.colorScheme.tertiary,
                 ),
               ),
-              // SAVED
-              Visibility(
-                visible: savedText.isNotEmpty,
-                child: Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 10),
-                    child: Text(
-                      savedText,
-                      overflow: TextOverflow.fade,
-                      maxLines: 2,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.amber,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              // // SAVED
+              // Visibility(
+              //   visible: savedText.isNotEmpty,
+              //   child: Expanded(
+              //     child: Padding(
+              //       padding: EdgeInsets.only(left: 10),
+              //       child: Text(
+              //         savedText,
+              //         overflow: TextOverflow.fade,
+              //         maxLines: 2,
+              //         style: const TextStyle(
+              //           fontSize: 12,
+              //           color: Colors.amber,
+              //           fontWeight: FontWeight.bold,
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
           // const Divider(height: 10),

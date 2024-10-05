@@ -33,6 +33,11 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
             style: const TextStyle(fontSize: 15),
           ),
         ),
+        // Text(
+        //   PurchasesService.to.debugText.value,
+        //   style: TextStyle(fontSize: 8),
+        //   textAlign: TextAlign.center,
+        // ),
         Divider(color: Colors.grey.withOpacity(0.1)),
         Obx(
           () => Column(
