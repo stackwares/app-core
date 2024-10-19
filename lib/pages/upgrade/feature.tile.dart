@@ -1,6 +1,5 @@
 import 'package:app_core/globals.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class FeatureTile extends StatelessWidget {
   final String title;
@@ -18,23 +17,23 @@ class FeatureTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: 10,
+        horizontal: 15,
         vertical: isSmallScreen ? 3 : 6,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.check, color: Get.theme.primaryColor),
+          Icon(Icons.check, color: Colors.pink),
           const SizedBox(width: 15),
-          Expanded(
+          Flexible(
             child: Text(
               title,
-              maxLines: 3,
+              maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontSize: fontSize,
                 // fontWeight: FontWeight.w500,
-                color: highlighted ? Get.theme.colorScheme.tertiary : null,
+                color: highlighted ? darkThemeData.colorScheme.tertiary : null,
               ),
             ),
           ),

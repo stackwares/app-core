@@ -1,18 +1,20 @@
 import 'package:app_core/config.dart';
 import 'package:app_core/globals.dart';
-import 'package:app_core/pages/upgrade/item.tile.dart';
-import 'package:app_core/utils/utils.dart';
+import 'package:app_core/pages/upgrade/appbar.dart';
+import 'package:app_core/pages/upgrade/footer_links.dart';
+import 'package:app_core/pages/upgrade/products_listview.dart';
 import 'package:app_core/widgets/gradient.widget.dart';
-import 'package:app_core/widgets/pro.widget.dart';
-import 'package:app_core/widgets/remote_image.widget.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 
-import '../../config/app.model.dart';
-import '../routes.dart';
+import '../../widgets/laurel.widget.dart';
 import 'feature.tile.dart';
+import 'review_card.dart';
+import 'upgrade_button.dart';
 import 'upgrade_screen.controller.dart';
 
 class UpgradeScreen extends StatelessWidget with ConsoleMixin {
@@ -22,327 +24,156 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
   Widget build(BuildContext context) {
     final controller = Get.put(UpgradeScreenController());
 
-    final benefits = ListView(
-      shrinkWrap: true,
-      controller: ScrollController(),
+    final laurelWreath = Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 15),
-          child: Text(
-            '${'unlock_all_access'.tr} ⤵',
-            style: const TextStyle(fontSize: 15),
+        Transform.flip(flipX: true, child: LaurelImage()),
+        const SizedBox(width: 10),
+        ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: 250),
+          child: Column(
+            children: [
+              Text(
+                'join_over_users'.tr,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 5),
+              RatingBarIndicator(
+                rating: 5,
+                itemCount: 5,
+                itemSize: 30,
+                itemBuilder: (context, index) => Icon(
+                  Icons.star,
+                  color: Colors.amber,
+                ),
+              ),
+            ],
           ),
         ),
-        // Text(
-        //   PurchasesService.to.debugText.value,
-        //   style: TextStyle(fontSize: 8),
-        //   textAlign: TextAlign.center,
-        // ),
-        Divider(color: Colors.grey.withOpacity(0.1)),
-        Obx(
-          () => Column(
-            children: controller.pricing.features
-                .map(
-                  (e) => FeatureTile(
-                    title: e.tr,
-                    fontSize: isSmallScreen ? 16 : 20,
-                    highlighted: [
-                      'money_back_guarantee',
-                      'cancel_anytime',
-                      'join_over_users',
-                      // 'premium_pro_limit',
-                    ].contains(e),
-                  ),
-                )
-                .toList()
-                .animate(interval: 400.ms)
-                .fade(duration: 300.ms),
-          ),
-        ),
-        // if (controller.pricing.upcomingFeatures.isNotEmpty) ...[
-        //   Column(
-        //     crossAxisAlignment: CrossAxisAlignment.start,
-        //     children: [
-        //       const Divider(),
-        //       Padding(
-        //         padding: const EdgeInsets.only(left: 15),
-        //         child: Text(
-        //           'upcoming_features'.tr,
-        //           style: const TextStyle(color: Colors.grey),
-        //         ),
-        //       ),
-        //       ...controller.pricing.upcomingFeatures
-        //           .map((e) => FeatureTile(title: e.tr))
-        //           .toList(),
-        //     ],
-        //   ),
-        // ]
+        const SizedBox(width: 10),
+        LaurelImage(),
       ],
     );
 
-    final scrollController = ScrollController();
-
-    final productsListView = Obx(
-      () => Scrollbar(
-        controller: scrollController,
-        thumbVisibility: isDesktop,
-        child: ListView.builder(
-          controller: scrollController,
-          shrinkWrap: true,
-          padding: EdgeInsets.zero,
-          // scrollDirection: Axis.horizontal,
-          itemCount: controller.data.length,
-          itemBuilder: (context, index) => IAPProductTile(
-            package: controller.data[index],
-          ).animate().slideY(duration: 600.ms).fade(duration: 600.ms),
-        ),
-      ),
-    );
-
-    final upgradeButton = Obx(
-      () => ElevatedButton(
-        onPressed: controller.busy.value ? null : controller.purchase,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Get.theme.primaryColor,
-          foregroundColor: Get.theme.colorScheme.onPrimary,
-          padding: EdgeInsets.symmetric(vertical: 15),
-        ),
-        child: Text(
-          controller.buttonText,
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-            fontWeight: FontWeight.w700,
-            fontSize: 17,
-            fontFamily: '',
+    final premiumBadge = Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Image.asset('assets/images/logo.png', height: 30),
+        const SizedBox(width: 10),
+        GradientWidget(
+          gradient: LinearGradient(colors: CoreConfig().gradientColors),
+          child: Text(
+            'unlock_all_access'.tr,
+            style: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
-      ),
+      ],
     )
         .animate(onPlay: (c) => c.repeat())
         .shimmer(duration: 2000.ms)
-        .then(delay: 2000.ms);
+        .then(delay: 3000.ms);
 
-    final discountCard = Align(
-      alignment: Alignment.center,
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              RemoteImage(
-                url: 'https://cdn-icons-png.flaticon.com/512/4840/4840351.png',
-                width: 32,
-                height: 32,
-              )
-                  .animate(onPlay: (c) => c.repeat())
-                  .scale(
-                    duration: 2000.ms,
-                    begin: Offset(1, 1),
-                    end: Offset(1.3, 1.3),
-                  )
-                  .shakeX(duration: 1000.ms, hz: 2, amount: 1)
-                  .then(delay: 3000.ms),
-              const SizedBox(width: 10),
-              Obx(
-                () => GradientWidget(
-                  gradient: LinearGradient(
-                    colors: CoreConfig().gradientColors,
-                  ),
-                  child: Text(
-                    controller.footerText,
-                    textAlign: TextAlign.center,
-                    maxLines: 3,
-                    overflow: TextOverflow.fade,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 15,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      )
-          .animate()
-          .shimmer(duration: 2000.ms)
-          .scaleXY(
-            duration: 1000.ms,
-            curve: Curves.fastOutSlowIn,
-            begin: 0.7,
-            end: 1,
-          )
-          .then(delay: 3000.ms),
+    final features = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ...controller.pricing.features
+            .map((e) => FeatureTile(title: e.tr))
+            .toList()
+            .animate(interval: 400.ms)
+            .fade(duration: 300.ms)
+      ],
     );
 
-    final actionCardContent = Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          discountCard,
-          const SizedBox(height: 5),
-          Column(
+    final topContent = Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(height: isSmallScreen ? 100 : 50),
+        premiumBadge,
+        const SizedBox(height: 20),
+        features,
+        const SizedBox(height: 20),
+        laurelWreath,
+        const SizedBox(height: 20),
+        // userReviews,
+        CarouselSlider(
+          items: stringReviews.map((e) => ReviewCard(review: e)).toList(),
+          options: CarouselOptions(
+            height: 120,
+            autoPlay: true,
+            enlargeCenterPage: true,
+          ),
+        ),
+        const SizedBox(height: 300),
+      ],
+    );
+
+    final bottomContent = Center(
+      heightFactor: 1,
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: 500),
+          child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              if (isIAPSupported) ...[
-                Obx(
-                  () => Visibility(
-                    visible: controller.data.isNotEmpty,
-                    replacement: const EmptyPackages(),
-                    child: productsListView,
-                  ),
-                )
-              ],
+              if (isIAPSupported) ...[ProductsListView()],
               const SizedBox(height: 5),
-              upgradeButton,
+              const CTAUpgradeButton(),
+              const SizedBox(height: 3),
+              const FooterLinks(),
             ],
           ),
-        ],
-      ),
-    );
-
-    final content = Padding(
-      padding: const EdgeInsets.only(left: 5, right: 5, bottom: 5),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Expanded(child: benefits),
-          actionCardContent,
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextButton(
-                style: TextButton.styleFrom(
-                  foregroundColor: Get.theme.primaryColor,
-                  textStyle: const TextStyle(fontSize: 10),
-                ),
-                onPressed: () => Utils.openUrl(appConfig.links.terms),
-                child: Text('terms_of_use'.tr),
-              ),
-              const Text('|'),
-              TextButton(
-                style: TextButton.styleFrom(
-                  foregroundColor: Get.theme.primaryColor,
-                  textStyle: const TextStyle(fontSize: 10),
-                ),
-                onPressed: () => Utils.openUrl(appConfig.links.privacy),
-                child: Text('privacy_policy'.tr),
-              ),
-              const Text('|'),
-              TextButton(
-                style: TextButton.styleFrom(
-                  foregroundColor: Get.theme.primaryColor,
-                  textStyle: const TextStyle(fontSize: 10),
-                ),
-                onPressed: controller.restore,
-                child: Text('restore_purchases'.tr),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-
-    final exitButton = Obx(
-      () => IconButton(
-        icon: controller.timerSeconds.value == 0
-            ? const Icon(Icons.close)
-            : Stack(
-                alignment: Alignment.center,
-                children: [
-                  const SizedBox(
-                    width: 30,
-                    height: 30,
-                    child: CircularProgressIndicator(),
-                  ),
-                  Text(
-                    controller.timerSeconds.value.toString(),
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-        onPressed: controller.timerSeconds.value == 0
-            ? () {
-                Get.back();
-                CoreConfig().onCancelledUpgradeScreen?.call();
-              }
-            : null,
-      ),
-    );
-
-    final appBar = AppBar(
-      backgroundColor: Get.isDarkMode ? Colors.transparent : null,
-      elevation: 0.0,
-      automaticallyImplyLeading: false,
-      centerTitle: false,
-      title: ProText(
-        size: 25,
-        premiumSize: 18,
-        text: 'premium'.tr.toUpperCase(),
-      ),
-      actions: [
-        exitButton,
-        TextButton(
-          onPressed: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
-          child: Text('help_question'.tr),
         ),
-        const SizedBox(width: 10),
-      ],
+      ),
+    );
+
+    final content = Theme(
+      data: darkThemeData,
+      child: Scaffold(
+        body: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: NetworkImage(controller.bgImageUri),
+                  fit: BoxFit.cover,
+                  opacity: 0.2,
+                ),
+              ),
+              child: Center(
+                child: SingleChildScrollView(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: 500),
+                    child: topContent,
+                  ),
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: bottomContent,
+            ),
+            Align(
+              alignment: Alignment.topRight,
+              child: SafeArea(child: UpgradeAppBar()),
+            )
+          ],
+        ),
+      ),
     );
 
     return Obx(
       () => PopScope(
         canPop: controller.timerSeconds.value == 0,
-        child: Scaffold(
-          backgroundColor: (Get.isDarkMode && !isSmallScreen)
-              ? Color.fromARGB(255, 18, 18, 18)
-              : null,
-          appBar: appBar,
-          body: content,
-        ),
-      ),
-    );
-  }
-}
-
-class EmptyPackages extends StatelessWidget {
-  const EmptyPackages({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    // return Center(
-    //   child: Column(
-    //     mainAxisSize: MainAxisSize.min,
-    //     children: [
-    //       const Icon(
-    //         Icons.warning,
-    //         size: 70,
-    //         color: Colors.red,
-    //       ),
-    //       const SizedBox(height: 5),
-    //       const Text(
-    //         'An error occured',
-    //         textAlign: TextAlign.center,
-    //       ),
-    //       const SizedBox(height: 5),
-    //       OutlinedButton.icon(
-    //         onPressed: UpgradeScreenController.to.load,
-    //         label: Text('refresh'.tr),
-    //         icon: const Icon(Icons.refresh),
-    //       ),
-    //       const SizedBox(height: 15),
-    //     ],
-    //   ),
-    // );
-
-    return Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: Center(
-        child: CircularProgressIndicator(),
+        child: content,
       ),
     );
   }

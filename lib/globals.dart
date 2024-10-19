@@ -11,6 +11,7 @@ import 'config.dart';
 // VARIABLES
 bool timeLockEnabled = true;
 late ScrollBehavior scollBehavior;
+late ThemeData darkThemeData;
 
 final currencyFormatter = NumberFormat.currency(symbol: '', decimalDigits: 2);
 final kFormatter = NumberFormat.compact();

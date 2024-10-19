@@ -30,7 +30,7 @@ class PurchasesService extends GetxService with ConsoleMixin {
   final packages = <Package>[].obs;
   final productIdsWithTrial = <String>[].obs;
   final license = const License().obs; // license from user table
-  final debugText = 'Debug Text'.obs;
+  // final debugText = 'Debug Text'.obs;
 
   // GETTERS
   bool get isPremium => planId != 'free' || isPremiumLicense;
@@ -171,8 +171,8 @@ class PurchasesService extends GetxService with ConsoleMixin {
       }
 
       console.warning('### products with intro trial: $productIdsWithTrial');
-      debugText.value =
-          'Trials: $productIdsWithTrial\nPackage Ids: $packageIds';
+      // debugText.value =
+      //     'Trials: $productIdsWithTrial\nPackage Ids: $packageIds';
     } on PlatformException catch (e, s) {
       console.error('load error: $e');
       return _showError(e, s);

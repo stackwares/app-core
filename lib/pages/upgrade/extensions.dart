@@ -53,6 +53,8 @@ extension StoreProductExtension on StoreProduct {
     return '$priceString / ${periodUnitName.tr.capitalize!}';
   }
 
+  String get itemPeriod => periodUnitName.tr.capitalize!;
+
   String get itemTitleNext {
     if (isAnnually && identifier.contains('.pro.')) {
       return ' - ${'best_deal'.tr}';
@@ -66,7 +68,7 @@ extension StoreProductExtension on StoreProduct {
   }
 
   String get itemOrigPrice {
-    return '$currencyCode ${price * 2}';
+    return '($currencySymbol ${currencyFormatter.format(price * 2)})';
   }
 
   String get currencySymbol {
@@ -76,13 +78,13 @@ extension StoreProductExtension on StoreProduct {
   String get itemSubTitle {
     if (isAnnually) {
       final monthlyPrice = price / 12;
-      return '$currencySymbol${currencyFormatter.format(monthlyPrice)} / ${'month'.tr.capitalize!}';
+      return '($currencySymbol${currencyFormatter.format(monthlyPrice)} / ${'month'.tr.capitalize!})';
     } else if (isMonthly) {
       final monthlyPrice = price / 4;
-      return '$currencySymbol${currencyFormatter.format(monthlyPrice)} / ${'week'.tr.capitalize!}';
+      return '($currencySymbol${currencyFormatter.format(monthlyPrice)} / ${'week'.tr.capitalize!})';
     } else if (isWeekly) {
       final monthlyPrice = price / 7;
-      return '$currencySymbol${currencyFormatter.format(monthlyPrice)} / ${'day'.tr.capitalize!}';
+      return '($currencySymbol${currencyFormatter.format(monthlyPrice)} / ${'day'.tr.capitalize!})';
     } else if (isLifetime) {
       return 'lifetime'.tr;
     }
@@ -103,7 +105,8 @@ extension StoreProductExtension on StoreProduct {
   }
 
   String get buttonTitle {
-    return hasFreeTrial ? 'redeem_trial'.tr : 'upgrade_to_pro'.tr;
+    // return hasFreeTrial ? 'redeem_trial'.tr : 'upgrade_to_pro'.tr;
+    return 'continue'.tr;
   }
 
   String get buttonSubTitle {

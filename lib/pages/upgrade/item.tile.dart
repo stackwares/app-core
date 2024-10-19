@@ -7,7 +7,6 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import '../../globals.dart';
 import '../../purchases/purchases.services.dart';
 import '../../supabase/model/gumroad_product.model.dart';
-import '../../widgets/remote_image.widget.dart';
 
 class IAPProductTile extends StatelessWidget {
   final Package package;
@@ -15,6 +14,8 @@ class IAPProductTile extends StatelessWidget {
 
   bool get isSelected =>
       UpgradeScreenController.to.packageId == package.identifier;
+
+  bool get isFirst => UpgradeScreenController.to.data.first == package;
 
   @override
   Widget build(BuildContext context) {
@@ -59,86 +60,79 @@ class IAPProductTile extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        // mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Row(
             children: [
-              // // TITLE
-              // Obx(
-              //   () => Visibility(
-              //     visible: isSelected,
-              //     replacement: titleText,
-              //     child: GradientWidget(
-              //       gradient: LinearGradient(
-              //         colors: CoreConfig().gradientColors,
-              //       ),
-              //       child: titleText,
-              //     ),
-              //   ),
-              // ),
               // PRICE & PERIOD
-              // const SizedBox(width: 5),
               Text(
                 product.itemTitle,
-                style: const TextStyle(fontSize: 18),
-              ),
-              // SUB PERIOD
-              const SizedBox(width: 10),
-              Text(
-                product.itemSubTitle,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Get.theme.colorScheme.tertiary,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              // // SAVED
-              // Visibility(
-              //   visible: savedText.isNotEmpty,
-              //   child: Expanded(
-              //     child: Padding(
-              //       padding: EdgeInsets.only(left: 10),
-              //       child: Text(
-              //         savedText,
-              //         overflow: TextOverflow.fade,
-              //         maxLines: 2,
-              //         style: const TextStyle(
-              //           fontSize: 12,
-              //           color: Colors.amber,
-              //           fontWeight: FontWeight.bold,
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
+              // DISCOUNTED PRICE & PERIOD
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  product.itemSubTitle,
+                  textAlign: TextAlign.right,
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.bold,
+                    color: darkThemeData.colorScheme.tertiary,
+                  ),
+                ),
+              ),
             ],
           ),
-          // const Divider(height: 10),
-          // PRIMARY FEATURE
           if (product.primaryFeature.isNotEmpty) ...[
-            Text(
-              product.primaryFeature.tr,
-              style: TextStyle(
-                color: Get.theme.primaryColor,
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ],
-          // TRIAL DURATION
-          Visibility(
-            visible: product.hasFreeTrial,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 2),
-              child: Text(
-                product.trialDurationText,
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold,
-                  color: Get.theme.colorScheme.tertiary,
+            Row(
+              children: [
+                Text(
+                  product.itemOrigPrice,
+                  style: TextStyle(
+                    color: darkThemeData.primaryColor,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    decoration: TextDecoration.lineThrough,
+                    decorationThickness: 0.4,
+                  ),
                 ),
-              ),
-            ),
-          ),
+                const SizedBox(width: 10),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: Colors.pink,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    '50% OFF', // TODO: localize
+                    style: TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                // TRIAL DURATION
+                Visibility(
+                  visible: product.hasFreeTrial,
+                  child: Expanded(
+                    child: Text(
+                      product.trialDurationText,
+                      textAlign: TextAlign.right,
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.orange,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            )
+          ],
         ],
       ),
     );
@@ -151,26 +145,32 @@ class IAPProductTile extends StatelessWidget {
           Obx(
             () => Card(
               elevation: Get.isDarkMode ? 10 : 1,
+              // color: isFirst && Get.isDarkMode
+              //     ? darkThemeData.colorScheme.primary.withOpacity(0.2)
+              //     : null,
+              color: isSelected
+                  ? darkThemeData.primaryColor.withOpacity(0.5)
+                  : null,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
                 side: isSelected
-                    ? BorderSide(color: Get.theme.primaryColor, width: 2)
-                    : const BorderSide(color: Colors.grey, width: 0.2),
+                    ? BorderSide(color: darkThemeData.primaryColor, width: 2)
+                    : const BorderSide(color: Colors.grey, width: 0.1),
               ),
               child: content,
             ),
           ),
-          Visibility(
-            visible: UpgradeScreenController.to.data.first == package,
-            child: Padding(
-              padding: EdgeInsets.only(right: 15),
-              child: RemoteImage(
-                url: 'https://cdn-icons-png.flaticon.com/128/477/477406.png',
-                width: 27,
-                height: 27,
-              ),
-            ),
-          ),
+          // Visibility(
+          //   visible: isFirst,
+          //   child: Padding(
+          //     padding: EdgeInsets.only(right: 15),
+          //     child: RemoteImage(
+          //       url: 'https://cdn-icons-png.flaticon.com/128/477/477406.png',
+          //       width: 27,
+          //       height: 27,
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
@@ -200,7 +200,7 @@ class IAPProductTileWeb extends StatelessWidget {
         Text(
           ' - 50% OFF Limited Time Sale',
           style: titleStyle.copyWith(
-            color: Get.theme.colorScheme.tertiary,
+            color: darkThemeData.colorScheme.tertiary,
             fontSize: 13,
           ),
         ),
@@ -212,7 +212,7 @@ class IAPProductTileWeb extends StatelessWidget {
         const Text('via Gumroad.com', style: subTitleStyle),
         Text(
           ' - ${'cancel_anytime'.tr}',
-          style: subTitleStyle.copyWith(color: Get.theme.primaryColor),
+          style: subTitleStyle.copyWith(color: darkThemeData.primaryColor),
         ),
       ],
     );
@@ -230,7 +230,7 @@ class IAPProductTileWeb extends StatelessWidget {
               subTitle,
             ],
           ),
-          Icon(Icons.check_circle, color: Get.theme.primaryColor),
+          Icon(Icons.check_circle, color: darkThemeData.primaryColor),
         ],
       ),
     );
@@ -239,7 +239,7 @@ class IAPProductTileWeb extends StatelessWidget {
       elevation: 10.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
-        side: BorderSide(color: Get.theme.primaryColor, width: 2),
+        side: BorderSide(color: darkThemeData.primaryColor, width: 2),
       ),
       child: content,
     );

@@ -32,6 +32,7 @@ dependencies:
   locale_emoji_flutter: ^0.2.1
   quick_actions: ^1.0.7
   extended_image: ^8.2.1
+  carousel_slider: ^5.0.0
 
   image_network:
     path: ../../Others/image_network
@@ -71,7 +72,7 @@ dependencies:
   firebase_performance: ^0.10.0+8
   firebase_messaging: ^15.1.3
   # API / NETWORKS
-  purchases_flutter: ^8.1.4
+  purchases_flutter: ^8.1.6
   # purchases_ui_flutter: ^6.22.0
   connectivity_plus: ^6.0.5
   supabase_flutter: ^2.6.0
