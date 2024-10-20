@@ -9,6 +9,7 @@ class Routes {
   static const about = '/about';
   static const feedback = '/feedback';
   static const upgrade = '/upgrade';
+  static const onboarding = '/onboarding';
   static const update = '/update';
   static const disabledBeta = '/disabled_beta';
   static const unknown = '/unknown';

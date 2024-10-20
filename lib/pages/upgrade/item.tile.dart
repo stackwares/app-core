@@ -139,39 +139,31 @@ class IAPProductTile extends StatelessWidget {
 
     return InkWell(
       onTap: () => UpgradeScreenController.to.package.value = package,
-      child: Stack(
-        alignment: Alignment.centerRight,
-        children: [
-          Obx(
-            () => Card(
-              elevation: Get.isDarkMode ? 10 : 1,
-              // color: isFirst && Get.isDarkMode
-              //     ? darkThemeData.colorScheme.primary.withOpacity(0.2)
-              //     : null,
-              color: isSelected
-                  ? darkThemeData.primaryColor.withOpacity(0.5)
-                  : null,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-                side: isSelected
-                    ? BorderSide(color: darkThemeData.primaryColor, width: 2)
-                    : const BorderSide(color: Colors.grey, width: 0.1),
-              ),
-              child: content,
+      child: Badge(
+        isLabelVisible: isFirst,
+        alignment: Alignment.topRight,
+        offset: Offset(-100, -7),
+        label: Text('✅ ${'best_deal'.tr.toUpperCase()}'),
+        backgroundColor: Colors.white,
+        padding: EdgeInsets.symmetric(horizontal: 10),
+        textStyle: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 12,
+          fontStyle: FontStyle.italic,
+        ),
+        child: Obx(
+          () => Card(
+            color:
+                isSelected ? darkThemeData.primaryColor.withOpacity(0.5) : null,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+              side: isSelected
+                  ? BorderSide(color: darkThemeData.primaryColor, width: 2)
+                  : const BorderSide(color: Colors.grey, width: 0.1),
             ),
+            child: content,
           ),
-          // Visibility(
-          //   visible: isFirst,
-          //   child: Padding(
-          //     padding: EdgeInsets.only(right: 15),
-          //     child: RemoteImage(
-          //       url: 'https://cdn-icons-png.flaticon.com/128/477/477406.png',
-          //       width: 27,
-          //       height: 27,
-          //     ),
-          //   ),
-          // ),
-        ],
+        ),
       ),
     );
   }

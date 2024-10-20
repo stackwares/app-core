@@ -18,7 +18,7 @@ dependencies:
   # ICONS
   icons_plus: ^5.0.0
   # ADS
-  stack_appodeal_flutter: ^3.3.3
+  stack_appodeal_flutter: ^3.4.0-beta.1
   # ANIMATIONS
   flutter_animate: ^4.5.0
   # DESKTOP

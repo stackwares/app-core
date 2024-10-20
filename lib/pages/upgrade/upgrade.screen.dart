@@ -8,10 +8,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 
-import '../../widgets/laurel.widget.dart';
+import '../onboarding/laurel.widget.dart';
 import 'feature.tile.dart';
 import 'review_card.dart';
 import 'upgrade_button.dart';
@@ -23,41 +22,6 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(UpgradeScreenController());
-
-    final laurelWreath = Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Transform.flip(flipX: true, child: LaurelImage()),
-        const SizedBox(width: 10),
-        ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: 250),
-          child: Column(
-            children: [
-              Text(
-                'join_over_users'.tr,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 5),
-              RatingBarIndicator(
-                rating: 5,
-                itemCount: 5,
-                itemSize: 30,
-                itemBuilder: (context, index) => Icon(
-                  Icons.star,
-                  color: Colors.amber,
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(width: 10),
-        LaurelImage(),
-      ],
-    );
 
     final premiumBadge = Row(
       mainAxisSize: MainAxisSize.min,
@@ -99,7 +63,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
         const SizedBox(height: 20),
         features,
         const SizedBox(height: 20),
-        laurelWreath,
+        const LaurelWidget(),
         const SizedBox(height: 20),
         // userReviews,
         CarouselSlider(

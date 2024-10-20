@@ -88,3 +88,31 @@ void initGlobalsWithContext(BuildContext context) {
 }
 
 enum BuildMode { beta, production }
+
+VoidCallback? getOnboard;
+
+String onboardingBGUri =
+    'https://images.unsplash.com/photo-1586455122412-4576812ffe42?q=80&w=600&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+
+List<String> stringReviews = [
+  "This app is absolutely fantastic! It has transformed how I manage my daily tasks and activities. Highly recommend!",
+  "I love using this app every day. Its user-friendly design makes navigating through features a breeze and enjoyable.",
+  "The features are incredibly useful and well-designed. It has made my life so much easier in countless ways.",
+  "This app exceeded my expectations in every way. I find myself relying on it more than I ever imagined!",
+  "I can't believe how much this app has improved my productivity. It's become an essential tool in my routine.",
+  "The updates are frequent and always enhance the experience. This app keeps getting better, and I love it!",
+  "This app is a lifesaver! I use it for everything, from planning my day to managing my projects efficiently.",
+  "The customer support is outstanding! They are quick to respond and genuinely care about improving user experience.",
+  "I highly recommend this app to everyone! It’s packed with features that really simplify daily tasks and activities.",
+  "This app has a beautiful design that makes it enjoyable to use. I always look forward to opening it!",
+  "It keeps me organized and on track like nothing else. I can’t imagine my life without this amazing app.",
+  "The performance is stellar! It runs smoothly without any glitches, which makes using it a pleasure every single time.",
+  "This app truly delivers on its promises. I’ve seen remarkable improvements in my daily workflow since using it.",
+  "It has helped me stay focused and productive. I’m so glad I found this incredible app!",
+  "Every time I use this app, I discover something new. It’s like a treasure trove of useful features!",
+  "I appreciate the thoughtful design that makes navigation intuitive. It’s easy to find everything I need within the app.",
+  "This app has everything I need in one place. It’s the perfect solution for managing my busy life!",
+  "I’m consistently impressed with how this app evolves. The developers really listen to feedback and make meaningful updates.",
+  "Using this app is a delightful experience. It combines functionality with an attractive interface that makes it enjoyable.",
+  "I’ve recommended this app to all my friends. It’s the best tool I’ve found for staying organized and productive!"
+];
