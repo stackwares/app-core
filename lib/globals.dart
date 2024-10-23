@@ -72,6 +72,7 @@ late HiveMetadataApp metadataApp;
 Future<void> initGlobals() async {
   metadataApp = await HiveMetadataApp.get();
   metadataDevice = await HiveMetadataDevice.get();
+  stringReviews.shuffle();
 }
 
 void initGlobalsWithContext(BuildContext context) {

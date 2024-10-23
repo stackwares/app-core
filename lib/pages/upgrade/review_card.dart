@@ -36,6 +36,7 @@ class ReviewCard extends StatelessWidget {
                 review,
                 overflow: TextOverflow.fade,
                 maxLines: 3,
+                style: TextStyle(fontSize: 12),
               ),
             ),
           ],

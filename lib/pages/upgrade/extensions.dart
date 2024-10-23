@@ -105,8 +105,8 @@ extension StoreProductExtension on StoreProduct {
   }
 
   String get buttonTitle {
-    // return hasFreeTrial ? 'redeem_trial'.tr : 'upgrade_to_pro'.tr;
-    return 'continue'.tr;
+    return hasFreeTrial ? 'redeem_trial'.tr : 'upgrade_to_pro'.tr;
+    // return 'continue'.tr;
   }
 
   String get buttonSubTitle {

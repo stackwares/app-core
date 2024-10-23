@@ -27,6 +27,9 @@ flutter build macos --analyze-size
 flutter build windows --analyze-size
 
 
+// -- GENERATE 32 BIT KEY FOR HIVE -- //
+openssl rand -base64 32
+
 
 
 flutter pub upgrade
