@@ -1,9 +1,8 @@
-import 'package:app_core/config.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/pages/upgrade/appbar.dart';
 import 'package:app_core/pages/upgrade/footer_links.dart';
 import 'package:app_core/pages/upgrade/products_listview.dart';
-import 'package:app_core/widgets/gradient.widget.dart';
+import 'package:app_core/widgets/pro.widget.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
@@ -28,15 +27,20 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
       children: [
         Image.asset('assets/images/logo.png', height: 30),
         const SizedBox(width: 10),
-        GradientWidget(
-          gradient: LinearGradient(colors: CoreConfig().gradientColors),
-          child: Text(
-            'unlock_all_access'.tr,
-            style: TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+        // GradientWidget(
+        //   gradient: LinearGradient(colors: CoreConfig().gradientColors),
+        //   child: Text(
+        //     'unlock_all_access'.tr,
+        //     style: TextStyle(
+        //       fontSize: 25,
+        //       fontWeight: FontWeight.bold,
+        //     ),
+        //   ),
+        // ),
+        ProText(
+          text: 'Pro',
+          size: 30,
+          premiumSize: 20,
         ),
       ],
     )

@@ -15,19 +15,22 @@ class ExitButton extends StatelessWidget {
       () => IconButton(
         icon: controller.timerSeconds.value == 0
             ? const Icon(Icons.close)
-            : Stack(
-                alignment: Alignment.center,
-                children: [
-                  const SizedBox(
-                    width: 30,
-                    height: 30,
-                    child: CircularProgressIndicator(),
-                  ),
-                  Text(
-                    controller.timerSeconds.value.toString(),
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
+            : Opacity(
+                opacity: 0.2,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    SizedBox(
+                      width: 30,
+                      height: 30,
+                      child: CircularProgressIndicator(),
+                    ),
+                    Text(
+                      controller.timerSeconds.value.toString(),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
               ),
         onPressed: controller.timerSeconds.value == 0
             ? () {

@@ -23,7 +23,7 @@ class FeatureTile extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.check, color: Colors.pink),
+          Icon(Icons.check, color: darkThemeData.primaryColor),
           const SizedBox(width: 15),
           Flexible(
             child: Text(

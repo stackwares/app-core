@@ -143,13 +143,12 @@ class IAPProductTile extends StatelessWidget {
         isLabelVisible: isFirst,
         alignment: Alignment.topRight,
         offset: Offset(-100, -7),
-        label: Text('✅ ${'best_deal'.tr.toUpperCase()}'),
+        label: Text('✅ ${'best_deal'.tr}'),
         backgroundColor: Colors.white,
         padding: EdgeInsets.symmetric(horizontal: 10),
         textStyle: TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 12,
-          fontStyle: FontStyle.italic,
         ),
         child: Obx(
           () => Card(
