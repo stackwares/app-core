@@ -96,6 +96,24 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
               const SizedBox(height: 5),
               const CTAUpgradeButton(),
               const SizedBox(height: 3),
+              Center(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.check_circle,
+                      color: Colors.greenAccent,
+                      size: 20,
+                    ),
+                    const SizedBox(width: 5),
+                    Text(
+                      controller.buttonSubText,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 12),
+                    ),
+                  ],
+                ),
+              ),
               const FooterLinks(),
             ],
           ),

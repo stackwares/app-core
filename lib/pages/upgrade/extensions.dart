@@ -109,8 +109,9 @@ extension StoreProductExtension on StoreProduct {
     // return 'continue'.tr;
   }
 
+  // TODO: localize no payment now
   String get buttonSubTitle {
-    return '${!isSubscription ? '${'now_only'.tr} $itemTitle' : '${'now_only'.tr} $itemTitle'}${!isApple ? ' - ${'cancel_anytime'.tr}' : ''}';
+    return '${isSubscription ? '${hasFreeTrial ? 'No payment now - ' : ''}${'cancel_anytime'.tr}' : '${'now_only'.tr} $itemTitle'}';
   }
 
   String get trialDurationText {

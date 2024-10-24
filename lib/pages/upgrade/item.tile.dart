@@ -107,7 +107,7 @@ class IAPProductTile extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
-                    '50% OFF', // TODO: localize
+                    '-50%', // TODO: localize
                     style: TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.bold,
